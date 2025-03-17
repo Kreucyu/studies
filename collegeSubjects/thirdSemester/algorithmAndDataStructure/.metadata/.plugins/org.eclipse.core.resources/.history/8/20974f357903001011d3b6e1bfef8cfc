@@ -19,8 +19,7 @@ public class app {
 			System.out.println("5 - Exibir lista");
 			System.out.println("6 - Esvaziar lista");
 			System.out.println("7 - Obter tamanho da lista");
-			System.out.println("8 - Inverter lista");
-			System.out.println("9 - Fechar programa");
+			System.out.println("8 - Fechar programa");
 			System.out.println("");
 			System.out.print("Opção: ");
 			type = sc.nextInt();
@@ -68,11 +67,7 @@ public class app {
 			case 7:
 				System.out.println("O tamanho da lista é " + list.getTamanho() + "\n");
 				break;
-			case 8: 
-				list.inverter();
-				System.out.println("\nLista invertida!\n");
-				break;
-			case 9:
+			case 8:
 				sc.close();
 				list.exit();
 				break;
@@ -80,6 +75,6 @@ public class app {
 				System.out.println("\nInsira um valor válido!\n");
 				break;
 			}
-		} while (type != 9);
+		} while (type != 8);
 	}
 }
