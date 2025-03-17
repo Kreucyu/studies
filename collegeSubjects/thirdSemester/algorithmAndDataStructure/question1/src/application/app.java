@@ -55,6 +55,7 @@ public class app {
 				System.out.print("Qual elemento você quer remover? ");
 				int remover = sc.nextInt();
 				list.retirar(remover);
+				System.out.println("");
 				break;
 			case 5:
 				System.out.println(list.toString()); 
