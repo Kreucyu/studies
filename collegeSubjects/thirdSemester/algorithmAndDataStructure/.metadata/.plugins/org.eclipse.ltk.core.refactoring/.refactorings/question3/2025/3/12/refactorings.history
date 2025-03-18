@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename compilation unit &apos;model.listaEstatica.java&apos; to &apos;listaEncadeada.java&apos;&#x0D;&#x0A;- Original project: &apos;question3&apos;&#x0D;&#x0A;- Original element: &apos;model.listaEstatica.java&apos;&#x0D;&#x0A;- Renamed element: &apos;model.listaEncadeada.java&apos;" description="Rename compilation unit &apos;listaEstatica.java&apos;" flags="2" id="org.eclipse.jdt.ui.rename.compilationunit" input="/src&lt;model{listaEstatica.java" name="listaEncadeada.java" references="false" stamp="1742251129783" version="1.0"/>
+</session>

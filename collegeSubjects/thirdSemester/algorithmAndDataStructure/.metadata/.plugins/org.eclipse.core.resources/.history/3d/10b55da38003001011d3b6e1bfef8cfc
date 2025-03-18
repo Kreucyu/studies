@@ -2,7 +2,7 @@ package application;
 
 import java.util.Scanner;
 
-import model.listaEncadeada;
+import model.listaEstatica;
 
 public class app {
 

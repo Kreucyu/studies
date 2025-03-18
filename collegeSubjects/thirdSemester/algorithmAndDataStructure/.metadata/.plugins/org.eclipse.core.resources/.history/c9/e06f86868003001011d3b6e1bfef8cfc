@@ -2,13 +2,13 @@ package application;
 
 import java.util.Scanner;
 
-import model.listaEncadeada;
+import model.listaEstatica;
 
 public class app {
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		listaEncadeada<Object> list = new listaEncadeada<>();
+		listaEstatica<Object> list = new listaEstatica<>();
 		int type = 0;
 		do {
 			System.out.println("O que deseseja fazer?");
