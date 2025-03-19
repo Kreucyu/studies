@@ -82,6 +82,10 @@ public class listaEncadeada<T> {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		noLista<T> atual = primeiro;
+		if(atual == null) {
+			sb.append("A lista está vazia!");
+			return sb.toString();
+		}
 		while(atual != null) {
 			sb.append(atual.getInfo());
 			if(atual.getProximo() != null) {

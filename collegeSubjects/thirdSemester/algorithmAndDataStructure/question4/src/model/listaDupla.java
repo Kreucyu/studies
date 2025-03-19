@@ -39,8 +39,8 @@ public class listaDupla<T> {
 			primeiro = atual.getProximo();
 			if (primeiro != null) {
 				primeiro.setAnterior(null);
-				return;
 			}
+			return;
 		}
 
 		while (atual != null && !atual.getInfo().equals(valor)) {
@@ -57,31 +57,9 @@ public class listaDupla<T> {
 		}
 	}
 
-	public void exibirOrdemInversa() {
-		listaDupla<T> inverso = new listaDupla<>();
-		noListaDupla<T> atual = primeiro;
-		
-		while(atual != null) {
-			noListaDupla<T> temp = atual.getProximo();
-			atual.setProximo(atual.getAnterior());
-			atual.setAnterior(temp);
-			atual = temp;
-		}
-		
-		if(primeiro != null) {
-			primeiro = primeiro.getAnterior();
-		}
-		
-		atual = primeiro;
-		while(atual != null) {
-			inverso.inserir(atual.getInfo());
-			atual = atual.getProximo();
-		}
-	}
-
 	public void liberar() {
 		noListaDupla<T> atual = primeiro;
-		while(atual != null) {
+		while (atual != null) {
 			noListaDupla<T> temp = atual.getProximo();
 			atual.setAnterior(null);
 			atual.setProximo(null);
@@ -90,15 +68,42 @@ public class listaDupla<T> {
 		primeiro = null;
 	}
 
+	public void exibirOrdemInversa() {
+		noListaDupla<T> atual = primeiro;
+		
+		if (atual == null) {
+			System.out.print("\nA lista está vazia\n");
+			return;
+		}
+
+		while (atual.getProximo() != null) {
+			atual = atual.getProximo();
+		}
+		
+		System.out.print("\nLista invertida: ");
+		while (atual != null) {
+			System.out.print(atual.getInfo());
+			if (atual.getAnterior() != null) {
+				System.out.print(", ");
+			}
+			atual = atual.getAnterior();
+		}
+		System.out.println("\n");
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		noListaDupla<T> atual = primeiro;
-		while(atual != null) {
+		if(atual == null) {
+			sb.append("A lista está vazia!");
+			return sb.toString();
+		}
+		while (atual != null) {
 			sb.append(atual.getInfo());
-			if(atual.getProximo() != null) {
+			if (atual.getProximo() != null) {
 				sb.append(", ");
-			} 
+			}
 			atual = atual.getProximo();
 		}
 		return sb.toString();
@@ -109,14 +114,21 @@ public class listaDupla<T> {
 		System.exit(0);
 	}
 
-}
+	public void imprimir() {
+		noListaDupla<T> atual = primeiro;
+		if(atual == null) {
+			System.out.println("\nA lista está vazia!\n");
+		}
+		while (atual != null) {
+			if (atual == primeiro) {System.out.println("\n--------------------------------------\n");} 
+			System.out.println("Valor: " + atual.getInfo() + "\n");
+			System.out.println("Anterior: " + (atual.getAnterior() != null ? atual.getAnterior().getInfo() : "null"));
+			System.out.println("Primeiro: " + atual.getInfo());
+			System.out
+					.println("Próximo: " + (atual.getProximo() != null ? atual.getProximo().getInfo() : "null") + "\n");
+			System.out.println("--------------------------------------\n");
+			atual = atual.getProximo();
+		}
+	}
 
-/*
- * public void imprimir() { noListaDupla<T> atual = primeiro; while(atual !=
- * null) { System.out.println("valor: " + atual.getInfo());
- * System.out.println("anterior: " + (atual.getAnterior() != null ?
- * atual.getAnterior().getInfo() : "null")); System.out.println("primeiro: " +
- * atual.getInfo()); System.out.println("proximo: " + (atual.getProximo() !=
- * null ? atual.getProximo().getInfo() : "null"));
- * System.out.println("--------------------"); atual = atual.getProximo(); } }
- */
+}
