@@ -20,14 +20,7 @@ public class listaDupla<T> {
 	
 
 	
-	public noListaDupla<T> buscar(T valor) {
-		noListaDupla<T> atual = primeiro;
-		while (atual != null) {
-			if (atual.getInfo().equals(valor) || atual.getInfo().toString().equals(valor.toString())) {
-				return atual;
-			}
-			atual = atual.getProximo();
-		}
+	public noListaDupla<T> buscar() {
 		return null;
 	}
 	

@@ -12,39 +12,12 @@ public class app {
 		Object value = null;
 		int type = 0;
 		
-		do {
-			System.out.print("num: ");
-			type = sc.nextInt();
-			if(type == 1) {
-				System.out.print("valor: ");
-				value = sc.nextInt();
-				list.inserir(value);
-				System.out.println("\nInserido\n");
-			}
-			if(type == 2) {
-				System.out.print("\nDigite o valor que deseja buscar: ");
-				value = sc.nextInt();
-				if (list.buscar(value) != null) {
-					System.out.println("\nValor encontrado, busca = "+ list.buscar(value).getInfo() + "\n");
-				} else {
-					System.out.println("\nValor não encontrado, busca = " + list.buscar(value) + "\n");
-				}
-				break;
-			}
-			
-			
-		} while(type != 3);
-		
 		sc.close();
 		
 	}
 }
 
 /*
- * 
- * list.imprimir();
- * 
- * 
  * do {
 			System.out.println("Escolha uma opção:\n");
 			System.out.println("1 - Inserir");

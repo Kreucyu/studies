@@ -20,20 +20,11 @@ public class app {
 				value = sc.nextInt();
 				list.inserir(value);
 				System.out.println("\nInserido\n");
-			}
-			if(type == 2) {
-				System.out.print("\nDigite o valor que deseja buscar: ");
-				value = sc.nextInt();
-				if (list.buscar(value) != null) {
-					System.out.println("\nValor encontrado, busca = "+ list.buscar(value).getInfo() + "\n");
-				} else {
-					System.out.println("\nValor não encontrado, busca = " + list.buscar(value) + "\n");
-				}
-				break;
+				list.imprimir();
 			}
 			
 			
-		} while(type != 3);
+		} while(type != 2);
 		
 		sc.close();
 		

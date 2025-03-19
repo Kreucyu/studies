@@ -20,7 +20,7 @@ public class listaDupla<T> {
 	
 
 	
-	public noListaDupla<T> buscar(T valor) {
+	public noListaDupla<T> buscar() {
 		noListaDupla<T> atual = primeiro;
 		while (atual != null) {
 			if (atual.getInfo().equals(valor) || atual.getInfo().toString().equals(valor.toString())) {
