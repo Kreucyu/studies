@@ -1,0 +1,113 @@
+package model;
+
+public class listaEncadeada<T> {
+	private noLista<T> primeiro;
+
+	public listaEncadeada() {
+		primeiro = null;
+	}
+	
+	
+
+	public noLista<T> getPrimeiro() {
+		return primeiro;
+	}
+
+	public void inserir(T valor) {
+		
+	}
+	
+	public boolean estaVazia() {
+		
+		return false;
+	}
+	
+	public noLista<T> buscar(T valor) {
+		
+		return null;
+	}
+	
+	public void retirar(T valor) {
+		
+	}
+	
+	public int obterComprimento() {
+		return 1;
+	}
+	
+	public noLista<T> obterNo(int idx) {
+		return null;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		
+		return sb.toString();
+	}
+
+
+
+	private void redimensionar() {
+		Object novoVetor[] = new Object[info.length + 10];
+		for (int i = 0; i < tamanho; i++) {
+			novoVetor[i] = info[i];
+		}
+		info = novoVetor;
+	}
+
+	
+
+	public void exibir() {
+		for (int i = 0; i < tamanho; i++) {
+			if (i == tamanho - 1) {
+				System.out.println(info[i]);
+			} else {
+				System.out.print(info[i] + ", ");
+			}
+		}
+	}
+
+	
+
+	
+	public void liberar() {
+		tamanho = 0;
+		info = new Object[10];
+	}
+
+	@SuppressWarnings("unchecked")
+	public T obterElemento(int posicao) {
+		try {
+		if(posicao > 0 || posicao < tamanho) {
+			return (T) info[posicao];
+		}
+		} catch (IndexOutOfBoundsException e) {
+			System.out.println("\nPosição inválida");
+		}		
+		return null;
+	}
+
+	
+	
+	public void exit() {
+		System.out.println("Saindo...");
+		System.exit(0);
+	}
+
+	public int getTamanho() {
+		return tamanho;
+	}
+
+	
+	
+	public void inverter() {
+    	for(int i = 0; i < tamanho / 2; i++) {
+    		int j = tamanho - 1 - i;
+    		Object temp = info[i];
+    		info[i] = info[j];
+    		info[j] = temp;
+    	}
+    }
+
+}

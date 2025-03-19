@@ -6,55 +6,57 @@ public class listaEncadeada<T> {
 	public listaEncadeada() {
 		primeiro = null;
 	}
+	
+	
 
 	public noLista<T> getPrimeiro() {
 		return primeiro;
 	}
 
 	public void inserir(T valor) {
-
+		
 	}
-
+	
 	public boolean estaVazia() {
-
+		
 		return false;
 	}
-
+	
 	public noLista<T> buscar(T valor) {
-
+		
 		return null;
 	}
-
+	
 	public void retirar(T valor) {
-
+		
 	}
-
+	
 	public int obterComprimento() {
 		return 1;
 	}
-
+	
 	public noLista<T> obterNo(int idx) {
 		return null;
 	}
-
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-
+		
 		return sb.toString();
 	}
-
-	public void exit() {
-		System.out.println("Saindo...");
-		System.exit(0);
-	}
-
+	
 	public listaEncadeada<T> criarInvertida() {
 		/*
 		 * só é necessário esse método na lista de exercícios 4, 
 		 * nesse enunciado não pede para inverter em nenhum momento.
 		 */
 		return null;
+	}
+	
+	public void exit() {
+		System.out.println("Saindo...");
+		System.exit(0);
 	}
 
 }
