@@ -12,42 +12,21 @@ public class listaEncadeada<T> {
 	}
 
 	public void inserir(T valor) {
-		noLista<T> insert = new noLista<>();
-		insert.setInfo(valor);
-		insert.setProximo(primeiro);
-		primeiro = insert;
+
 	}
 
 	public boolean estaVazia() {
-		return primeiro == null;
+
+		return false;
 	}
 
 	public noLista<T> buscar(T valor) {
-		noLista<T> atual = primeiro;
-		while (atual != null) {
-			if(valor == atual) {
-				return atual;
-			}
-			atual = atual.getProximo();
-		}
-			return null;
+
+		return null;
 	}
 
 	public void retirar(T valor) {
-		noLista<T> atual = primeiro;
-		noLista<T> anterior = null;
-		while(atual != null || !atual.getInfo().equals(valor)) {
-			anterior = atual;
-			atual = atual.getProximo();
-		}
-		if (atual != null) {
-			if(anterior == null) {
-				primeiro = atual.getProximo();
-			} else {
-				anterior.setProximo(atual.getProximo());
-			}
-		}
-		
+
 	}
 
 	public int obterComprimento() {
