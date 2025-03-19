@@ -93,7 +93,7 @@ public class listaEncadeada<T> {
 	}
 
 	public void exit() {
-		System.out.println("\nSaindo...");
+		System.out.println("Saindo...");
 		System.exit(0);
 	}
 

@@ -32,7 +32,7 @@ public class app {
 				System.out.println("\nValor inserido!\n");
 				break;
 			case 2:
-				System.out.print("\nDigite o valor que deseja buscar: ");
+				System.out.println("\nDigite o valor que deseja buscar: ");
 				value = sc.nextInt();
 				if (list.buscar(value) != null) {
 					System.out.println("\nValor encontrado, busca = "+ list.buscar(value).getInfo() + "\n");
@@ -41,17 +41,14 @@ public class app {
 				}
 				break;
 			case 3:
-				System.out.print("\nDigite o valor que deseja remover: ");
+				System.out.println("\nDigite o valor que deseja remover: ");
 				value = sc.nextInt();
 				list.retirar(value);
-				System.out.println("\nValor removido!\n");
 				break;
 			case 4:
-				System.out.print("\nDigite o nó que deseja buscar: ");
+				System.out.println("\nDigite o nó que deseja buscar: ");
 				int idx = sc.nextInt();
-				if(list.obterNo(idx) != null) {
-					System.out.println("\nNó " + idx + ", valor encontrado: " + list.obterNo(idx).getInfo() + "\n");
-				}
+				list.obterNo(idx);
 				break;
 			case 5:
 				System.out.println("\n" + list.toString() + "\n");

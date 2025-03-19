@@ -61,21 +61,16 @@ public class listaEncadeada<T> {
 	}
 
 	public noLista<T> obterNo(int idx) {
-		try {
-			if(idx < 0 || idx >= obterComprimento()) {
-				throw new IndexOutOfBoundsException();
-			}
-			noLista<T> atual = primeiro;
-			int temp = 0;
-			while (temp < idx) {
-				atual = atual.getProximo();
-				temp++;
-			}
-			return atual;
-		} catch (IndexOutOfBoundsException e) {
-			System.out.println("\nPosição inválida!\n");
-			return null;
+		if (idx < 0 || idx >= obterComprimento()) {
+			throw new IndexOutOfBoundsException("Posição inválida!");
 		}
+		noLista<T> atual = primeiro;
+		int temp = 0;
+		while (temp < idx) {
+			atual = atual.getProximo();
+			temp++;
+		}
+		return atual;
 	}
 
 	@Override
@@ -93,7 +88,7 @@ public class listaEncadeada<T> {
 	}
 
 	public void exit() {
-		System.out.println("\nSaindo...");
+		System.out.println("Saindo...");
 		System.exit(0);
 	}
 

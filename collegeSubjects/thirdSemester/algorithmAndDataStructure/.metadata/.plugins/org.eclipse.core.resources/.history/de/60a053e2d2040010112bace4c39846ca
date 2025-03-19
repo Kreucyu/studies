@@ -29,32 +29,29 @@ public class app {
 				System.out.print("\nDigite o valor que deseja inserir: ");
 				value = sc.nextInt();
 				list.inserir(value);
-				System.out.println("\nValor inserido!\n");
+				System.out.println("Valor inserido! \n");
 				break;
 			case 2:
-				System.out.print("\nDigite o valor que deseja buscar: ");
+				System.out.println("\nDigite o valor que deseja buscar: ");
 				value = sc.nextInt();
 				if (list.buscar(value) != null) {
-					System.out.println("\nValor encontrado, busca = "+ list.buscar(value).getInfo() + "\n");
+					System.out.println("Valor encontrado, busca = "+ list.buscar(value).getInfo());
 				} else {
-					System.out.println("\nValor não encontrado, busca = " + list.buscar(value) + "\n");
+					System.out.println("Valor não encontrado, busca = " + list.buscar(value));
 				}
 				break;
 			case 3:
-				System.out.print("\nDigite o valor que deseja remover: ");
+				System.out.println("\nDigite o valor que deseja remover: ");
 				value = sc.nextInt();
 				list.retirar(value);
-				System.out.println("\nValor removido!\n");
 				break;
 			case 4:
-				System.out.print("\nDigite o nó que deseja buscar: ");
+				System.out.println("\nDigite o nó que deseja buscar: ");
 				int idx = sc.nextInt();
-				if(list.obterNo(idx) != null) {
-					System.out.println("\nNó " + idx + ", valor encontrado: " + list.obterNo(idx).getInfo() + "\n");
-				}
+				list.obterNo(idx);
 				break;
 			case 5:
-				System.out.println("\n" + list.toString() + "\n");
+				System.out.println(list.toString());
 				break;
 			case 6:
 				if(list.estaVazia() == false) {
@@ -64,7 +61,7 @@ public class app {
 				}
 				break;
 			case 7:
-				System.out.println("\nO comprimento da lista é " + list.obterComprimento() + "\n");
+				System.out.println("O comprimento da lista é " + list.obterComprimento());
 				break;
 			case 8:
 				list.exit();

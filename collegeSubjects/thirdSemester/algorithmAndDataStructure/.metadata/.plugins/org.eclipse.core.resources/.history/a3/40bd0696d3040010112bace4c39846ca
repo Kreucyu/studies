@@ -44,14 +44,11 @@ public class app {
 				System.out.print("\nDigite o valor que deseja remover: ");
 				value = sc.nextInt();
 				list.retirar(value);
-				System.out.println("\nValor removido!\n");
 				break;
 			case 4:
 				System.out.print("\nDigite o nó que deseja buscar: ");
 				int idx = sc.nextInt();
-				if(list.obterNo(idx) != null) {
-					System.out.println("\nNó " + idx + ", valor encontrado: " + list.obterNo(idx).getInfo() + "\n");
-				}
+				list.obterNo(idx);
 				break;
 			case 5:
 				System.out.println("\n" + list.toString() + "\n");

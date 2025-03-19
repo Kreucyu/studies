@@ -73,7 +73,7 @@ public class listaEncadeada<T> {
 			}
 			return atual;
 		} catch (IndexOutOfBoundsException e) {
-			System.out.println("\nPosição inválida!\n");
+			System.out.println("Posição inválida!");
 			return null;
 		}
 	}
@@ -93,7 +93,7 @@ public class listaEncadeada<T> {
 	}
 
 	public void exit() {
-		System.out.println("\nSaindo...");
+		System.out.println("Saindo...");
 		System.exit(0);
 	}
 
