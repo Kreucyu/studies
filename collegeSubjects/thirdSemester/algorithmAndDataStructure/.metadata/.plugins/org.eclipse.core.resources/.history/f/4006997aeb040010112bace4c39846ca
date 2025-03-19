@@ -93,20 +93,8 @@ public class listaDupla<T> {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		noListaDupla<T> atual = primeiro;
-		while(atual != null) {
-			sb.append(atual.getInfo());
-			if(atual.getProximo() != null) {
-				sb.append(", ");
-			} 
-			atual = atual.getProximo();
-		}
-		return sb.toString();
-	}
 
-	public void exit() {
-		System.out.println("\nSaindo...");
-		System.exit(0);
+		return sb.toString();
 	}
 
 }
