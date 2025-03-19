@@ -79,11 +79,9 @@ public class listaEncadeada<T> {
 		noLista<T> atual = primeiro;
 		while(atual != null) {
 			sb.append(atual.getInfo());
-			if(atual.getProximo() != null) {
-				sb.append(", ");
-			} 
-			atual = atual.getProximo();
+			sb.append(", ");
 		}
+
 		return sb.toString();
 	}
 

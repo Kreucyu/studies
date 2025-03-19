@@ -25,29 +25,29 @@ public class listaEncadeada<T> {
 	public noLista<T> buscar(T valor) {
 		noLista<T> atual = primeiro;
 		while (atual != null) {
-			if (atual.getInfo().equals(valor) || atual.getInfo().toString().equals(valor.toString())) {
+			if(atual.getInfo().equals(valor) || atual.getInfo().toString().equals(valor.toString())) {
 				return atual;
 			}
 			atual = atual.getProximo();
 		}
-		return null;
+			return null;
 	}
 
 	public void retirar(T valor) {
 		noLista<T> atual = primeiro;
 		noLista<T> anterior = null;
-		while (atual != null && !atual.getInfo().equals(valor)) {
+		while(atual != null && !atual.getInfo().equals(valor)) {
 			anterior = atual;
 			atual = atual.getProximo();
 		}
 		if (atual != null) {
-			if (anterior == null) {
+			if(anterior == null) {
 				primeiro = atual.getProximo();
 			} else {
 				anterior.setProximo(atual.getProximo());
 			}
 		}
-
+		
 	}
 
 	public int obterComprimento() {
@@ -61,29 +61,20 @@ public class listaEncadeada<T> {
 	}
 
 	public noLista<T> obterNo(int idx) {
-		if (idx < 0 || idx >= obterComprimento()) {
-			throw new IndexOutOfBoundsException("Posição inválida!");
+		try {
+			if(idx >= 12) {
+				
+			}
+		} catch (IndexOutOfBoundsException e) {
+			System.out.println("Exeção capturada: " + e.getMessage());
 		}
-		noLista<T> atual = primeiro;
-		int temp = 0;
-		while (temp < idx) {
-			atual = atual.getProximo();
-			temp++;
-		}
-		return atual;
+		return null;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		noLista<T> atual = primeiro;
-		while(atual != null) {
-			sb.append(atual.getInfo());
-			if(atual.getProximo() != null) {
-				sb.append(", ");
-			} 
-			atual = atual.getProximo();
-		}
+
 		return sb.toString();
 	}
 
@@ -94,8 +85,8 @@ public class listaEncadeada<T> {
 
 	public listaEncadeada<T> criarInvertida() {
 		/*
-		 * só é necessário esse método na lista de exercícios 4, nesse enunciado não
-		 * pede para inverter em nenhum momento.
+		 * só é necessário esse método na lista de exercícios 4, 
+		 * nesse enunciado não pede para inverter em nenhum momento.
 		 */
 		return null;
 	}

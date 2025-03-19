@@ -78,11 +78,12 @@ public class listaEncadeada<T> {
 		StringBuilder sb = new StringBuilder();
 		noLista<T> atual = primeiro;
 		while(atual != null) {
-			sb.append(atual.getInfo());
-			if(atual.getProximo() != null) {
+			if(atual.getProximo() == null) {
+				sb.append(atual.getInfo());
+			} else {
+				sb.append(atual.getInfo());
 				sb.append(", ");
-			} 
-			atual = atual.getProximo();
+			}
 		}
 		return sb.toString();
 	}
