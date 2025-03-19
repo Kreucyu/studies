@@ -9,20 +9,12 @@ public class app {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		listaEncadeada<Object> list = new listaEncadeada<>();
-		System.out.println("lista: " + list.estaVazia());
 		list.inserir(5);
 		list.inserir(10);
 		list.inserir(15);
 		list.inserir(20);
-		System.out.print("\nQual elemento quer buscar? ");
-		Object value = sc.next();
-		if (list.buscar(value) != null) {
-			System.out.println("Valor encontrado, busca = "+ list.buscar(value).getInfo());
-		} else {
-			System.out.println("Valor não encontrado, busca = " + list.buscar(value));
-		}
-		System.out.println("lista: " + list.estaVazia());
-		sc.close();
+		list.buscar(15);
+		list.buscar(40);
 		
 	}
 }
