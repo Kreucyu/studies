@@ -64,7 +64,6 @@ public class app {
 				System.out.println("O comprimento da lista é " + list.obterComprimento());
 				break;
 			case 8:
-				list.exit();
 				break;
 			default:
 				System.out.println("\nInsira um valor válido!\n");

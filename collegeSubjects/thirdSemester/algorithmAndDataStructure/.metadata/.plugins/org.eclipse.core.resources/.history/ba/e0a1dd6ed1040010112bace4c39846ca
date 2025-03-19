@@ -27,50 +27,40 @@ public class app {
 			switch(type) {
 			case 1:
 				System.out.print("\nDigite o valor que deseja inserir: ");
-				value = sc.nextInt();
-				list.inserir(value);
-				System.out.println("Valor inserido!");
+				value = sc.next();
 				break;
 			case 2:
-				System.out.println("\nDigite o valor que deseja buscar: ");
-				value = sc.nextInt();
-				if (list.buscar(value) != null) {
-					System.out.println("Valor encontrado, busca = "+ list.buscar(value).getInfo());
-				} else {
-					System.out.println("Valor não encontrado, busca = " + list.buscar(value));
-				}
 				break;
 			case 3:
-				System.out.println("\nDigite o valor que deseja remover: ");
-				value = sc.nextInt();
-				list.retirar(value);
 				break;
 			case 4:
-				System.out.println("\nDigite o nó que deseja buscar: ");
-				int idx = sc.nextInt();
-				list.obterNo(idx);
 				break;
 			case 5:
-				System.out.println(list.toString());
 				break;
 			case 6:
-				if(list.estaVazia() == false) {
-					System.out.println("A lista não está vazia, estado = " + list.estaVazia());
-				} else {
-					System.out.println("A lista está vazia, estado = " + list.estaVazia());
-				}
 				break;
 			case 7:
-				System.out.println("O comprimento da lista é " + list.obterComprimento());
 				break;
 			case 8:
-				list.exit();
 				break;
 			default:
 				System.out.println("\nInsira um valor válido!\n");
 				break;
 			}
 		} while (type != 8);
+		System.out.println("lista: " + list.estaVazia());
+		list.inserir(5);
+		list.inserir(10);
+		list.inserir(15);
+		list.inserir(20);
+		System.out.print("\nQual elemento quer buscar? ");
+		Object value = sc.next();
+		if (list.buscar(value) != null) {
+			System.out.println("Valor encontrado, busca = "+ list.buscar(value).getInfo());
+		} else {
+			System.out.println("Valor não encontrado, busca = " + list.buscar(value));
+		}
+		System.out.println("lista: " + list.estaVazia());
 		sc.close();
 		
 	}
