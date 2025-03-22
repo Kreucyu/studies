@@ -1,0 +1,47 @@
+Aula 18/03
+------------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW vw_municipio_de_sc	
+AS
+	SELECT l.nm_localidade AS municipio, l.nr_cep AS cep
+	FROM localidade l
+	WHERE l.sg_uf = "sc"
+		AND l.fl_tipo_localidade = 'M';
+SELECT * FROM vw_municipio_de_sc;
+
+DESC vw_municipio_de_sc;
+
+SELECT vws.TABLE_CATALOG, vws.TABLE_SCHEMA, vws.TABLE_NAME, vws.VIEW_DEFINITION
+FROM information_schema.views vws
+WHERE vws.TABLE_NAME = 'vw_municipio_de_sc';
+
+SHOW FULL TABLES
+
+------------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW vw_ceps_de_blumenau
+AS
+SELECT lgd.nm_logradouro_comp, br.nm_bairro, lgd.nr_cep
+FROM logradouro lgd, bairro br, localidade loc
+WHERE lgd.cd_bairro_inicio = br.cd_bairro
+  AND lgd.cd_localidade = loc.cd_localidade
+  AND loc.nm_localidade = 'Blumenau';
+
+SELECT * FROM vw_ceps_de_blumenau;
+
+------------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW vw_localidades_varias_ufs
+AS
+    SELECT l.nm_localidade, 
+        COUNT(DISTINCT l.sg_uf) AS quantidade_ufs
+    FROM localidade l
+    WHERE l.fl_tipo_localidade = 'M'
+    GROUP BY l.nm_localidade
+    HAVING 
+        COUNT(DISTINCT l.sg_uf) > 1;
+
+SELECT * FROM vw_localidades_varias_ufs
+ORDER BY 2 DESC, 1;
+
+------------------------------------------------------------------------------------------------------------------
