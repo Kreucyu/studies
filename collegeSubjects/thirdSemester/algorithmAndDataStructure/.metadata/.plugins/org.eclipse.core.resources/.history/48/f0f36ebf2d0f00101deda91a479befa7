@@ -1,0 +1,11 @@
+package application;
+
+import model.entities.PilhaVetor;
+
+public class App {
+
+	public static <T> void main(String args[]) {
+		int limite = 10;
+		PilhaVetor<T> pilha = new PilhaVetor<T>(limite);
+	}
+}

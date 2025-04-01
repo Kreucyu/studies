@@ -1,0 +1,32 @@
+package application;
+
+import model.entities.PilhaVetor;
+
+public class App {
+
+	@SuppressWarnings("unchecked")
+	public static <T> void main(String args[]) {
+		PilhaVetor<T> pilha = new PilhaVetor<>(10);
+		System.out.println("Caso 1: ");
+		System.out.println("\nA pilha esta vazia? r = " + pilha.estaVazia());
+		System.out.println("\nCaso 2: ");
+		pilha.push((T) Integer.valueOf(10));
+		System.out.println("\nA pilha esta vazia? r = " + pilha.estaVazia());
+		System.out.println("\nCaso 3: ");
+		pilha.push((T) Integer.valueOf(20));
+		pilha.push((T) Integer.valueOf(30));
+		System.out.println("\n" + pilha.pop() + ", " + pilha.pop() + ", " + pilha.pop());
+		System.out.println("\nA pilha esta vazia? r = " + pilha.estaVazia());
+		System.out.println("\nCaso 4: ");
+		PilhaVetor<T> pilha1 = new PilhaVetor<>(3);
+		pilha1.push((T) Integer.valueOf(10));
+		pilha1.push((T) Integer.valueOf(20));
+		pilha1.push((T) Integer.valueOf(30));
+		pilha1.push((T) Integer.valueOf(40));
+		System.out.println("\nCaso 5: ");
+		PilhaVetor<T> pilha2 = new PilhaVetor<>(10);
+		pilha2.pop();
+		System.out.println("\nCaso 6: ");
+		PilhaVetor<T> pilha3 = new PilhaVetor<>(10);
+	}
+}
