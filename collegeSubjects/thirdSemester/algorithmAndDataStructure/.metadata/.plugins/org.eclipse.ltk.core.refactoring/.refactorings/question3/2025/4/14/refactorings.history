@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 2 elements to &apos;stacks2/src/model.entities&apos;&#x0D;&#x0A;- Original project: &apos;question3&apos;&#x0D;&#x0A;- Destination element: &apos;stacks2/src/model.entities&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     model.listaEncadeada.java&#x0D;&#x0A;     model.noLista.java" description="Copy compilation units" destination="=stacks2/src&lt;model.entities" element1="/src&lt;model{listaEncadeada.java" element2="/src&lt;model{noLista.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1743539775204" units="2" version="1.0"/>
+</session>
