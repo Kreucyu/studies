@@ -1,0 +1,20 @@
+package application;
+
+import model.listaEstatica;
+
+public class app {
+
+	public static void main(String[] args) {
+		listaEstatica<Object> list = new listaEstatica<>();
+		list.inserir(10);
+		list.inserir(20);
+		list.inserir(30);
+		list.inserir(40);
+		list.inserir(50);
+		list.inserir(60);
+		System.out.println("Lista antes da remoção: " + list.toString());
+		list.retirarElementos(2, 4);
+		System.out.println("Lista depois da remoção: " + list.toString());
+		
+	}
+}

@@ -4,10 +4,10 @@
     <fullyQualifiedTypeName name="model.listaEncadeada"/>
     <fullyQualifiedTypeName name="java.lang.NullPointerException"/>
     <fullyQualifiedTypeName name="model.noLista"/>
-    <fullyQualifiedTypeName name="java.lang.IndexOutOfBoundsException"/>
     <fullyQualifiedTypeName name="java.lang.StringBuilder"/>
     <fullyQualifiedTypeName name="java.io.IOException"/>
     <fullyQualifiedTypeName name="model.exception.PilhaCheiaException"/>
     <fullyQualifiedTypeName name="model.exception.PilhaVaziaException"/>
     <fullyQualifiedTypeName name="model.entities.PilhaVetor"/>
+    <fullyQualifiedTypeName name="java.lang.IndexOutOfBoundsException"/>
 </qualifiedTypeNameHistroy>
