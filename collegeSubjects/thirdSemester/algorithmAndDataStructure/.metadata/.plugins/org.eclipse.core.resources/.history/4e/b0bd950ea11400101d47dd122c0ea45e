@@ -1,0 +1,14 @@
+package application;
+
+import model.entities.FilaVetor;
+
+public class App {
+
+	public static <T> void main(String[] args) {
+		FilaVetor<T> f1 = new FilaVetor<>(5);
+		System.out.println("Fila vazia? estado: " + f1.estaVazia()); 
+		f1.inserir((T) Integer.valueOf(10));
+
+	}
+
+}

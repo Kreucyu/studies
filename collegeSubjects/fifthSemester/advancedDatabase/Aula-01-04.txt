@@ -1,0 +1,99 @@
+SHOW INDEXES FROM pessoa;
+
+CREATE FULLTEXT INDEX idx_pessoa_fulltext1 ON pessoa(alimentos, anotacoes);
+
+explain
+SELECT *
+FROM pessoa p
+WHERE p.alimentos LIKE '% tortas%sobremesas%';
+
+---------------------------------------------------------------------------------------------------
+
+SHOW INDEXES FROM pessoa;
+
+CREATE OR REPLACE FULLTEXT INDEX idx_pessoa_fulltext1 ON pessoa(alimentos, anotacoes);
+
+explain
+SELECT *
+FROM pessoa p 
+WHERE MATCH (alimentos, anotacoes)
+	AGAINST ('tortas sobremesas');
+
+---------------------------------------------------------------------------------------------------
+
+SHOW INDEXES FROM pessoa;
+
+CREATE OR REPLACE FULLTEXT INDEX idx_pessoa_fulltext1 ON pessoa(alimentos, anotacoes);
+
+explain
+SELECT *
+FROM pessoa p 
+WHERE MATCH (alimentos, anotacoes)
+	AGAINST ('+tortas -sobremesas vivamus' IN BOOLEAN MODE);
+
+
+---------------------------------------------------------------------------------------------------
+
+SHOW INDEXES FROM pessoa;
+
+CREATE OR REPLACE FULLTEXT INDEX idx_pessoa_fulltext1 ON pessoa(alimentos, anotacoes);
+CREATE OR REPLACE FULLTEXT INDEX idx_pessoa_fulltext2 ON 
+pessoa(nome, escolaridade, atividade, email, logradouro, cep, cidade, regiao, pais, telefone, alimentos, anotacoes);
+
+explain
+SELECT *
+FROM pessoa p 
+WHERE MATCH (nome, escolaridade, atividade, email, logradouro, cep, cidade, regiao, pais, telefone, alimentos, anotacoes)
+	AGAINST ('+abigail +brasil +software' IN BOOLEAN MODE);
+
+---------------------------------------------------------------------------------------------------
+
+SHOW INDEXES FROM pessoa;
+DESC pessoa;
+
+explain
+SELECT p.escolaridade, COUNT(p.id) AS qtde
+FROM pessoa p
+GROUP BY p.escolaridade
+ORDER BY 2 DESC;
+
+---------------------------------------------------------------------------------------------------
+
+SHOW INDEXES FROM pessoa;
+DESC pessoa;
+
+explain
+SELECT p.escolaridade, COUNT(p.id) AS qtde
+FROM pessoa p
+GROUP BY p.escolaridade
+ORDER BY 2 DESC;
+
+CREATE TABLE escolaridade
+(id_escolaridade INT AUTO_INCREMENT, 
+ds_escolaridade VARCHAR(50),
+PRIMARY KEY(id_escolaridade)
+);
+
+INSERT INTO escolaridade(ds_escolaridade)
+	SELECT DISTINCT(p.escolaridade)
+	FROM pessoa p
+	ORDER BY 1;
+	
+SELECT * FROM escolaridade;
+
+UPDATE pessoa
+SET escolaridade = (SELECT e.id_escolaridade
+FROM escolaridade e
+WHERE e.ds_escolaridade = pessoa.escolaridade);
+
+ALTER TABLE pessoa
+MODIFY COLUMN escolaridade INT(11);
+
+ALTER TABLE pessoa
+ADD CONSTRAINT pessoa_escolaridade_fk FOREIGN KEY (escolaridade) REFERENCES escolaridade(id_escolaridade);
+DESC pessoa;
+
+SELECT e.ds_escolaridade, COUNT(p.id) AS qtde
+FROM pessoa p JOIN escolaridade e ON (p.escolaridade = e.id_escolaridade)
+GROUP BY e.ds_escolaridade
+ORDER BY 2 DESC;

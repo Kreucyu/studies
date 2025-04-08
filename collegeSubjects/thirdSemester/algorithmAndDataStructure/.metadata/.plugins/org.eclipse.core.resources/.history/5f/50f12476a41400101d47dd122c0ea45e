@@ -1,0 +1,32 @@
+package application;
+
+import model.entities.FilaVetor;
+import model.exception.FilaVaziaException;
+
+public class App {
+
+	public static <T> void main(String[] args) {
+		FilaVetor<T> f1 = new FilaVetor<>(5);
+		System.out.println("Fila vazia? estado: " + f1.estaVazia()); 
+		f1.inserir((T) Integer.valueOf(10));
+		System.out.println("\nFila vazia? estado: " + f1.estaVazia()); 
+		FilaVetor<T> f2 = new FilaVetor<>(10);
+		System.out.println("\nFila vazia? estado: " + f2.estaVazia()); 
+		f2.inserir((T) Integer.valueOf(10));
+		f2.inserir((T) Integer.valueOf(20));
+		f2.inserir((T) Integer.valueOf(30));
+		System.out.println("\nFila vazia? estado: " + f2.estaVazia()); 
+		System.out.println("Elementos removidos: " + f2.retirar() + ", " + f2.retirar() + ", " + f2.retirar());
+		System.out.println("\nFila vazia? estado: " + f2.estaVazia());
+		
+		
+		try {
+			f2.peek();
+		} catch (FilaVaziaException e) {
+			System.out.println("\nFila vazia!");
+		}
+		
+
+	}
+
+}

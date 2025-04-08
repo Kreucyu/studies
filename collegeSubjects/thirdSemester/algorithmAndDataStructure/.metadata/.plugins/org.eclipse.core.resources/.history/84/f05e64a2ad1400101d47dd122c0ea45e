@@ -1,0 +1,108 @@
+package model.entities;
+
+import java.util.Arrays;
+
+import model.exception.FilaCheiaException;
+import model.exception.FilaVaziaException;
+
+public class FilaVetor<T> implements Fila<T> {
+	private Object[] info;
+	private int limite;
+	private int tamanho;
+	private int inicio;
+
+	@SuppressWarnings("unchecked")
+	public FilaVetor(int limite) {
+		this.limite = limite;
+		this.info = (T[]) new Object[limite];
+		this.tamanho = 0;
+	}
+
+	@Override
+	public void inserir(T valor) {
+		if (tamanho == limite) {
+			throw new FilaCheiaException();
+		}
+		int pos = (inicio + tamanho) % limite;
+		info[pos] = valor;
+		tamanho++;
+	}
+
+	@Override
+	public boolean estaVazia() {
+		return tamanho == 0;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public T peek() {
+		if (estaVazia()) {
+			throw new FilaVaziaException();
+		}
+		return (T) info[inicio];
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public T retirar() {
+		int pos = inicio;
+		if (estaVazia()) {
+			throw new FilaVaziaException();
+		}
+		if (tamanho >= 1 && inicio + 1 > limite) {
+			inicio = 0;
+		} else {
+			inicio++;
+		}
+		tamanho--;
+		return (T) info[pos];
+	}
+
+	@Override
+	public void liberar() {
+		while (!estaVazia()) {
+			retirar();
+		}
+	}
+
+	public FilaVetor<T> criarFilaConcatenada(FilaVetor<T> f2) {
+		FilaVetor<T> f3 = new FilaVetor<>(limite + f2.limite);
+		int temp1 = inicio;
+		int temp2 = f2.inicio;
+		while (!estaVazia()) {
+			f3.inserir(peek());
+			inicio++;
+		}
+		while (!f2.estaVazia()) {
+			f3.inserir(f2.peek());
+			f2.inicio++;
+		}
+		inicio = temp1;
+		f2.inicio = temp2;
+		return f3;
+
+	}
+
+	public int getLimite() {
+		return limite;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		int temp = inicio;
+		if (!estaVazia()) {
+			sb.append(peek());
+			inicio++;
+				
+				if (i > 0) {
+					sb.append(", ");
+				}
+
+			return sb.toString();
+		}
+		sb.append("\nPilha vazia");
+		return sb.toString();
+	}
+
+}
