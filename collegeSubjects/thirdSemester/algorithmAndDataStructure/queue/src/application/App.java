@@ -1,5 +1,6 @@
 package application;
 
+import model.entities.FilaLista;
 import model.entities.FilaVetor;
 import model.exception.FilaCheiaException;
 import model.exception.FilaVaziaException;
@@ -70,6 +71,45 @@ public class App {
 		System.out.println("\nLista 2: " + f8.toString());
 		System.out.println("\nCapacidade da fila concatenada: " + f9.getLimite());
 		System.out.println("\nQuestão 3 - caso 1:");
+		FilaLista<T> fl1 = new FilaLista<>();
+		System.out.println("\nFila vazia? estado: " + fl1.estaVazia());
+		System.out.println("\nCaso 2:");
+		fl1.inserir((T) Integer.valueOf(10));
+		fl1.inserir((T) Integer.valueOf(20));
+		fl1.inserir((T) Integer.valueOf(30));
+		System.out.println("\nFila vazia? estado: " + fl1.estaVazia());
+		System.out.println("\nCaso 3:");
+		FilaLista<T> fl2 = new FilaLista<>();
+		fl2.inserir((T) Integer.valueOf(10));
+		fl2.inserir((T) Integer.valueOf(20));
+		fl2.inserir((T) Integer.valueOf(30));
+		System.out.println("\n(ANTES) Fila vazia? estado: " + fl2.estaVazia());
+		System.out.println("\nValores removidos: " + fl2.retirar() + ", " + fl2.retirar() + ", " + fl2.retirar());
+		System.out.println("\n(DEPOIS) Fila vazia? estado: " + fl2.estaVazia());
+		System.out.println("\nCaso 4:");
+		FilaLista<T> fl3 = new FilaLista<>();
+		fl3.inserir((T) Integer.valueOf(10));
+		fl3.inserir((T) Integer.valueOf(20));
+		fl3.inserir((T) Integer.valueOf(30));
+		System.out.println("\nTopo: " + fl3.peek());
+		System.out.println("\nElemento removido: " + fl3.retirar());
+		System.out.println("\nTopo: " + fl3.peek());
+		System.out.println("\nCaso 5:");
+		FilaLista<T> fl4 = new FilaLista<>();
+		fl4.inserir((T) Integer.valueOf(10));
+		fl4.inserir((T) Integer.valueOf(20));
+		fl4.inserir((T) Integer.valueOf(30));
+		System.out.println("\nFila vazia? estado: " + fl4.estaVazia());
+		System.out.println("\nChamada de liberar()");
+		fl4.liberar();
+		System.out.println("\nFila vazia? estado: " + fl4.estaVazia());
+		System.out.println("\nCaso 6:");
+		FilaLista<T> fl5 = new FilaLista<>();
+		fl5.inserir((T) Integer.valueOf(10));
+		fl5.inserir((T) Integer.valueOf(20));
+		fl5.inserir((T) Integer.valueOf(30));
+		System.out.println("\n" + fl5.toString());
+		
 	}
 
 }

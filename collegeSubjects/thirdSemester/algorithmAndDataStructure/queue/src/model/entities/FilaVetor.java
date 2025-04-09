@@ -1,7 +1,5 @@
 package model.entities;
 
-import java.util.Arrays;
-
 import model.exception.FilaCheiaException;
 import model.exception.FilaVaziaException;
 

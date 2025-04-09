@@ -1,11 +1,15 @@
 package model.entities;
 
-public interface Fila <T> {
-	
+public interface Fila<T> {
+
 	void inserir(T valor);
+
 	boolean estaVazia();
+
 	T peek();
+
 	T retirar();
+
 	void liberar();
-	
+
 }

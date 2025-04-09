@@ -1,0 +1,78 @@
+package model.entities;
+
+import java.util.Arrays;
+
+import model.exception.FilaCheiaException;
+import model.exception.FilaVaziaException;
+
+public class FilaLista<T> implements Fila<T> {
+	private Object[] info;
+	private int limite;
+	private int tamanho;
+	private int inicio;
+
+
+	@Override
+	public void inserir(T valor) {
+		if (tamanho == limite) {
+			throw new FilaCheiaException();
+		}
+		int pos = (inicio + tamanho) % limite;
+		info[pos] = valor;
+		tamanho++;
+	}
+
+	@Override
+	public boolean estaVazia() {
+		return tamanho == 0;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public T peek() {
+		return (T) info[inicio];
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public T retirar() {
+		int pos = inicio;
+		if (tamanho >= 1 && inicio + 1 > limite) {
+			inicio = 0;
+		} else {
+			inicio++;
+		}
+		tamanho--;
+		return (T) info[pos];
+	}
+
+	@Override
+	public void liberar() {
+		while (!estaVazia()) {
+			retirar();
+		}
+	}
+
+	public int getLimite() {
+		return limite;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		int fim = ((inicio + tamanho) % limite) - 1;
+		int temp = inicio;
+		while (temp <= fim) {
+			sb.append(info[temp]);
+			if(!(temp == fim)) {
+				sb.append(", ");
+			}
+			temp++;
+		}
+		if(estaVazia()) {
+			sb.append("Fila vazia!");
+		}
+		return sb.toString();
+	}
+
+}

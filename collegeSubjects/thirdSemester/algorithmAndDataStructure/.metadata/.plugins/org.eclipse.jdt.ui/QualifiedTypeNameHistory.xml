@@ -10,4 +10,10 @@
     <fullyQualifiedTypeName name="model.exception.PilhaVaziaException"/>
     <fullyQualifiedTypeName name="model.entities.PilhaVetor"/>
     <fullyQualifiedTypeName name="java.lang.IndexOutOfBoundsException"/>
+    <fullyQualifiedTypeName name="java.lang.RuntimeException"/>
+    <fullyQualifiedTypeName name="model.exception.FilaVaziaException"/>
+    <fullyQualifiedTypeName name="model.exception.FilaCheiaException"/>
+    <fullyQualifiedTypeName name="model.entities.FilaVetor"/>
+    <fullyQualifiedTypeName name="model.entities.FilaLista"/>
+    <fullyQualifiedTypeName name="model.entities.listaEncadeada"/>
 </qualifiedTypeNameHistroy>

@@ -1,0 +1,128 @@
+-- identificar os gatilhos criados na base de dados
+SELECT tg.EVENT_OBJECT_TABLE, tg.TRIGGER_NAME, tg.EVENT_MANIPULATION,
+       tg.ACTION_TIMING, tg.ACTION_STATEMENT
+FROM information_schema.`TRIGGERS` tg
+WHERE tg.TRIGGER_SCHEMA = 'base_teste_pl';
+
+DESC itemnotafiscal;
+DESC medicamento;
+
+-- criando trigger para atualizar dados da venda de medicamento
+delimiter $$ -- ajuste do limitar final de criação do gatinho
+CREATE OR REPLACE TRIGGER tg_itemnotafiscal_venda AFTER INSERT
+    ON itemnotafiscal FOR EACH ROW
+BEGIN
+    UPDATE medicamento m SET m.qt_estoque = m.qt_estoque - NEW.qt_vendida
+    WHERE m.cd_medicamento = NEW.cd_medicamento;
+END $$
+  
+-- testando o gatilho criado
+INSERT INTO notafiscal (cd_cliente, dt_emissao) VALUES (1, CURDATE()); -- curdate() retorna data atual
+
+SELECT * FROM notafiscal;
+
+INSERT INTO itemnotafiscal(nr_notafiscal, cd_medicamento, qt_vendida, vl_venda) VALUES (1,1,1,10);
+SELECT * FROM medicamento;
+
+----------------------------------------------------------------------------------------------------
+
+delimiter $$ -- ajuste do limitar final de criação do gatinho
+CREATE OR REPLACE TRIGGER tg_itemnotafiscal_venda AFTER INSERT
+    ON itemnotafiscal FOR EACH ROW
+BEGIN
+    DECLARE var_estoque INT DEFAULT 0;
+    
+    SELECT m.qt_estoque INTO var_estoque 
+    FROM medicamento m 
+    WHERE m.cd_medicamento = NEW.cd_medicamento;
+
+    -- ou
+    SET var_estoque = (
+        SELECT m.qt_estoque 
+        FROM medicamento m 
+        WHERE m.cd_medicamento = NEW.cd_medicamento
+    );
+
+    IF var_estoque < NEW.qt_vendida THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Estoque insuficiente!';
+    END IF;
+
+    UPDATE medicamento m 
+    SET m.qt_estoque = m.qt_estoque - NEW.qt_vendida
+    WHERE m.cd_medicamento = NEW.cd_medicamento;
+END $$
+  
+-- testando o gatilho criado
+-- criando uma nota fiscal para o cliente 1 com a data de hoje
+INSERT INTO notafiscal (cd_cliente, dt_emissao) VALUES (1, CURDATE()); -- curdate() retorna data atual;
+SELECT * FROM notafiscal;
+
+-- inserindo medicamento 1 na nota fiscal nro 1 (itemnotafiscal)
+INSERT INTO itemnotafiscal (nr_notafiscal, cd_medicamento, qt_vendida, vl_venda) 
+VALUES (1, 1, 1, 10);
+
+SELECT * FROM medicamento;
+
+----------------------------------------------------------------------------------------------------
+
+delimiter $$ -- ajuste do limitar final de criação do gatinho
+CREATE OR REPLACE TRIGGER tg_itemnotafiscal_venda BEFORE INSERT
+    ON itemnotafiscal FOR EACH ROW
+BEGIN
+    DECLARE var_estoque INT DEFAULT 0; -- declaração da variável que receberá o estoque do medicamento
+    DECLARE var_medicamento DECIMAL(8,2) DEFAULT 0.00; -- armazena preço venda do medicamento
+
+    SELECT m.qt_estoque, m.vl_venda 
+    INTO var_estoque, var_medicamento
+    FROM medicamento m 
+    WHERE m.cd_medicamento = NEW.cd_medicamento;
+
+    -- ou
+    SET var_estoque = (
+        SELECT m.qt_estoque 
+        FROM medicamento m 
+        WHERE m.cd_medicamento = NEW.cd_medicamento
+    );
+
+    IF var_estoque < NEW.qt_vendida THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Estoque insuficiente!';
+    END IF;
+
+    UPDATE medicamento m 
+    SET m.qt_estoque = m.qt_estoque - NEW.qt_vendida
+    WHERE m.cd_medicamento = NEW.cd_medicamento;
+END $$
+
+----------------------------------------------------------------------------------------------------
+
+delimiter $$ -- ajiste do limitar final de criacao do gatilho
+CREATE OR REPLACE TRIGGER tg_itemnotafiscal_venda BEFORE INSERT 
+				ON itemnotafiscal FOR EACH ROW 
+BEGIN 
+	DECLARE var_estoque INT DEFAULT 0; -- declaracao da variavel que recebera o estoque do medicamento
+	DECLARE var_medicamento DECIMAL (8,2) DEFAULT 0.00; -- armazena preço venda do medicamento
+	SELECT m.qt_estoque, m.vl_venda INTO var_estoque, var_medicamento	
+		 FROM medicamento m WHERE m.cd_medicamento = NEW.cd_medicamento;
+	SET NEW.vl_venda = var_medicamento; -- atualiza o valor do medicamento na venda (itemnotafiscal)
+	IF var_estoque < NEW.qt_vendida THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Estoque insuficiente!';
+	END IF;
+	UPDATE medicamento m SET m.qt_estoque = m.qt_estoque - NEW.qt_vendida
+		WHERE m.cd_medicamento = NEW.cd_medicamento;
+	-- atualizaa o valor total da nota fiscal
+	UPDATE notafiscal nf SET nf.vl_total = nf.vl_total + (NEW.qt_vendida * var_medicamento)
+		WHERE nf.nr_notafiscal = NEW.nr_notafiscal;
+END $$
+
+-- criando uma nota fiscal para o cliente 1 com a data de hoje
+INSERT INTO notafiscal (cd_cliente, dt_emissao) VALUES (1,CURDATE()); -- curdate() retorna data atual;
+SELECT * FROM notafiscal;
+-- inserindo medicamento 2 na nota fiscal nro 1 (itemnotafiscal)
+INSERT INTO itemnotafiscal (nr_notafiscal,cd_medicamento, qt_vendida) VALUES (1,1,1);
+SELECT * FROM medicamento;
+SELECT * FROM itemnotafiscal;
+DELETE FROM itemnotafiscal;
+
+----------------------------------------------------------------------------------------------------
+
+
