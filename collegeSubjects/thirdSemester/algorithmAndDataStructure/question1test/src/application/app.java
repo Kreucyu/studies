@@ -13,8 +13,12 @@ public class app {
 		list.inserir(50);
 		list.inserir(60);
 		System.out.println("Lista antes da remoção: " + list.toString());
-		list.retirarElementos(2, 4);
-		System.out.println("Lista depois da remoção: " + list.toString());
+		try {
+			list.retirarElementos(2, 4);
+		} catch (IndexOutOfBoundsException e) {
+			System.out.println("\nPosição inválida");
+		}
+		System.out.println("\nLista depois da remoção: " + list.toString());
 		
 	}
 }

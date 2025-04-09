@@ -16,4 +16,5 @@
     <fullyQualifiedTypeName name="model.entities.FilaVetor"/>
     <fullyQualifiedTypeName name="model.entities.FilaLista"/>
     <fullyQualifiedTypeName name="model.entities.listaEncadeada"/>
+    <fullyQualifiedTypeName name="model.listaEstatica"/>
 </qualifiedTypeNameHistroy>

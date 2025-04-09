@@ -61,13 +61,9 @@ public class listaEstatica<T> {
 
 	@SuppressWarnings("unchecked")
 	public T obterElemento(int posicao) {
-		try {
 		if(posicao > 0 || posicao < tamanho) {
 			return (T) info[posicao];
 		}
-		} catch (IndexOutOfBoundsException e) {
-			System.out.println("\nPosição inválida");
-		}		
 		return null;
 	}
 
@@ -109,7 +105,7 @@ public class listaEstatica<T> {
     }
 	
 	public void retirarElementos(int inicio, int fim) {
-		if(obterElemento(inicio) == null && obterElemento(fim) == null && fim < inicio) {
+		if(obterElemento(inicio) == null || obterElemento(fim) == null || inicio > fim) {
 			throw new IndexOutOfBoundsException();
 		} else {
 			int destino = inicio;
