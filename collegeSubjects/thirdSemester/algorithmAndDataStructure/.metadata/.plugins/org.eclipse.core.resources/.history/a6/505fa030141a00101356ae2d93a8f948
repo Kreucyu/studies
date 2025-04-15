@@ -1,0 +1,25 @@
+package model;
+
+public class NoArvoreBinaria<T> {
+	private T info;
+	private NoArvoreBinaria<T> esq;
+	private NoArvoreBinaria<T> dir;
+
+	public NoArvoreBinaria(T info) {
+
+	}
+
+	public NoArvoreBinaria(T info, NoArvoreBinaria<T> esq, NoArvoreBinaria<T> dir) {
+
+	}
+
+	public T getInfo() {
+		return info;
+	}
+
+	public void setInfo(T info) {
+		this.info = info;
+	}
+	
+	
+}

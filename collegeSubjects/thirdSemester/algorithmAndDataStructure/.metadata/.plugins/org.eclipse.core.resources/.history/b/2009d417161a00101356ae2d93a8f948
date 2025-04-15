@@ -1,0 +1,14 @@
+package application;
+
+import model.ArvoreBinaria;
+
+public class App {
+	public static <T> void main(String args[]) {
+		ArvoreBinaria<T> arvore = new ArvoreBinaria<>();
+		System.out.println("Caso 1:");
+		System.out.println("\nEstá vazia? estado: " + arvore.estaVazia());
+		System.out.println("\nCaso 2:");
+		arvore.setRaiz((NoArvoreBinaria) Integer.valueOf(5));
+		
+	}
+}

@@ -1,0 +1,24 @@
+package application;
+
+import model.ArvoreBinaria;
+import model.NoArvoreBinaria;
+
+public class App {
+	public static <T> void main(String args[]) {
+		ArvoreBinaria<Integer> arvore = new ArvoreBinaria<>();
+		NoArvoreBinaria<Integer> no1 = new NoArvoreBinaria<>(5);
+		System.out.println("Caso 1:");
+		System.out.println("\nEstá vazia? estado: " + arvore.estaVazia());
+		System.out.println("\nCaso 2:");
+		arvore.setRaiz(no1);
+		System.out.println("\nEstá vazia? estado: " + arvore.estaVazia());
+		System.out.println("\nCaso 3:");
+		NoArvoreBinaria<Integer> no2 = new NoArvoreBinaria<>(1);
+		NoArvoreBinaria<Integer> no3 = new NoArvoreBinaria<>(2);
+		NoArvoreBinaria<Integer> no4 = new NoArvoreBinaria<>(3);
+		NoArvoreBinaria<Integer> no5 = new NoArvoreBinaria<>(4);
+		NoArvoreBinaria<Integer> no6 = new NoArvoreBinaria<>(5);
+		NoArvoreBinaria<Integer> no7 = new NoArvoreBinaria<>(6);
+		NoArvoreBinaria<Integer> no8 = new NoArvoreBinaria<>(no2.getInfo(), no3, no4);
+	}
+}

@@ -4,7 +4,6 @@
     <fullyQualifiedTypeName name="model.listaEncadeada"/>
     <fullyQualifiedTypeName name="java.lang.NullPointerException"/>
     <fullyQualifiedTypeName name="model.noLista"/>
-    <fullyQualifiedTypeName name="java.lang.StringBuilder"/>
     <fullyQualifiedTypeName name="java.io.IOException"/>
     <fullyQualifiedTypeName name="model.exception.PilhaCheiaException"/>
     <fullyQualifiedTypeName name="model.exception.PilhaVaziaException"/>
@@ -17,4 +16,7 @@
     <fullyQualifiedTypeName name="model.entities.FilaLista"/>
     <fullyQualifiedTypeName name="model.entities.listaEncadeada"/>
     <fullyQualifiedTypeName name="model.listaEstatica"/>
+    <fullyQualifiedTypeName name="model.ArvoreBinaria"/>
+    <fullyQualifiedTypeName name="model.NoArvoreBinaria"/>
+    <fullyQualifiedTypeName name="java.lang.StringBuilder"/>
 </qualifiedTypeNameHistroy>

@@ -1,0 +1,9 @@
+package application;
+
+import model.ArvoreBinaria;
+
+public class App {
+	public static void main(String args[]) {
+		ArvoreBinaria arvore = new ArvoreBinaria<>();
+	}
+}
