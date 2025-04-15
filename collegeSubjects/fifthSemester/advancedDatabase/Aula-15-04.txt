@@ -1,0 +1,30 @@
+delimiter $$
+CREATE OR REPLACE FUNCTION fc_obter_nome_medicamento (p_id INTEGER) RETURNS VARCHAR(100)
+BEGIN
+    DECLARE v_nome VARCHAR(10);
+    SELECT m.nm_medicamento INTO v_nome
+        FROM medicamento m WHERE m.cd_medicamento = p_id;
+    RETURN v_nome;
+END $$
+
+-- utilizando a função para identificar o nome do medicamento 1
+SELECT fc_obter_nome_medicamento(2);
+
+-- criação de function para retornar o percentual de ganho (venda) sobre um medicamento
+DELIMITER $$
+
+CREATE OR REPLACE FUNCTION fc_obter_lucro_medicamento (p_id INTEGER) RETURNS DECIMAL(4,1)
+BEGIN
+    DECLARE v_lucro DECIMAL(4,1);
+    SELECT ROUND(((m.vl_venda - m.vl_custo)/m.vl_custo)*100,1) INTO v_lucro
+        FROM medicamento m WHERE m.cd_medicamento = p_id;
+    RETURN v_lucro;
+END $$
+
+-- chamada para a função
+SELECT fc_obter_lucro_medicamento(2);
+SELECT * FROM medicamento;
+
+SHOW CREATE FUNCTION fc_obter_lucro_medicamento
+
+---------------------------------------------------------------------------------------------

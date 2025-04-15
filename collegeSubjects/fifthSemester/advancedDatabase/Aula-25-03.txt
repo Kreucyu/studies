@@ -1,0 +1,232 @@
+SHOW INDEX FROM localidade;
+
+EXPLAIN 
+SELECT l.*
+FROM localidade l
+WHERE l.nm_localidade = 'blumenau';
+
+CREATE INDEX idx_localidade_nome ON localidade(nm_localidade);
+
+-- INDEX DE CORREÇÃO DA QUESTÃO F
+
+CREATE INDEX idx_logradouro_localidade ON logradouro(cd_localidade);
+
+---------------------------------------------------------------------------------------------------
+
+a) Quantidade total de municípios (fl_tipo_localidade= 'M') por Unidade da Federação (UF);
+
+CREATE VIEW vw_total_municipios_por_uf AS
+SELECT sg_uf, COUNT(*) AS total_municipios
+FROM localidade
+WHERE fl_tipo_localidade = 'M'
+GROUP BY sg_uf;
+
+SELECT * FROM vw_total_municipios_por_uf;
+
+---------------------------------------------------------------------------------------------------
+
+b) Qual(is) UF(s) apresenta(m) número total de municípios menor que 100. Ordenar o resultado pelo menor número total apurado;
+
+CREATE VIEW vw_ufs_com_menos_de_100_municipios AS
+SELECT sg_uf, COUNT(*) AS total_municipios
+FROM localidade
+WHERE fl_tipo_localidade = 'M'
+GROUP BY sg_uf
+HAVING COUNT(*) < 100
+ORDER BY total_municipios ASC;
+
+SELECT * FROM vw_ufs_com_menos_de_100_municipios;
+
+---------------------------------------------------------------------------------------------------
+
+c) Qual o número de total de CEPs encontrados em cada município, com respectiva UF, ordenados pelo maior número (de CEPs listados). Considerar apenas os municípios que possuem mais de um CEP (tabela logradouro);
+
+CREATE VIEW vw_ceps_por_municipio_uf AS
+SELECT l.cd_localidade, loc.nm_localidade, loc.sg_uf, COUNT(DISTINCT l.nr_cep) AS total_ceps
+FROM logradouro l
+JOIN localidade loc ON l.cd_localidade = loc.cd_localidade
+GROUP BY l.cd_localidade, loc.nm_localidade, loc.sg_uf
+HAVING COUNT(DISTINCT l.nr_cep) > 1
+ORDER BY total_ceps DESC;
+
+SELECT * FROM vw_ceps_por_municipio_uf;
+
+---------------------------------------------------------------------------------------------------
+
+d) Qual a localidade (nome) que apresenta o maior número de CEPs especiais (grandes usuários). Listar também a UF e o tipo da localidade;
+
+SELECT loc.nm_localidade, loc.sg_uf, loc.fl_tipo_localidade, COUNT(gu.nr_cep) AS total_ceps_especiais
+FROM grande_usuario gu
+JOIN localidade loc ON gu.cd_localidade = loc.cd_localidade
+GROUP BY loc.nm_localidade, loc.sg_uf, loc.fl_tipo_localidade
+ORDER BY total_ceps_especiais DESC
+LIMIT 1;
+
+---------------------------------------------------------------------------------------------------
+
+e) Listar o nome dos distritos (fl_tipo_localidade= 'D') e do respectivo município que cada distrito está associado. Considerar como filtro apenas a UF "SC";
+
+CREATE VIEW vw_distritos_com_municipios_sc AS
+SELECT d.nm_localidade AS distrito, m.nm_localidade AS municipio
+FROM localidade d
+JOIN localidade m ON d.cd_localidade_sub = m.cd_localidade
+WHERE d.fl_tipo_localidade = 'D' AND d.sg_uf = 'SC';
+
+SELECT * FROM vw_distritos_com_municipios_sc;
+
+---------------------------------------------------------------------------------------------------
+
+f) Listar o nome do(s) bairro(s) do município de Florianópolis (UF "SC") com o respectivo total de CEPs encontrado em cada bairro;
+
+SELECT b.nm_bairro, COUNT(DISTINCT l.nr_cep) AS total_ceps
+FROM bairro b
+JOIN logradouro l ON b.cd_bairro = l.cd_bairro_inicio OR b.cd_bairro = l.cd_bairro_fim
+JOIN localidade loc ON l.cd_localidade = loc.cd_localidade
+WHERE loc.nm_localidade = 'Florianópolis' AND loc.sg_uf = 'SC'
+GROUP BY b.nm_bairro;
+
+---------------------------------------------------------------------------------------------------
+
+g) Qual o nome de logradouro mais popular encontrado nos municípios da UF "SC". Listar também o número de vezes encontrado;
+
+SELECT l.nm_logradouro, COUNT(*) AS total
+FROM logradouro l
+WHERE l.sg_uf = 'SC'
+GROUP BY l.nm_logradouro
+ORDER BY total DESC
+LIMIT 1;
+
+---------------------------------------------------------------------------------------------------
+
+h) Listar o nome do(s) bairro(s) que apresenta(m) o maior número de logradouros associado. Listar também o nome da localidade e considerar como filtro a UF "RS";
+
+CREATE OR REPLACE VIEW vw_bairros_rs_logradouros AS
+SELECT b.nm_bairro, loc.nm_localidade, COUNT(l.cd_logradouro) AS total_logradouros
+FROM bairro b
+JOIN logradouro l ON b.cd_bairro = l.cd_bairro_inicio OR b.cd_bairro = l.cd_bairro_fim
+JOIN localidade loc ON l.cd_localidade = loc.cd_localidade
+WHERE l.sg_uf = 'RS'
+GROUP BY b.nm_bairro, loc.nm_localidade;
+
+SELECT * FROM vw_bairros_rs_logradouros ORDER BY total_logradouros DESC LIMIT 1;
+
+---------------------------------------------------------------------------------------------------
+
+i) Qual o nome do logradouro mais popular no Brasil, ou seja, o que é encontrado no maior número de localidades. Atenção, aqui poderá haver mais de um logradouro, haja vista que podem apresentar o mesmo número de ocorrências e, neste caso, todos os empatados na 1a. posição (maior número) devem ser exibidos;
+
+CREATE VIEW vw_logradouros_popularidade AS
+SELECT nm_logradouro, COUNT(DISTINCT cd_localidade) AS qtd_localidades
+FROM logradouro
+GROUP BY nm_logradouro;
+
+SELECT * FROM vw_logradouros_popularidade ORDER BY qtd_localidades DESC LIMIT 1;
+
+---------------------------------------------------------------------------------------------------
+
+j) Listar os logradouros com dados completos (nome e tipo) do seu bairro. Caso não resida em um município contemplado na base com vários CEPs (tabela logradouro), utilize como filtro o bairro onde a FURB está localizada que é "Itoupava Seca";
+
+CREATE VIEW vw_logradouros_itoupava_seca AS
+SELECT l.nm_logradouro, l.tp_logradouro, b.nm_bairro
+FROM logradouro l
+JOIN bairro b ON l.cd_bairro_inicio = b.cd_bairro OR l.cd_bairro_fim = b.cd_bairro
+WHERE b.nm_bairro = 'Itoupava Seca';
+
+SELECT * FROM vw_logradouros_itoupava_seca;
+
+---------------------------------------------------------------------------------------------------
+
+k) Criar uma view para listar o nome do município, a UF e a quantidade de bairros encontrados em cada município listado. Ordenar pelo maior número de bairros listados;
+
+CREATE VIEW vw_municipios_bairros AS
+SELECT loc.nm_localidade AS municipio, loc.sg_uf, COUNT(DISTINCT b.cd_bairro) AS total_bairros
+FROM bairro b
+JOIN logradouro l ON b.cd_bairro = l.cd_bairro_inicio OR b.cd_bairro = l.cd_bairro_fim
+JOIN localidade loc ON l.cd_localidade = loc.cd_localidade
+GROUP BY loc.nm_localidade, loc.sg_uf
+ORDER BY total_bairros DESC;
+
+SELECT * FROM vw_municipios_bairros;
+
+---------------------------------------------------------------------------------------------------
+
+l) Criar uma view para listar a sigla da UF, o nome do município e a respectiva quantidade CEPs associadas a cada UF/município listado. Considerar apenas os municípios com mais de um CEP (tabela logradouro);
+
+CREATE VIEW vw_ceps_por_municipio_maior_que_1 AS
+SELECT loc.sg_uf, loc.nm_localidade AS municipio, COUNT(DISTINCT l.nr_cep) AS total_ceps
+FROM logradouro l
+JOIN localidade loc ON l.cd_localidade = loc.cd_localidade
+GROUP BY loc.sg_uf, loc.nm_localidade
+HAVING COUNT(DISTINCT l.nr_cep) > 1;
+
+SELECT * FROM vw_ceps_por_municipio_maior_que_1; 
+
+---------------------------------------------------------------------------------------------------
+
+m) Criar uma view para listar o nome das praças existentes na base com respectivo nome da localidade, UF e número do CEP. Ordenar pela UF seguida pelo nome da praça;
+
+CREATE VIEW vw_pracas AS
+SELECT l.nm_logradouro, loc.nm_localidade, loc.sg_uf, l.nr_cep
+FROM logradouro l
+JOIN localidade loc ON l.cd_localidade = loc.cd_localidade
+WHERE l.nm_logradouro LIKE 'Praça%'
+ORDER BY loc.sg_uf, l.nm_logradouro;
+
+SELECT * FROM vw_pracas; 
+
+---------------------------------------------------------------------------------------------------
+
+n) Criar uma view para listar as informações dos grandes usuário como: nome, logradouro completo, bairro, localidade completa, UF, CEP. Não utilizar o campo ds_endereco. Ordenar pelo nome do grande usuário;
+
+CREATE OR REPLACE VIEW vw_grande_usuario AS
+SELECT gu.nm_grande_usuario, l.nm_logradouro, l.tp_logradouro, b.nm_bairro, loc.nm_localidade, loc.sg_uf, gu.nr_cep
+FROM grande_usuario gu
+JOIN logradouro l ON gu.cd_logradouro = l.cd_logradouro
+JOIN bairro b ON gu.cd_bairro = b.cd_bairro
+JOIN localidade loc ON gu.cd_localidade = loc.cd_localidade
+ORDER BY gu.nm_grande_usuario;
+
+SELECT * FROM vw_grande_usuario;
+
+---------------------------------------------------------------------------------------------------
+
+o) Criar uma view com todos os CEPS existentes na base de dados (localidades, logradouros e grandes usuários). Além do número do CEP, em havendo dados complementares (logradouro, bairro, localidade, uf) estes deverão presentes também. Aos CEPS que não apresentarem dados complementares, recomenda-se deixar em branco estes atributos nas linhas (registros). Para testar a view criada faça uma busca considerando o seu número de CEP.
+
+CREATE OR REPLACE VIEW view_ceps AS
+SELECT 
+    l.nr_cep AS cep,
+    l.nm_logradouro AS logradouro,
+    b.nm_bairro AS bairro,
+    loc.nm_localidade AS localidade,
+    l.sg_uf AS uf
+FROM 
+    logradouro l
+LEFT JOIN 
+    bairro b ON l.cd_bairro_inicio = b.cd_bairro
+LEFT JOIN 
+    localidade loc ON l.cd_localidade = loc.cd_localidade
+
+UNION ALL
+
+SELECT 
+    gu.nr_cep AS cep,
+    NULL AS logradouro,
+    NULL AS bairro,
+    loc.nm_localidade AS localidade,
+    gu.sg_uf AS uf
+FROM 
+    grande_usuario gu
+LEFT JOIN 
+    localidade loc ON gu.cd_localidade = loc.cd_localidade
+
+UNION ALL
+
+SELECT 
+    loc.nr_cep AS cep,
+    NULL AS logradouro,
+    NULL AS bairro,
+    loc.nm_localidade AS localidade,
+    loc.sg_uf AS uf
+FROM 
+    localidade loc;
+    
+    SELECT * FROM view_ceps WHERE cep = '88360000';
