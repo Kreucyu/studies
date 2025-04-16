@@ -1,0 +1,17 @@
+package application;
+
+import model.entities.FilaVetor;
+
+public class App3 {
+
+	public static void main(String[] args) {
+		// teste encurtar()
+		FilaVetor<Integer> f1 = new FilaVetor<>(10);
+		f1.inserir(10);
+		f1.inserir(20);
+		f1.inserir(30);
+		f1.inserir(40);
+
+	}
+
+}

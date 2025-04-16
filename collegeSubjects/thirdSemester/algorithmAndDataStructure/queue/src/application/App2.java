@@ -5,6 +5,7 @@ import model.entities.FilaDeque;
 public class App2 {
 
 	public static <T> void main(String[] args) {
+		//teste fila deque
 		FilaDeque<Integer> f1 = new FilaDeque<>(10);
 		f1.inserir(1);
 		f1.inserir(2);
