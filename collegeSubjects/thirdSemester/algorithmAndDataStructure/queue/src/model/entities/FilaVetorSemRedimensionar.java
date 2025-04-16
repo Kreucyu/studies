@@ -3,14 +3,14 @@ package model.entities;
 import model.exception.FilaCheiaException;
 import model.exception.FilaVaziaException;
 
-public class FilaVetor<T> implements Fila<T> {
+public class FilaVetorSemRedimensionar<T> implements Fila<T> {
 	private Object[] info;
 	private int limite;
 	private int tamanho;
 	private int inicio;
 
 	@SuppressWarnings("unchecked")
-	public FilaVetor(int limite) {
+	public FilaVetorSemRedimensionar(int limite) {
 		this.limite = limite;
 		this.info = (T[]) new Object[limite];
 		this.tamanho = 0;
@@ -19,8 +19,7 @@ public class FilaVetor<T> implements Fila<T> {
 	@Override
 	public void inserir(T valor) {
 		if (tamanho == limite) {
-			System.out.println("\nFila cheia! redimensionando...");
-			redimensionar();
+			throw new FilaCheiaException();
 		}
 		int pos = (inicio + tamanho) % limite;
 		info[pos] = valor;
@@ -64,8 +63,8 @@ public class FilaVetor<T> implements Fila<T> {
 		}
 	}
 
-	public FilaVetor<T> criarFilaConcatenada(FilaVetor<T> f2) {
-		FilaVetor<T> f3 = new FilaVetor<>(getLimite() + f2.getLimite());
+	public FilaVetorSemRedimensionar<T> criarFilaConcatenada(FilaVetorSemRedimensionar<T> f2) {
+		FilaVetorSemRedimensionar<T> f3 = new FilaVetorSemRedimensionar<>(getLimite() + f2.getLimite());
 		int fim = ((inicio + tamanho) % limite) - 1;
 		int temp = inicio;
 		while (inicio <= fim) {
@@ -125,7 +124,7 @@ public class FilaVetor<T> implements Fila<T> {
 		if (tamanho == 0) {
 			throw new FilaVaziaException();
 		}
-		FilaVetor<Object> f2 = new FilaVetor<>(tamanho);
+		FilaVetorSemRedimensionar<Object> f2 = new FilaVetorSemRedimensionar(tamanho);
 		int temp = inicio;
 		while (f2.tamanho != tamanho) {
 			if(temp == limite) {
@@ -139,24 +138,6 @@ public class FilaVetor<T> implements Fila<T> {
 		this.limite = this.tamanho;
 		System.out.println("\nTamanho da fila depois de encurtar: " + limite);
 		info = f2.info;
-	}
-	
-	@SuppressWarnings("unchecked")
-	private void redimensionar() {
-		FilaVetor<Object> f2 = new FilaVetor<>(tamanho);
-		int temp = inicio;
-		while (f2.tamanho != tamanho) {
-			if(temp == limite) {
-				temp = 0;
-			}
-			f2.inserir(info[temp]);
-			temp++;
-		}
-		this.info = (T[]) new Object[limite * 2];
-		this.limite *= 2;
-		for(int i = 0; f2.tamanho != 0; i++) {
-			info[i] = f2.retirar();
-		}
 	}
 
 }

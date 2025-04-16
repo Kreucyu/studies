@@ -19,7 +19,6 @@ public class FilaVetor<T> implements Fila<T> {
 	@Override
 	public void inserir(T valor) {
 		if (tamanho == limite) {
-			System.out.println("\nFila cheia! redimensionando...");
 			redimensionar();
 		}
 		int pos = (inicio + tamanho) % limite;
@@ -125,7 +124,7 @@ public class FilaVetor<T> implements Fila<T> {
 		if (tamanho == 0) {
 			throw new FilaVaziaException();
 		}
-		FilaVetor<Object> f2 = new FilaVetor<>(tamanho);
+		FilaVetor<Object> f2 = new FilaVetor(tamanho);
 		int temp = inicio;
 		while (f2.tamanho != tamanho) {
 			if(temp == limite) {
@@ -141,22 +140,8 @@ public class FilaVetor<T> implements Fila<T> {
 		info = f2.info;
 	}
 	
-	@SuppressWarnings("unchecked")
-	private void redimensionar() {
-		FilaVetor<Object> f2 = new FilaVetor<>(tamanho);
-		int temp = inicio;
-		while (f2.tamanho != tamanho) {
-			if(temp == limite) {
-				temp = 0;
-			}
-			f2.inserir(info[temp]);
-			temp++;
-		}
-		this.info = (T[]) new Object[limite * 2];
-		this.limite *= 2;
-		for(int i = 0; f2.tamanho != 0; i++) {
-			info[i] = f2.retirar();
-		}
+	public void redimensionar() {
+		
 	}
 
 }

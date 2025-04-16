@@ -19,7 +19,6 @@ public class FilaVetor<T> implements Fila<T> {
 	@Override
 	public void inserir(T valor) {
 		if (tamanho == limite) {
-			System.out.println("\nFila cheia! redimensionando...");
 			redimensionar();
 		}
 		int pos = (inicio + tamanho) % limite;
@@ -153,10 +152,7 @@ public class FilaVetor<T> implements Fila<T> {
 			temp++;
 		}
 		this.info = (T[]) new Object[limite * 2];
-		this.limite *= 2;
-		for(int i = 0; f2.tamanho != 0; i++) {
-			info[i] = f2.retirar();
-		}
+		info = f2.info;
 	}
 
 }

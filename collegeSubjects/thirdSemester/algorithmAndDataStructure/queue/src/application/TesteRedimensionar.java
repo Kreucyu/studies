@@ -1,0 +1,20 @@
+package application;
+
+import model.entities.FilaVetor;
+
+public class TesteRedimensionar {
+
+	public static void main(String[] args) {
+		//testando com a lista cheia
+		FilaVetor<Integer> f1 = new FilaVetor<>(5);
+		f1.inserir(10);
+		f1.inserir(20);
+		f1.inserir(30);
+		f1.inserir(40);
+		f1.inserir(50);
+		f1.inserir(60);
+		System.out.println(f1.toString());
+		//testando com a lista quebrada
+		
+	}
+}
