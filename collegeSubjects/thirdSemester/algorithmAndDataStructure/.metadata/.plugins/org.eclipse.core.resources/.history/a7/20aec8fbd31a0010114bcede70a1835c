@@ -1,0 +1,13 @@
+package application;
+
+import model.entities.FilaVetor;
+
+public class App2 {
+
+	public static <T> void main(String[] args) {
+		FilaVetor<Integer> f1 = new FilaVetor<>(10);
+		f1.inserir(1);
+		System.out.println(f1.toString());
+	}
+
+}

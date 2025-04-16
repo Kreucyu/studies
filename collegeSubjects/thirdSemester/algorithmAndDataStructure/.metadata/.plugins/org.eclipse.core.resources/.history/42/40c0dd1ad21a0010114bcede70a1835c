@@ -1,0 +1,11 @@
+package model.entities;
+
+public interface FilaD <T> {
+	
+	void inserir(T valor);
+	boolean estaVazia();
+	T peek();
+	T retirar();
+	void liberar();
+	
+}

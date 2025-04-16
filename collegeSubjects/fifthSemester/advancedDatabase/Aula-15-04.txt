@@ -27,4 +27,146 @@ SELECT * FROM medicamento;
 
 SHOW CREATE FUNCTION fc_obter_lucro_medicamento
 
+ou
+
+SELECT r.ROUTINE_SCHEMA, r.ROUTINE_NAME, r.ROUTINE_TYPE, r.DATA_TYPE,
+       r.ROUTINE_DEFINITION
+FROM information_schema.ROUTINES r
+WHERE r.ROUTINE_SCHEMA = 'base_teste_pl';
+
 ---------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE PROCEDURE sp_registra_venda(
+    IN p_nf INTEGER, -- Número da nota fiscal
+    IN p_med INTEGER, -- Código do medicamento
+    IN p_qtde INTEGER -- Quantidade vendida
+)
+BEGIN
+    DECLARE v_preco_med DECIMAL(8,2) DEFAULT 0.0; -- Variável para armazenar o preço do medicamento
+    DECLARE v_total_item DECIMAL(8,2) DEFAULT 0.0; -- Variável para armazenar o valor total do item vendido
+
+    -- Obtém o preço do medicamento da venda
+    SELECT m.vl_venda INTO v_preco_med
+    FROM medicamento m
+    WHERE m.cd_medicamento = p_med;
+
+    -- Calcula o valor total do item vendido
+    SET v_total_item = v_preco_med * p_qtde;
+
+    -- Insere o item na nota fiscal
+    INSERT INTO itemnotafiscal (nr_notafiscal, cd_medicamento, qt_vendida, vl_venda)
+    VALUES (p_nf, p_med, p_qtde, v_preco_med);
+
+    -- Atualiza o estoque do medicamento
+    UPDATE medicamento m
+    SET m.qt_estoque = m.qt_estoque - p_qtde
+    WHERE m.cd_medicamento = p_med;
+
+    -- Atualiza o valor total da nota fiscal
+    UPDATE notafiscal nf
+    SET nf.vl_total = nf.vl_total + v_total_item
+    WHERE nf.nr_notafiscal = p_nf;
+END $$
+
+-- Testando a rotina criada:
+-- Inserção de uma nova nota fiscal
+INSERT INTO notafiscal (dt_emissao) VALUES (CURDATE());
+
+-- Chamando a procedure para registrar uma venda
+CALL sp_registra_venda(2, 1, 1); -- Venda na nota fiscal 2, medicamento 1, quantidade 1
+
+-- Verificando os dados:
+SELECT * FROM notafiscal;
+SELECT * FROM itemnotafiscal;
+
+----------------------------------------------------------------------------------------------
+
+DELIMITER $$
+
+CREATE OR REPLACE PROCEDURE sp_registra_venda(
+    IN p_nr_notafiscal INT, -- Número da nota fiscal
+    IN p_cd_medicamento INT, -- Código do medicamento
+    IN p_qt_vendida INT -- Quantidade vendida
+)
+BEGIN
+    -- Variáveis locais
+    DECLARE var_preco_med DECIMAL(8,2) DEFAULT 0.00; -- Preço do medicamento
+    DECLARE var_estoque INT DEFAULT 0; -- Estoque do medicamento
+    DECLARE var_total_item DECIMAL(8,2) DEFAULT 0.00; -- Valor total do item vendido
+
+    -- Busca o preço de venda e o estoque atual do medicamento
+    SELECT m.vl_venda, m.qt_estoque INTO var_preco_med, var_estoque
+    FROM medicamento m
+    WHERE m.cd_medicamento = p_cd_medicamento;
+
+    IF var_estoque < p_qt_vendida THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Estoque insuficiente!';
+    ELSE
+        SET var_total_item = var_preco_med * p_qt_vendida;
+
+        UPDATE medicamento
+        SET qt_estoque = qt_estoque - p_qt_vendida
+        WHERE cd_medicamento = p_cd_medicamento;
+
+        INSERT INTO itemnotafiscal (nr_notafiscal, cd_medicamento, qt_vendida, vl_venda)
+        VALUES (p_nr_notafiscal, p_cd_medicamento, p_qt_vendida, var_preco_med);
+
+        UPDATE notafiscal
+        SET vl_total = vl_total + var_total_item
+        WHERE nr_notafiscal = p_nr_notafiscal;
+    END IF;
+END $$
+
+
+------------------------------------------------------------------------------------------------
+
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE sp_registra_venda(
+    IN p_nf INTEGER, -- Número da nota fiscal
+    IN p_med INTEGER, -- Código do medicamento
+    IN p_qtde INTEGER -- Quantidade vendida
+)
+BEGIN
+    DECLARE v_preco_med DECIMAL(8,2) DEFAULT 0.0; -- Variável para armazenar o preço do medicamento
+    DECLARE v_total_item DECIMAL(8,2) DEFAULT 0.0; -- Variável para armazenar o valor total do item vendido
+
+    -- Obtém o preço do medicamento da venda
+    SELECT m.vl_venda INTO v_preco_med
+    FROM medicamento m
+    WHERE m.cd_medicamento = p_med;
+
+    -- Calcula o valor total do item vendido
+    SET v_total_item = v_preco_med * p_qtde;
+
+    -- Insere o item na nota fiscal
+    INSERT INTO itemnotafiscal (nr_notafiscal, cd_medicamento, qt_vendida, vl_venda)
+    VALUES (p_nf, p_med, p_qtde, v_preco_med);
+
+    -- Atualiza o estoque do medicamento
+    UPDATE medicamento m
+    SET m.qt_estoque = m.qt_estoque - p_qtde
+    WHERE m.cd_medicamento = p_med;
+
+    -- Atualiza o valor total da nota fiscal
+    UPDATE notafiscal nf
+    SET nf.vl_total = nf.vl_total + v_total_item
+    WHERE nf.nr_notafiscal = p_nf;
+END $$
+
+delimiter $$
+CREATE OR REPLACE FUNCTION fc_cria_nf() RETURNs INTEGER 
+BEGIN
+	INSERT INTO notafiscal(dt_emissao) VALUES (CURDATE());
+	RETURN LAST_INSERT_ID();
+	END $$
+
+CALL sp_registra_venda(fc_cria_nf(),4,4);
+
+SELECT * FROM medicamento;
+SELECT * FROM notafiscal;
+SELECT * FROM itemnotafiscal;
+
+------------------------------------------------------------------------------------------------
+
+
