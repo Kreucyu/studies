@@ -73,12 +73,11 @@ public class Arvore<T> {
 	private int contarNos(NoArvore<T> no) {
 		NoArvore<T> p;
 		p = no.getPrimeiro();
-		int total = 1;
 		while(p != null) {
-			total += contarNos(p);
+			
 			p = p.getProximo();
 		}
-		return total;
+		return 1;
 	}
 
 
