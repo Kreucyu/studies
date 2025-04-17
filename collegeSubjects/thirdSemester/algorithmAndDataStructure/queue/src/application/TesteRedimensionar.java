@@ -13,8 +13,18 @@ public class TesteRedimensionar {
 		f1.inserir(40);
 		f1.inserir(50);
 		f1.inserir(60);
-		System.out.println(f1.toString());
+		System.out.println("\n" + f1.toString());
 		//testando com a lista quebrada
-		
+		FilaVetor<Integer> f2 = new FilaVetor<>(4);
+		f2.inserir(10);
+		f2.inserir(20);
+		f2.inserir(30);
+		f2.inserir(40);
+		System.out.println("\n" + f2.toString());
+		System.out.println("\nElemenetos retirados: " + f2.retirar() + ", " + f2.retirar());
+		System.out.println("\n" + f2.toString());
+		f2.inserir(50);
+		f2.inserir(60);
+		System.out.println("\n" + f2.toString());
 	}
 }

@@ -1,0 +1,12 @@
+package application;
+
+import model.NoArvore;
+
+public class App {
+
+	public static void main(String[] args) {
+		NoArvore<Object> no1 = new NoArvore<>();
+
+	}
+
+}

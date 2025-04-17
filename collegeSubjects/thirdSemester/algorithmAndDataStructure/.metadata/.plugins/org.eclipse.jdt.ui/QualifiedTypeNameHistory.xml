@@ -16,8 +16,9 @@
     <fullyQualifiedTypeName name="model.listaEstatica"/>
     <fullyQualifiedTypeName name="model.ArvoreBinaria"/>
     <fullyQualifiedTypeName name="model.NoArvoreBinaria"/>
-    <fullyQualifiedTypeName name="java.lang.StringBuilder"/>
     <fullyQualifiedTypeName name="model.entities.FilaDeque"/>
     <fullyQualifiedTypeName name="model.exception.FilaVaziaException"/>
     <fullyQualifiedTypeName name="model.entities.FilaVetor"/>
+    <fullyQualifiedTypeName name="java.lang.StringBuilder"/>
+    <fullyQualifiedTypeName name="model.Arvore"/>
 </qualifiedTypeNameHistroy>

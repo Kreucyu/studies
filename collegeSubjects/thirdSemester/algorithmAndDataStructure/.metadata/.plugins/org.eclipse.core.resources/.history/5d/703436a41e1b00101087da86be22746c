@@ -1,0 +1,8 @@
+package model;
+
+public class NoArvore<T> {
+	private T info;
+	private NoArvore primeiro;
+	private NoArvore proximo;
+	
+}

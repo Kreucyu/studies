@@ -105,7 +105,7 @@ public class FilaVetor<T> implements Fila<T> {
 		if (estaVazia()) {
 			sb.append("Fila vazia!");
 		} else {
-		while (!(temp == fim + 1))  {
+		while (!(temp == fim + 1))  { //valor de fim +1 acabou ficando que nem inicio, tostring com erro.
 			sb.append(info[temp]);
 			if (!(temp == fim)) {
 				sb.append(", ");

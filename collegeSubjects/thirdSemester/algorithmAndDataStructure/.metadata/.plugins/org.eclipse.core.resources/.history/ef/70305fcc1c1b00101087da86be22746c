@@ -1,0 +1,25 @@
+package model;
+
+public class Arvore {
+	
+	public Arvore() {
+		
+	}
+	
+	public boolean pertence(T info) {
+		
+	}
+	
+	private boolean pertence(NoArvore<T> no, T info) {
+		
+	}
+
+	@Override
+	public String toString() {
+		return "Arvore []";
+	}
+	
+	
+	
+	
+}

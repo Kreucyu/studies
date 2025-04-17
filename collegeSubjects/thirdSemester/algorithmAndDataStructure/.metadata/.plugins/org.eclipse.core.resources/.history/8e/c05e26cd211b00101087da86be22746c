@@ -1,0 +1,69 @@
+package model;
+
+public class Arvore<T> {
+	private NoArvore<T> raiz;
+
+	public Arvore() {
+		setRaiz(null);
+	}
+
+	public NoArvore<T> getRaiz() {
+		return raiz;
+	}
+
+	public void setRaiz(NoArvore<T> raiz) {
+		this.raiz = raiz;
+	}
+	
+	@Override
+	public String toString() {
+		if (raiz == null) {
+			return "Árvore vazia";
+		} else {
+			return obterRepresentacaoTextual(raiz);
+		}
+	}
+	
+	private String obterRepresentacaoTextual(NoArvore<T> no) {
+		StringBuilder sb = new StringBuilder();
+		NoArvore<T> p;
+		sb.append("<");
+		sb.append(no.getInfo());
+		p = no.getPrimeiro();
+		while(p != null) {
+			sb.append(obterRepresentacaoTextual(p));
+			p = p.getProximo();
+		}
+		sb.append(">");
+		return sb.toString();
+	}
+
+	public boolean pertence(T info) {
+		if (raiz == null) {
+			return false;
+		} else {
+			return pertence(raiz, info);
+		}
+
+	}
+
+	private boolean pertence(NoArvore<T> no, T info) {
+		if(no.getInfo() == info) {
+			return true;
+		}
+		return false;
+
+	}
+	
+	public int contarNos() {
+		return contarNos(raiz);
+		
+	}
+	
+	private int contarNos(NoArvore<T> no) {
+		return 0;
+		
+	}
+
+
+}
