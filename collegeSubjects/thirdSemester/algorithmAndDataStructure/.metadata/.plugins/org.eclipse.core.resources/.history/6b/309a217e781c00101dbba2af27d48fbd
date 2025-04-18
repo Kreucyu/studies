@@ -1,0 +1,9 @@
+package model;
+
+public class Arvore<T> {
+	private NoArvoreBinaria<T> raiz;
+	
+	public ArvoreBinaria() {
+		setRaiz(raiz);
+	}
+}

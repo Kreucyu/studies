@@ -1,0 +1,9 @@
+package model;
+
+public class NoArvoreBinaria<T> {
+	private T info;
+	
+	public NoArvoreBinaria<T>(T info) {
+		
+	}
+}
