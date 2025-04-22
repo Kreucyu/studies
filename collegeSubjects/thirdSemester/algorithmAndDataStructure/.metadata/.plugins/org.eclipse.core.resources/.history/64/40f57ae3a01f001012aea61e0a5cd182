@@ -1,0 +1,116 @@
+package model;
+
+public class ArvoreBinaria<T> {
+	private NoArvoreBinaria<T> raiz;
+
+	public ArvoreBinaria() {
+		setRaiz(raiz);
+	}
+
+	public void setRaiz(NoArvoreBinaria<T> raiz) {
+		this.raiz = raiz;
+	}
+
+	public boolean estaVazia() {
+		return raiz == null;
+	}
+
+	public boolean pertence(T info) {
+		return pertence(raiz, info);
+	}
+
+	private boolean pertence(NoArvoreBinaria<T> no, T info) {
+		if (no == null) {
+			return false;
+		}
+		return no.getInfo() == info || pertence(no.getEsquerda(), info) || pertence(no.getDireita(), info);
+	}
+
+	@Override
+	public String toString() {
+		return arvorePre(raiz);
+	}
+
+	private String arvorePre(NoArvoreBinaria<T> no) {
+		StringBuilder sb = new StringBuilder();
+		if(no == null) {
+			return "<>";
+		}
+		sb.append("<");
+		sb.append(no.getInfo());
+		sb.append(arvorePre(no.getEsquerda()));
+		sb.append(arvorePre(no.getDireita()));
+		sb.append(">");
+		return sb.toString();
+	}
+
+	public int contarNos() {
+		return contarNos(raiz);
+	}
+
+	private int contarNos(NoArvoreBinaria<T> no) {
+		if(no == null) {
+			return 0;
+		}
+		return 1 + contarNos(no.getEsquerda()) + contarNos(no.getDireita());
+	}
+	
+	public int calcDisNosAlt() {
+		return 0;
+	}
+	
+	public int calcDisNosQtde(T info, T info2) {
+		return calcDisNosQtde(raiz, info, info2);
+	}
+	
+	private int calcDisNosQtde(NoArvoreBinaria<T> no, T info1, T info2) {
+	    NoArvoreBinaria<T>[] caminho1 = new NoArvoreBinaria[contarNos()];
+	    NoArvoreBinaria<T>[] caminho2 = new NoArvoreBinaria[contarNos()];
+	    int[] index1 = {0};
+	    int[] index2 = {0};
+
+	    if (!encontrarCaminho(no, info1, caminho1, index1) || !encontrarCaminho(no, info2, caminho2, index2)) {
+	        return -1;
+	    }
+
+	    int i = 0;
+	    while (i < index1[0] && i < index2[0] && caminho1[i].getInfo().equals(caminho2[i].getInfo())) {
+	        i++; 
+	    }
+
+	    return (index1[0] - i) + (index2[0] - i);
+	}
+
+	private boolean encontrarCaminho(NoArvoreBinaria<T> no, T info, NoArvoreBinaria<T>[] caminho, int[] index) {
+	    if (no == null) return false;
+
+	    caminho[index[0]++] = no; 
+
+	    if (no.getInfo().equals(info)) {
+	        return true;
+	    }
+
+	    if (encontrarCaminho(no.getEsquerda(), info, caminho, index) || encontrarCaminho(no.getDireita(), info, caminho, index)) {
+	        return true;
+	    }
+
+	    index[0]--;
+	    return false;
+	}
+
+	
+	public int getAltura() {
+		return getAltura(raiz);
+	}
+	
+	private int getAltura(NoArvoreBinaria<T> no) {
+		if(no == null) {
+			return 0;
+		}
+		int esquerda = getAltura(no.getEsquerda());
+		int direita = getAltura(no.getDireita());
+		return 1 + Math.max(esquerda, direita);
+	}
+	
+	
+}

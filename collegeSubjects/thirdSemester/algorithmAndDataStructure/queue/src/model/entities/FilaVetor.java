@@ -115,40 +115,35 @@ public class FilaVetor<T> implements Fila<T> {
 	}
 		return sb.toString();
 	}
+	
+	private void copiarElementos(FilaVetor<Object> f2) {
+		int temp = inicio;
+		while (f2.tamanho != tamanho) {
+			if(temp == limite) {
+				temp = 0;
+			}
+			f2.inserir(info[temp]);
+			temp++;
+		}
+		this.info = f2.info;
+		this.inicio = 0;
+	}
 
 	public void encurtar() {
 		if (tamanho == 0) {
 			throw new FilaVaziaException();
 		}
 		FilaVetor<Object> f2 = new FilaVetor<>(tamanho);
-		int temp = inicio;
-		while (f2.tamanho != tamanho) {
-			if(temp == limite) {
-				temp = 0;
-			}
-			f2.inserir(info[temp]);
-			temp++;
-		}
+		copiarElementos(f2);
 		System.out.println("\nTamanho da fila antes de encurtar: " + limite);
-		this.info = f2.info;
 		this.limite = this.tamanho;
-		this.inicio = 0;
 		System.out.println("\nTamanho da fila depois de encurtar: " + limite);
 	}
 	
 	private void redimensionar() {
 		FilaVetor<Object> f2 = new FilaVetor<>(limite * 2);
-		int temp = inicio;
-		while (f2.tamanho != tamanho) {
-			if(temp == limite) {
-				temp = 0;
-			}
-			f2.inserir(info[temp]);
-			temp++;
-		}
-		this.info = f2.info;
+		copiarElementos(f2);
 		this.limite *= 2;
-		this.inicio = 0;
 	}
 
 }

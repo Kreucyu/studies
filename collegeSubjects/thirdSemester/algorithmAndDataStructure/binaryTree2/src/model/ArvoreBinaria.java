@@ -55,14 +55,73 @@ public class ArvoreBinaria<T> {
 		return 1 + contarNos(no.getEsquerda()) + contarNos(no.getDireita());
 	}
 	
-	public int calcDisNosAlt() {
-		return 0;
+	public int calcularDistanciaAltura(T info1, T info2) {
+		return calcDistanciaAlt(raiz, info1, info2);
 	}
 	
-	public int calcDisNosQtde() {
-		return 0;
+	private int calcDistanciaAlt(NoArvoreBinaria<T> raiz, T info1, T info2) {
+	    int alturaNo1 = calcularAltura(raiz, info1, 0);
+	    int alturaNo2 = calcularAltura(raiz, info2, 0);
+
+	    if (alturaNo1 == -1 || alturaNo2 == -1) {
+	        return -1;
+	    }
+	    return Math.abs(alturaNo1 - alturaNo2);
+	}
+
+	private int calcularAltura(NoArvoreBinaria<T> no, T info, int alturaAtual) {
+	    if (no == null) return -1;
+
+	    if (no.getInfo() == info) {
+	        return alturaAtual;
+	    }
+
+	    int alturaEsquerda = calcularAltura(no.getEsquerda(), info, alturaAtual + 1);
+	    if (alturaEsquerda != -1) {
+	        return alturaEsquerda;
+	    }
+
+	    int alturaDireita = calcularAltura(no.getDireita(), info, alturaAtual + 1);
+	    return alturaDireita;
+	}
+
+	
+	public int calcDisNosQtde(T info, T info2) {
+		return calcDisNosQtde(raiz, info, info2);
 	}
 	
+	@SuppressWarnings("unchecked")
+	private int calcDisNosQtde(NoArvoreBinaria<T> no, T info1, T info2) {
+	    NoArvoreBinaria<T>[] caminho1 = new NoArvoreBinaria[contarNos()];
+	    NoArvoreBinaria<T>[] caminho2 = new NoArvoreBinaria[contarNos()];
+	    
+	    int c1 = encontrarCaminho(no, info1, caminho1, 0);
+	    int c2 = encontrarCaminho(no, info2, caminho2, 0);
+
+	    if (c1 == -1 || c2 == -1) {
+	        return -1;
+	    }
+
+	    int i = 0;
+	    while (i < c1 && i < c2 && caminho1[i].getInfo() == caminho2[i].getInfo()) {
+	        i++;
+	    }
+	    return (c1 - i) + (c2 - i);
+	}
+
+	private int encontrarCaminho(NoArvoreBinaria<T> no, T info, NoArvoreBinaria<T>[] caminho, int i) {
+	    if (no == null) return -1;
+	    caminho[i++] = no; 
+	    
+	    if (no.getInfo() == info) {
+	        return i; 
+	    }
+	    int resultado = encontrarCaminho(no.getEsquerda(), info, caminho, i);
+	    if (resultado != -1) return resultado;
+	    resultado = encontrarCaminho(no.getDireita(), info, caminho, i);
+	    return resultado;
+	}
+
 	public int getAltura() {
 		return getAltura(raiz);
 	}

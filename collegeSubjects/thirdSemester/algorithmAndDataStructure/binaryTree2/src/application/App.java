@@ -30,7 +30,8 @@ public class App {
 		System.out.println("\npertence(10) = " + arvore1.pertence(10));
 		System.out.println("\ncontarNos() = " + arvore1.contarNos());
 		System.out.println("\ngetAltura() = " + arvore1.getAltura());
-		
+		System.out.println("\nDistancia entre nós (2, 6) = " + arvore1.calcDisNosQtde(2, 6));
+		System.out.println("\nDistancia altura entre nós (2, 6) = " + arvore1.calcularDistanciaAltura(2, 6));
 
 	}
 
