@@ -1,0 +1,13 @@
+package application;
+
+import model.ArvoreBinaria;
+
+public class App {
+
+	public static void main(String[] args) {
+		ArvoreBinaria<Integer> arvore = new ArvoreBinaria<>();
+		System.out.println("estaVazia() = " + arvore.estaVazia());
+
+	}
+
+}

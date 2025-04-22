@@ -2,7 +2,7 @@ package model;
 
 public class ArvoreBinaria<T> {
 	private NoArvoreBinaria<T> raiz;
-	
+
 	public ArvoreBinaria() {
 		setRaiz(raiz);
 	}
@@ -10,36 +10,71 @@ public class ArvoreBinaria<T> {
 	public void setRaiz(NoArvoreBinaria<T> raiz) {
 		this.raiz = raiz;
 	}
-	
+
 	public boolean estaVazia() {
 		return raiz == null;
 	}
-	
+
 	public boolean pertence(T info) {
-		return false;
+		return pertence(raiz, info);
 	}
-	
-	@SuppressWarnings("unused")
+
 	private boolean pertence(NoArvoreBinaria<T> no, T info) {
-		return false;
+		if (no == null) {
+			return false;
+		}
+		return no.getInfo() == info || pertence(no.getEsquerda(), info) || pertence(no.getDireita(), info);
 	}
 
 	@Override
 	public String toString() {
-		return "ArvoreBinaria [raiz=" + raiz + "]";
+		return arvorePre(raiz);
 	}
-	
-	@SuppressWarnings("unused")
+
 	private String arvorePre(NoArvoreBinaria<T> no) {
-		return "";
+		StringBuilder sb = new StringBuilder();
+		if(no == null) {
+			return "<>";
+		}
+		sb.append("<");
+		sb.append(no.getInfo());
+		sb.append(arvorePre(no.getEsquerda()));
+		sb.append(arvorePre(no.getDireita()));
+		sb.append(">");
+		return sb.toString();
 	}
-	
+
 	public int contarNos() {
-		return 1;
+		return contarNos(raiz);
+	}
+
+	private int contarNos(NoArvoreBinaria<T> no) {
+		if(no == null) {
+			return 0;
+		}
+		return 1 + contarNos(no.getEsquerda()) + contarNos(no.getDireita());
 	}
 	
-	@SuppressWarnings("unused")
-	private int contarNos(NoArvoreBinaria<T> no) {
-		return 1;
+	public int calcDisNosAlt() {
+		return 0;
 	}
+	
+	public int calcDisNosQtde() {
+		return 0;
+	}
+	
+	public int getAltura() {
+		return getAltura(raiz);
+	}
+	
+	private int getAltura(NoArvoreBinaria<T> no) {
+		if(no == null) {
+			return 0;
+		}
+		int esquerda = getAltura(no.getEsquerda());
+		int direita = getAltura(no.getDireita());
+		return 1 + Math.max(esquerda, direita);
+	}
+	
+	
 }

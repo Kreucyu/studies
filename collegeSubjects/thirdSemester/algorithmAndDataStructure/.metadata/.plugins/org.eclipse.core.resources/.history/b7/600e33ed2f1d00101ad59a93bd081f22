@@ -1,0 +1,18 @@
+package application;
+
+import model.ArvoreBinaria;
+import model.NoArvoreBinaria;
+
+public class App {
+
+	public static void main(String[] args) {
+		ArvoreBinaria<Integer> arvore = new ArvoreBinaria<>();
+		System.out.println("estaVazia() = " + arvore.estaVazia());
+		NoArvoreBinaria<Integer> no5 = new NoArvoreBinaria<>(5);
+		arvore.setRaiz(no5);
+		System.out.println("\nestaVazia() = " + arvore.estaVazia());
+		ArvoreBinaria<Integer> arvore1 = new ArvoreBinaria<>();
+
+	}
+
+}

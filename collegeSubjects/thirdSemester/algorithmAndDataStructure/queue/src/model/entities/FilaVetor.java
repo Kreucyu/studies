@@ -94,33 +94,28 @@ public class FilaVetor<T> implements Fila<T> {
 		if (inicio > limite) {
 			inicio = 0;
 		}
-		int fim;
-		int var = (inicio + tamanho) % limite - 1;
-		if (var == -1) {
-			fim = limite - 1;
-		} else {
-			fim = var;
+		int fim = (inicio + tamanho) % limite - 1;
+		if (fim == -1) {
+			fim = 0;
 		}
 		int temp = inicio;
 		if (estaVazia()) {
 			sb.append("Fila vazia!");
 		} else {
-		while (!(temp == fim + 1))  { //valor de fim +1 acabou ficando que nem inicio, tostring com erro.
+		for (int i = 0; i != tamanho; i++)  {
 			sb.append(info[temp]);
-			if (!(temp == fim)) {
+			if (i + 1 != tamanho) {
 				sb.append(", ");
 			}
-			if (temp + 1 == limite && fim + 1 != limite) {
+			temp++;
+			if (temp + 1 > limite) {
 				temp = 0;
-			} else {
-				temp++;
 			}
 		} 
 	}
 		return sb.toString();
 	}
 
-	@SuppressWarnings("unchecked")
 	public void encurtar() {
 		if (tamanho == 0) {
 			throw new FilaVaziaException();
@@ -135,15 +130,14 @@ public class FilaVetor<T> implements Fila<T> {
 			temp++;
 		}
 		System.out.println("\nTamanho da fila antes de encurtar: " + limite);
-		this.info = (T[]) new Object[tamanho];
+		this.info = f2.info;
 		this.limite = this.tamanho;
+		this.inicio = 0;
 		System.out.println("\nTamanho da fila depois de encurtar: " + limite);
-		info = f2.info;
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void redimensionar() {
-		FilaVetor<Object> f2 = new FilaVetor<>(tamanho);
+		FilaVetor<Object> f2 = new FilaVetor<>(limite * 2);
 		int temp = inicio;
 		while (f2.tamanho != tamanho) {
 			if(temp == limite) {
@@ -152,11 +146,9 @@ public class FilaVetor<T> implements Fila<T> {
 			f2.inserir(info[temp]);
 			temp++;
 		}
-		this.info = (T[]) new Object[limite * 2];
+		this.info = f2.info;
 		this.limite *= 2;
-		for(int i = 0; f2.tamanho != 0; i++) {
-			info[i] = f2.retirar();
-		}
+		this.inicio = 0;
 	}
 
 }

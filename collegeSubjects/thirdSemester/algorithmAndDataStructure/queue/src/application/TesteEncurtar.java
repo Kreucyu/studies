@@ -32,6 +32,24 @@ public class TesteEncurtar {
 		System.out.println("\n" + f2.toString());
 		f2.encurtar();
 		System.out.println("\n" + f2.toString());
+		FilaVetor<Integer> f3 = new FilaVetor<>(8);
+		f3.inserir(1);
+		f3.inserir(2);
+		f3.inserir(3);
+		f3.inserir(4);
+		f3.inserir(5);
+		f3.inserir(6);
+		f3.inserir(7);
+		f3.inserir(8);
+		System.out.println("\n" + f3.toString());
+		f3.encurtar();
+		f3.retirar();
+		f3.retirar();
+		f3.retirar();
+		f3.inserir(9);
+		f3.inserir(10);
+		System.out.println("\n" + f3.toString());
+		f3.encurtar();
+		System.out.println("\n" + f3.toString());
 	}
-
 }

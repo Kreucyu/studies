@@ -14,11 +14,11 @@
     <fullyQualifiedTypeName name="model.entities.FilaLista"/>
     <fullyQualifiedTypeName name="model.entities.listaEncadeada"/>
     <fullyQualifiedTypeName name="model.listaEstatica"/>
-    <fullyQualifiedTypeName name="model.ArvoreBinaria"/>
     <fullyQualifiedTypeName name="model.entities.FilaDeque"/>
     <fullyQualifiedTypeName name="model.exception.FilaVaziaException"/>
     <fullyQualifiedTypeName name="model.entities.FilaVetor"/>
     <fullyQualifiedTypeName name="java.lang.StringBuilder"/>
     <fullyQualifiedTypeName name="model.Arvore"/>
+    <fullyQualifiedTypeName name="model.ArvoreBinaria"/>
     <fullyQualifiedTypeName name="model.NoArvoreBinaria"/>
 </qualifiedTypeNameHistroy>

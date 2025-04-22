@@ -1,0 +1,53 @@
+package application;
+
+import model.entities.FilaVetor;
+
+public class TesteEncurtar {
+
+	public static void main(String[] args) {
+		// teste encurtar() - fila circular
+		FilaVetor<Integer> f1 = new FilaVetor<>(7);
+		f1.inserir(9);
+		f1.inserir(8);
+		f1.inserir(7);
+		f1.inserir(6);
+		f1.inserir(0);
+		f1.inserir(4);
+		f1.inserir(5);
+		System.out.println(f1.toString());
+		System.out.println("\nValores removidos: " + f1.retirar() + ", " + f1.retirar() + ", " + f1.retirar() + ", " + f1.retirar() + ", " + f1.retirar());
+		System.out.println("\n" + f1.toString());
+		f1.inserir(1);
+		f1.inserir(2);
+		System.out.println("\n" + f1.toString());
+		f1.encurtar();
+		System.out.println("\n" + f1.toString());
+		// teste encurtar() - fila padrão
+		FilaVetor<Integer> f2 = new FilaVetor<>(10);
+		System.out.println("\n" + f2.toString());
+		f2.inserir(1);
+		f2.inserir(2);
+		f2.inserir(3);
+		f2.inserir(4);
+		System.out.println("\n" + f2.toString());
+		f2.encurtar();
+		System.out.println("\n" + f2.toString());
+		FilaVetor<Integer> f3 = new FilaVetor<>(8);
+		f3.inserir(1);
+		f3.inserir(2);
+		f3.inserir(3);
+		f3.inserir(4);
+		f3.inserir(5);
+		f3.inserir(6);
+		f3.inserir(7);
+		f3.inserir(8);
+		System.out.println("\n" + f3.toString());
+		f3.encurtar();
+		System.out.println("\n" + f3.toString());
+		f3.retirar();
+		f3.retirar();
+		f3.retirar();
+		System.out.println("\n" + f3.toString());
+	}
+
+}

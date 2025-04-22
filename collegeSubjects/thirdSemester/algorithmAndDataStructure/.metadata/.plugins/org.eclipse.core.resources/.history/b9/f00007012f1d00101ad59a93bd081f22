@@ -1,0 +1,49 @@
+package model;
+
+public class ArvoreBinaria<T> {
+	private NoArvoreBinaria<T> raiz;
+
+	public ArvoreBinaria() {
+		setRaiz(raiz);
+	}
+
+	public void setRaiz(NoArvoreBinaria<T> raiz) {
+		this.raiz = raiz;
+	}
+
+	public boolean estaVazia() {
+		return raiz == null;
+	}
+
+	public boolean pertence(T info) {
+		if (raiz == null) {
+			return false;
+		}
+		return pertence(raiz, info);
+	}
+
+	private boolean pertence(NoArvoreBinaria<T> no, T info) {
+		return no == info || pertence(no.getEsquerda(), info) || pertence(no.getDireita(), info);
+	}
+
+	@Override
+	public String toString() {
+		if (raiz == null) {
+			return "<>";
+		}
+		return arvorePre(raiz);
+	}
+
+	private String arvorePre(NoArvoreBinaria<T> no) {
+		return "";
+	}
+
+	public int contarNos() {
+		return 1;
+	}
+
+	@SuppressWarnings("unused")
+	private int contarNos(NoArvoreBinaria<T> no) {
+		return 1;
+	}
+}
