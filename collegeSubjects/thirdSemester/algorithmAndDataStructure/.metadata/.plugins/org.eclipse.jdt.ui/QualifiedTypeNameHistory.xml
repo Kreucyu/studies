@@ -4,7 +4,6 @@
     <fullyQualifiedTypeName name="model.listaEncadeada"/>
     <fullyQualifiedTypeName name="java.lang.NullPointerException"/>
     <fullyQualifiedTypeName name="model.noLista"/>
-    <fullyQualifiedTypeName name="java.io.IOException"/>
     <fullyQualifiedTypeName name="model.exception.PilhaCheiaException"/>
     <fullyQualifiedTypeName name="model.exception.PilhaVaziaException"/>
     <fullyQualifiedTypeName name="model.entities.PilhaVetor"/>
@@ -21,4 +20,7 @@
     <fullyQualifiedTypeName name="model.Arvore"/>
     <fullyQualifiedTypeName name="model.ArvoreBinaria"/>
     <fullyQualifiedTypeName name="model.NoArvoreBinaria"/>
+    <fullyQualifiedTypeName name="javafx.scene.Parent"/>
+    <fullyQualifiedTypeName name="javafx.fxml.FXMLLoader"/>
+    <fullyQualifiedTypeName name="java.io.IOException"/>
 </qualifiedTypeNameHistroy>

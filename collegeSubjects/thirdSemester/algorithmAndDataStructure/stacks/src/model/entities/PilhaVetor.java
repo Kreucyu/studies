@@ -12,7 +12,7 @@ public class PilhaVetor<T> implements Pilha<T> {
 	public PilhaVetor(int limite) {
 		this.limite = limite;
 		this.info = (T[]) new Object[limite];
-		this.tamanho = -1;
+		this.tamanho = 0;
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class PilhaVetor<T> implements Pilha<T> {
 
 	@Override
 	public boolean estaVazia() {
-		return (tamanho == -1);
+		return (tamanho == 0);
 	}
 
 	@Override
@@ -64,6 +64,21 @@ public class PilhaVetor<T> implements Pilha<T> {
 
 	@Override
 	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		if (!estaVazia()) {
+			for (int i = tamanho; i > 0; i--) {
+				sb.append(info[i]);
+				if (i - 1 > 0) {
+					sb.append(", ");
+				}
+			}
+			return sb.toString();
+		}
+		sb.append("\nPilha vazia");
+		return sb.toString();
+	}
+	
+	public String toString1() {
 		StringBuilder sb = new StringBuilder();
 		if (!estaVazia()) {
 			for (int i = tamanho; i >= 0; i--) {

@@ -35,6 +35,9 @@ public class App {
 		System.out.println("\nO valor pertence a árvore (55)? " + arv.pertence(55));
 		System.out.println("\nCaso 4: ");
 		System.out.println("\nQuantidade de nós: " + arv.contarNos());
+		System.out.println("\nDistancia de nós (1, 6) = " + arv.calcularDistanciaAltura(1, 6));
+		System.out.println("\nDistancia entre nós (6, 10) = " + arv.calcDistanciaNos(6, 10));
+		System.out.println("\nAltura da árvore = " + arv.getAltura());
 
 	}
 

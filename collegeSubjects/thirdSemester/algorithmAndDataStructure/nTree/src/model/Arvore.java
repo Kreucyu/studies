@@ -80,6 +80,97 @@ public class Arvore<T> {
 		}
 		return total;
 	}
+	
+	public int calcularDistanciaAltura(T info1, T info2) {
+		return calDisAltura(raiz, info1, info2);
+	}
+	
+    private int calDisAltura(NoArvore<T> no, T info1, T info2) {
+        int alturaNo1 = calcularAltura(no, info1, 0);
+        int alturaNo2 = calcularAltura(no, info2, 0);
+
+        if (alturaNo1 == -1 || alturaNo2 == -1) {
+            return -1;
+        }
+
+        return Math.abs(alturaNo1 - alturaNo2);
+    }
+
+    private int calcularAltura(NoArvore<T> no, T info, int alturaAtual) {
+        if (no == null) return -1;
+        if (no.getInfo().equals(info)) return alturaAtual;
+
+        NoArvore<T> p = no.getPrimeiro();
+        while (p != null) {
+            int altura = calcularAltura(p, info, alturaAtual + 1);
+            if (altura != -1) {
+                return altura;
+            }
+            p = p.getProximo();
+        }
+        return -1;
+    }
+    
+    public int calcDistanciaNos(T info1, T info2) {
+        return calcDisNosQtde(raiz, info1, info2);
+    }
+
+    @SuppressWarnings("unchecked")
+    private int calcDisNosQtde(NoArvore<T> no, T info1, T info2) {
+        NoArvore<T>[] caminho1 = new NoArvore[contarNos()];
+        NoArvore<T>[] caminho2 = new NoArvore[contarNos()];
+
+        int c1 = encontrarCaminho(no, info1, caminho1, 0);
+        int c2 = encontrarCaminho(no, info2, caminho2, 0);
+
+        if (c1 == -1 || c2 == -1) {
+            return -1;
+        }
+        
+        int i = 0;
+        while (i < c1 && i < c2 && caminho1[i].getInfo() == caminho2[i].getInfo()) {
+            i++;
+        }
+
+        return (c1 - i) + (c2 - i);
+    }
+
+    private int encontrarCaminho(NoArvore<T> no, T info, NoArvore<T>[] caminho, int i) {
+        if (no == null) return -1;
+        
+        caminho[i++] = no;
+        
+        if (no.getInfo().equals(info)) {
+            return i;
+        }
+
+        NoArvore<T> p = no.getPrimeiro();
+        while (p != null) {
+            int resultado = encontrarCaminho(p, info, caminho, i);
+            if (resultado != -1) {
+                return resultado;
+            }
+            p = p.getProximo();
+        }
+        return -1;
+    }
+    
+    public int getAltura() {
+        return getAltura(raiz);
+    }
+
+    private int getAltura(NoArvore<T> no) {
+        if (no == null) return 0;
+        int alturaMaxima = 0;
+
+        NoArvore<T> p = no.getPrimeiro();
+        while (p != null) {
+            alturaMaxima = Math.max(alturaMaxima, getAltura(p));
+            p = p.getProximo();
+        }
+
+        return 1 + alturaMaxima;
+    }
 
 
 }
