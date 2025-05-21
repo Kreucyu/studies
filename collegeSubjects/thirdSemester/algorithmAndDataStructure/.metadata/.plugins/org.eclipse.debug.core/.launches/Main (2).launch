@@ -14,5 +14,5 @@
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="application.Main"/>
     <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="ValidadorHTML"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ValidadorHTML"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="--module-path &quot;C:\Users\elcio\OneDrive\Documents\javaFX\lib&quot; --add-modules=javafx.fxml,javafx.controls"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="--module-path &quot;A:\Ferramentas\eclipse\javaFX\lib&quot; --add-modules=javafx.fxml,javafx.controls"/>
 </launchConfiguration>

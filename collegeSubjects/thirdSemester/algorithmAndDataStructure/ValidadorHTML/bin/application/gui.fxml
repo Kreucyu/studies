@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400" prefWidth="600" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+	<children>
+
+		<TextField fx:id="campoCaminho" layoutX="133.0" layoutY="20" prefHeight="25.0" prefWidth="380.0" promptText="Caminho do arquivo HTML" />
+
+		<Button fx:id="botaoValidar" layoutX="517.0" layoutY="20.0" onAction="#validarArquivo" text="Validar" />
+
+		<Label layoutX="20" layoutY="60" text="Resultado da Análise:" />
+		<TextArea fx:id="saidaErros" editable="false" layoutX="20" layoutY="80" prefHeight="100" prefWidth="550" wrapText="true" />
+
+		<Label layoutX="20" layoutY="190" text="Tags encontradas:" />
+		<TextArea fx:id="saidaTags" editable="false" layoutX="20" layoutY="210" prefHeight="160" prefWidth="550" wrapText="true" />
+      <Button fx:id="botaoValidar1" layoutX="21.0" layoutY="20.0" onAction="#abrirFileChooser" prefHeight="25.0" prefWidth="106.0" text="Escolher arquivo" />
+
+	</children>
+</AnchorPane>

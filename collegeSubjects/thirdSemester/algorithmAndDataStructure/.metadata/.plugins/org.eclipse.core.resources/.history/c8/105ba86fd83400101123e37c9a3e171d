@@ -1,0 +1,170 @@
+
+package application;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import model.entities.OrdenacaoMergeSort;
+import model.entities.PilhaLista;
+
+import java.io.*;
+
+public class Controller {
+
+	@FXML
+	private TextField campoCaminho;
+	@FXML
+	private Button botaoValidar;
+	@FXML
+	private TextArea saidaErros;
+	@FXML
+	private TextArea saidaTags;
+
+	private static final String[] SINGLETON_TAGS = { "meta", "base", "br", "col", "command", "embed", "hr", "img",
+			"input", "link", "param", "source", "!doctype" };
+
+	private boolean isSingleton(String tag) {
+		for (String s : SINGLETON_TAGS) {
+			if (s.equalsIgnoreCase(tag))
+				return true;
+		}
+		return false;
+	}
+
+	@FXML
+	private void validarArquivo() {
+		saidaErros.clear();
+		saidaTags.clear();
+		String caminho = campoCaminho.getText();
+
+		PilhaLista<String> pilha = new PilhaLista<>();
+		TagContador[] contagem = new TagContador[500];
+		int contagemIndex = 0;
+
+		String[] erros = new String[100];
+		int erroIndex = 0;
+
+		try (BufferedReader leitor = new BufferedReader(new FileReader(caminho))) {
+			String linha;
+			int numLinha = 0;
+
+			while ((linha = leitor.readLine()) != null) {
+				numLinha++;
+				linha = linha.replaceAll("<!--.*?-->", "").trim();
+				if (linha.isEmpty())
+					continue;
+
+				while (linha.contains("<") && linha.contains(">")) {
+					int ini = linha.indexOf("<");
+					int fim = linha.indexOf(">", ini);
+					if (fim == -1)
+						break;
+
+					String tag = linha.substring(ini + 1, fim).trim().toLowerCase();
+					linha = linha.substring(fim + 1);
+					if (tag.isEmpty())
+						continue;
+
+					if (tag.contains(" "))
+						tag = tag.substring(0, tag.indexOf(" "));
+
+					if (tag.startsWith("/")) {
+						String tagFinal = tag.substring(1);
+						if (pilha.estaVazia()) {
+							erros[erroIndex++] = "Linha " + numLinha + ": </" + tagFinal + "> sem abertura.";
+						} else {
+
+							boolean tagExisteNaPilha = false;
+							PilhaLista<String> verificador = new PilhaLista<>();
+							while (!pilha.estaVazia()) {
+								String t = pilha.pop();
+								verificador.push(t);
+								if (t.equals(tagFinal)) {
+									tagExisteNaPilha = true;
+									break;
+								}
+							}
+							while (!verificador.estaVazia()) {
+								pilha.push(verificador.pop());
+							}
+
+							if (!tagExisteNaPilha) {
+								erros[erroIndex++] = "Linha " + numLinha + ": </" + tagFinal + "> sem abertura.";
+							} else {
+								String topo = pilha.peek();
+								if (topo.equals(tagFinal)) {
+									pilha.pop();
+								} else {
+									erros[erroIndex++] = "Linha " + numLinha + ": Esperava </" + topo
+											+ ">, mas encontrou </" + tagFinal + ">.";
+
+									PilhaLista<String> pilhaTemp = new PilhaLista<>();
+									while (!pilha.estaVazia()) {
+										String atual = pilha.pop();
+										if (atual.equals(tagFinal)) {
+											break;
+										} else {
+											pilhaTemp.push(atual);
+										}
+									}
+
+									while (!pilhaTemp.estaVazia()) {
+										pilha.push(pilhaTemp.pop());
+									}
+
+								}
+							}
+						}
+
+						continue;
+					}
+
+					boolean existe = false;
+					for (int i = 0; i < contagemIndex; i++) {
+						if (contagem[i].nome.equalsIgnoreCase(tag)) {
+							contagem[i].quantidade++;
+							existe = true;
+							break;
+						}
+					}
+					if (!existe)
+						contagem[contagemIndex++] = new TagContador(tag);
+
+					if (!isSingleton(tag)) {
+						pilha.push(tag);
+					}
+				}
+			}
+
+			while (!pilha.estaVazia()) {
+				erros[erroIndex++] = "Tag <" + pilha.pop() + "> sem fechamento.";
+			}
+
+			if (erroIndex == 0) {
+				saidaErros.setText("✔ Arquivo bem formatado!");
+				OrdenacaoMergeSort<TagContador> ordena = new OrdenacaoMergeSort<>();
+				TagContador[] ordenado = new TagContador[contagemIndex];
+				for (int i = 0; i < contagemIndex; i++)
+					ordenado[i] = contagem[i];
+				ordena.setInfo(ordenado);
+				ordena.ordenar();
+
+				StringBuilder sb = new StringBuilder();
+				for (TagContador tag : ordena.getInfo()) {
+					sb.append("<").append(tag.nome).append(">: ").append(tag.quantidade).append("\n");
+				}
+				saidaTags.setText(sb.toString());
+			} else {
+				StringBuilder sb = new StringBuilder("❌ Arquivo mal formatado:\n");
+				for (int i = 0; i < erroIndex; i++) {
+					sb.append(erros[i]).append("\n");
+				}
+				saidaErros.setText(sb.toString());
+			}
+
+		} catch (IOException e) {
+			saidaErros.setText("Erro ao ler o arquivo: " + e.getMessage());
+		}
+	}
+}

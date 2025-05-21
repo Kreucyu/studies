@@ -1,0 +1,5 @@
+utilizei javaFX para fazer a interface gráfica então, para rodar o programa caso não esteja funcionando, abra um terminal onde esta o Trabalho.jar e execute o comando:
+
+java --module-path "caminho\do\java\fx\lib" --add-modules javafx.controls,javafx.fxml -jar Trabalho.jar
+
+caso você não tenha o javaFX instalado vou deixar um zip do javafx, so selecionar o caminho da pasta lib dele e substituir nas aspas do comando!
