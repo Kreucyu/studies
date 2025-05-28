@@ -1,29 +1,33 @@
 package entities;
 
 public class NoMapa<T> {
-private int chave;
-private T valor;
+	private int chave;
+	private T valor;
 
-public int getChave() {
-	return chave;
-	
-}
+	public int getChave() {
+		return chave;
+	}
 
-public void setChave(int chave) {
-	
-}
+	public void setChave(int chave) {
+		this.chave = chave;
+	}
 
-public T getValor() {
-	return valor;	 
-}
+	public T getValor() {
+		return valor;
+	}
 
-public void setValor(T valor) {
-	
-}
+	public void setValor(T valor) {
+		this.valor = valor;
+	}
 
-public boolean equals(Object o) {
-	return false;
-	
-}
+	public boolean equals(Object o) {
+		if (this == o)return true;
+		if (o == null)return false;
+		if (getClass() != o.getClass())return false;
+		@SuppressWarnings("unchecked")
+		NoMapa<T> other = (NoMapa<T>) o;
+		if (chave != other.chave)return false;
+		return true;
+	}
 
 }

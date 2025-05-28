@@ -1,0 +1,22 @@
+package application;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import entities.Aluno;
+import entities.MapaDispersao;
+
+public class Main {
+
+	@SuppressWarnings("unchecked")
+	public static <T> void main(String[] args) {
+		MapaDispersao<T> map1 = new MapaDispersao<T>(53);
+		LocalDate data = LocalDate.parse("01/01/2000", DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		Aluno obj1 = new Aluno(12000, "Jean", data);
+		map1.inserir(12000, (T) obj1);
+		System.out.println("Aluno inserido");
+		System.out.println("\nAluno encontrado: " + map1.buscar(12000));
+
+	}
+
+}

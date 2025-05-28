@@ -1,0 +1,7 @@
+package entities;
+
+public class MapaDispercao<T> {
+	@SuppressWarnings("unused")
+	private ListaEncadeada<NoMapa<T>> info[];
+	
+}

@@ -1,0 +1,184 @@
+
+package application;
+
+import javafx.fxml.FXML;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import java.io.File;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import model.entities.OrdenacaoMergeSort;
+import model.entities.PilhaLista;
+import model.entities.TagContador;
+
+import java.io.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+public class Controller {
+	
+	//campos utilizados na interface para exibir e receber os dados.
+	
+	@FXML
+	private TextField campoCaminho;
+	@FXML
+	private Button botaoValidar;
+	@FXML
+	private TextArea saidaErros;
+	@FXML
+	private TextArea saidaTags;
+	
+	private Stage stage;
+
+	public void setStage(Stage stage) {
+	    this.stage = stage;
+	}
+	
+	//método utilizado para abrir a janela de seleção do arquivo html.
+	
+	@FXML
+	private void abrirFileChooser() {
+	    FileChooser fileChooser = new FileChooser();
+	    fileChooser.setTitle("Selecionar Arquivo HTML");
+	    fileChooser.getExtensionFilters().add(
+	        new FileChooser.ExtensionFilter("Arquivos HTML (*.html, *.htm)", "*.html", "*.htm")
+	    );
+
+	    File arquivo = fileChooser.showOpenDialog(stage);
+	    if (arquivo != null) {
+	        campoCaminho.setText(arquivo.getAbsolutePath());
+	    }
+	}
+
+	//definição das tags de fechamento único, de acordo com o enunciado.
+
+	private static final String[] SINGLETON_TAGS = { "meta", "base", "br", "col", "command", "embed", "hr", "img",
+			"input", "link", "param", "source", "!doctype" };
+
+	private boolean isSingleton(String tag) {
+		for (String s : SINGLETON_TAGS) {
+			if (s.equalsIgnoreCase(tag))
+				return true;
+		}
+		return false;
+	}
+	
+	//método principal para a leitura e validação do arquivo html.
+
+	@FXML
+	private void validarArquivo() {
+		saidaErros.clear(); 
+		saidaTags.clear();
+		String caminho = campoCaminho.getText();
+		
+		String[] tagsFechadasErradas = new String[100];
+		int tagsErradasIndex = 0;
+
+		//inicialização da pilha.
+		PilhaLista<String> pilha = new PilhaLista<>();
+		//inicialização do contador de tags.
+		TagContador[] contagem = new TagContador[500];
+		int contagemIndex = 0;
+
+		//inicialização vetor de erros.
+		String[] erros = new String[100];
+		int erroIndex = 0;
+
+		try (BufferedReader leitor = new BufferedReader(new FileReader(caminho))) {
+			// Lê o conteúdo completo do arquivo e armazena em uma String para posterior análise.
+			String linha;
+			StringBuilder sbHtml = new StringBuilder();
+			
+			while ((linha = leitor.readLine()) != null) {
+			    sbHtml.append(linha).append("\n");
+			}
+			leitor.close();
+			//separação e organização das tags lidas
+			String html = sbHtml.toString().replaceAll("<!--.*?-->", "").toLowerCase();
+			Pattern padrao = Pattern.compile("<\\s*/?\\s*([a-zA-Z0-9]+)([^<>]*?)>", Pattern.DOTALL);
+			Matcher matcher = padrao.matcher(html);
+			
+			// Itera por todas as tags encontradas no conteúdo HTML
+			while (matcher.find()) {
+			    String tagCompleta = matcher.group(0);
+			    String nomeTag = matcher.group(1).toLowerCase();
+
+			    if (isSingleton(nomeTag)) continue; //se for singleton, pula os outros passos.
+
+			    if (tagCompleta.startsWith("</")) {
+			        String tagFinal = nomeTag;
+			        //caso a pilha esteja vazia e possui uma tag de fechamento encontrada, mensagem de erro.
+			        if (pilha.estaVazia()) {
+			            erros[erroIndex++] = "Tag de fechamento </" + tagFinal + "> sem abertura.";
+			        } else {
+			            String topo = pilha.peek();
+			            if (topo.equals(tagFinal)) {
+			                pilha.pop();
+			            } else {
+			            	//caso não encontre a tag de fechamento esperada, exibe a que foi encontrada.
+			            	erros[erroIndex++] = "Esperava </" + topo + ">, mas encontrou </" + tagFinal + ">.";
+			            	tagsFechadasErradas[tagsErradasIndex++] = topo;
+			            	tagsFechadasErradas[tagsErradasIndex++] = tagFinal;
+			            	pilha.pop();
+			            }
+			        }
+			    } else {
+			        pilha.push(nomeTag);
+			     // Verifica se a tag já foi registrada para incrementar sua contagem
+			        boolean existe = false;
+			        for (int i = 0; i < contagemIndex; i++) {
+			            if (contagem[i].nome.equalsIgnoreCase(nomeTag)) {
+			                contagem[i].quantidade++;
+			                existe = true;
+			                break;
+			            }
+			        }
+			        if (!existe) contagem[contagemIndex++] = new TagContador(nomeTag);
+			    }
+			}
+
+			//loop para verificar se as tags na qual foram encontradas quando houve um erro tem um par.
+			while (!pilha.estaVazia()) {
+			    String tag = pilha.pop();
+			    boolean jaReportada = false;
+			    for (int i = 0; i < tagsErradasIndex; i++) {
+			        if (tagsFechadasErradas[i].equalsIgnoreCase(tag)) {
+			            jaReportada = true;
+			            break;
+			        }
+			    }
+			    //caso não tenha um fechamento, irá exibir um erro.
+			    if (!jaReportada) {
+			        erros[erroIndex++] = "Tag <" + tag + "> sem fechamento.";
+			    }
+			}
+			//caso não for encontrado nenhum erro, será exibida a mensagem de sucesso e, em seguida a inicialização do MergeSort.
+			if (erroIndex == 0) {
+				saidaErros.setText("Arquivo bem formatado!");
+				OrdenacaoMergeSort<TagContador> ordena = new OrdenacaoMergeSort<>();
+				TagContador[] ordenado = new TagContador[contagemIndex];
+				for (int i = 0; i < contagemIndex; i++)
+					ordenado[i] = contagem[i];
+				ordena.setInfo(ordenado);
+				ordena.ordenar();
+				//após ordenação, será exibida as tags na tela da interface.
+				StringBuilder sb = new StringBuilder();
+				for (TagContador tag : ordena.getInfo()) {
+					sb.append("<").append(tag.nome).append(">: ").append(tag.quantidade).append("\n");
+				}
+				saidaTags.setText(sb.toString());
+			} else {
+				//caso tenha erros no vetor, será redirecionado para a mensagem de arquivo mal formatado.
+				StringBuilder sb = new StringBuilder("Arquivo mal formatado:\n");
+				for (int i = 0; i < erroIndex; i++) {
+					sb.append(erros[i]).append("\n"); //exibição dos erros.
+				}
+				saidaErros.setText(sb.toString());
+			}
+
+		} catch (IOException e) { //caputura de erros caso o arquivo não seja lido ou seja inválido.
+			if (caminho == null || caminho.trim().isEmpty()) saidaErros.setText("Erro: Nenhum arquivo foi selecionado!"); //if que captura se nenhum arquivo foi selecionado.
+			else saidaErros.setText("Erro ao ler o arquivo: " + e.getMessage());
+		}
+	}
+}

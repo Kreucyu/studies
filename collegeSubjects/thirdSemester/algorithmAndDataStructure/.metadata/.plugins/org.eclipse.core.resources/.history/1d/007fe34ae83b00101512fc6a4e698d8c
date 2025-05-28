@@ -1,0 +1,78 @@
+package application;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import entities.Aluno;
+import entities.MapaDispersao;
+
+public class Main {
+
+	@SuppressWarnings("unchecked")
+	public static <T> void main(String[] args) {
+		//caso 1:
+		MapaDispersao<T> map1 = new MapaDispersao<T>(53);
+		LocalDate data = LocalDate.parse("01/01/2000", DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		Aluno obj1 = new Aluno(12000, "Jean", data);
+		map1.inserir(12000, (T) obj1);
+		System.out.println("Aluno inserido");
+		if(map1.buscar(12000) != null) System.out.println("\n"+map1.buscar(12000));
+		else System.out.println("\nAluno não foi encontrado");
+		System.out.println("\nCarga Map1: " + map1.calcularFatorCarga());
+		//caso 2:
+		MapaDispersao<T> map2 = new MapaDispersao<T>(53);
+		LocalDate data1 = LocalDate.parse("01/01/2000", DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		LocalDate data2 = LocalDate.parse("20/01/1999", DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		LocalDate data3 = LocalDate.parse("18/02/2001", DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		LocalDate data4 = LocalDate.parse("25/11/1998", DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		Aluno obj2 = new Aluno(12000, "Jean", data1);
+		Aluno obj3 = new Aluno(14000, "Pedro", data2);
+		Aluno obj4 = new Aluno(12500, "Marta", data3);
+		Aluno obj5 = new Aluno(13000, "Lucas", data4);
+		map2.inserir(12000, (T) obj2);
+		System.out.println("\nAluno inserido (12000)");
+		map2.inserir(14000, (T) obj3);
+		System.out.println("\nAluno inserido (14000)");
+		map2.inserir(12500, (T) obj4);
+		System.out.println("\nAluno inserido (12500)");
+		map2.inserir(13000, (T) obj5);
+		System.out.println("\nAluno inserido (13000)");
+		if(map2.buscar(12000) != null) System.out.println("\n"+map2.buscar(12000));
+		else System.out.println("\nAluno 12000 não foi encontrado");
+		if(map2.buscar(14000) != null) System.out.println("\n"+map2.buscar(14000));
+		else System.out.println("\nAluno 14000 não foi encontrado");
+		if(map2.buscar(12500) != null) System.out.println("\n"+map2.buscar(12500));
+		else System.out.println("\nAluno 12500 não foi encontrado");
+		if(map2.buscar(13000) != null) System.out.println("\n"+map2.buscar(13000));
+		else System.out.println("\nAluno 13000 não foi encontrado");
+		System.out.println("\nCarga Map2: " + map2.calcularFatorCarga());
+		//caso 3:
+		MapaDispersao<T> map3 = new MapaDispersao<T>(53);
+		Aluno obj6 = new Aluno(12000, "Jean", data1);
+		Aluno obj7 = new Aluno(14000, "Pedro", data2);
+		Aluno obj8 = new Aluno(14226, "Marta", data3);
+		Aluno obj9 = new Aluno(17180, "Lucas", data4);
+		map3.inserir(12000, (T) obj6);
+		System.out.println("\nAluno inserido (12000)");
+		map3.inserir(14000, (T) obj7);
+		System.out.println("\nAluno inserido (14000)");
+		map3.inserir(14226, (T) obj8);
+		System.out.println("\nAluno inserido (14226)");
+		map3.inserir(17180, (T) obj9);
+		System.out.println("\nAluno inserido (17180)");
+		if(map3.buscar(12000) != null) System.out.println("\n"+map3.buscar(12000));
+		else System.out.println("\nAluno 12000 não foi encontrado");
+		if(map3.buscar(14000) != null) System.out.println("\n"+map3.buscar(14000));
+		else System.out.println("\nAluno 14000 não foi encontrado");
+		if(map3.buscar(14226) != null) System.out.println("\n"+map2.buscar(14226));
+		else System.out.println("\nAluno 14226 não foi encontrado");
+		if(map3.buscar(17180) != null) System.out.println("\n"+map3.buscar(17180));
+		else System.out.println("\nAluno 17180 não foi encontrado");
+		System.out.println("\nCarga Map3: " + map3.calcularFatorCarga());
+		
+		
+		
+
+	}
+
+}
