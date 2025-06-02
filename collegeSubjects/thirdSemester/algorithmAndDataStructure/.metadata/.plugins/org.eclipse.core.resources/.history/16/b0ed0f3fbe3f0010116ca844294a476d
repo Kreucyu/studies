@@ -28,9 +28,10 @@ public class MapaDispersao<T> {
 	
 	public void remover(int chave) {
 		int indice = calcularHash(chave);
+		ListaEncadeada<NoMapa<T>> lista = info[indice];
 		NoMapa<T> no = new NoMapa<T>();
 		no.setChave(chave);
-		info[indice].retirar(no);
+		lista.retirar(no);
 	}
 	
 	public T buscar(int chave) {
@@ -49,7 +50,7 @@ public class MapaDispersao<T> {
 	public double calcularFatorCarga() {
 		double elementos = 0;
 		for(ListaEncadeada<NoMapa<T>> lista : info) {
-			if(lista != null) elementos += lista.obterComprimento();
+			elementos += lista.obterComprimento();
 		}
 		return elementos / info.length;
 	}

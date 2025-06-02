@@ -49,7 +49,7 @@ public class MapaDispersao<T> {
 	public double calcularFatorCarga() {
 		double elementos = 0;
 		for(ListaEncadeada<NoMapa<T>> lista : info) {
-			if(lista != null) elementos += lista.obterComprimento();
+			if(lista.estaVazia()) elementos += lista.obterComprimento();
 		}
 		return elementos / info.length;
 	}

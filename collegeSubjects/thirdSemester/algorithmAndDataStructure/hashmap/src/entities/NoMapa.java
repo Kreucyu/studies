@@ -24,8 +24,7 @@ public class NoMapa<T> {
 		if (this == o)return true;
 		if (o == null)return false;
 		if (getClass() != o.getClass())return false;
-		@SuppressWarnings("unchecked")
-		NoMapa<T> other = (NoMapa<T>) o;
+		NoMapa<?> other = (NoMapa<?>) o;
 		if (chave != other.chave)return false;
 		return true;
 	}
