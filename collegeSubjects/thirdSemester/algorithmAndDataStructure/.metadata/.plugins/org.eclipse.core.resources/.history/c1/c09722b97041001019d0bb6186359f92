@@ -1,0 +1,35 @@
+import entities.BuscaBinaria;
+import entities.BuscaLinear;
+import entities.BuscaLinearVetorOrdenado;
+
+public class TesteBuscas {
+
+    public static void main(String[] args) {
+        // Criar o vetor ordenado de inteiros
+        Integer[] dados = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
+
+        // Caso 1 – Busca Linear
+        BuscaLinear<Integer> buscaLinear = new BuscaLinear<>();
+        buscaLinear.setInfo(dados);
+        int resultado1 = buscaLinear.buscar(20);
+        System.out.println("Caso 1 - Esperado: 2 | Obtido: " + resultado1);
+
+        // Caso 2 – Busca Linear em Vetor Ordenado
+        BuscaLinearVetorOrdenado<Integer> buscaLinearOrdenada = new BuscaLinearVetorOrdenado<>();
+        buscaLinearOrdenada.setInfo(dados);
+        int resultado2 = buscaLinearOrdenada.buscar(40);
+        System.out.println("Caso 2 - Esperado: 4 | Obtido: " + resultado2);
+
+        // Caso 3 – Busca Binária (dado existe)
+        BuscaBinaria<Integer> buscaBinaria1 = new BuscaBinaria<>();
+        buscaBinaria1.setInfo(dados);
+        int resultado3 = buscaBinaria1.buscar(70);
+        System.out.println("Caso 3 - Esperado: 7 | Obtido: " + resultado3);
+
+        // Caso 4 – Busca Binária (dado não existe)
+        BuscaBinaria<Integer> buscaBinaria2 = new BuscaBinaria<>();
+        buscaBinaria2.setInfo(dados);
+        int resultado4 = buscaBinaria2.buscar(75);
+        System.out.println("Caso 4 - Esperado: -1 | Obtido: " + resultado4);
+    }
+}

@@ -1,13 +1,14 @@
 package entities;
 
 public class BuscaLinearVetorOrdenado<T extends Comparable<T>> extends BuscaAbstract {
+	@SuppressWarnings("unchecked")
 	public int buscar(T valor) {
 		Object[] info = getInfo();
 		int n = info.length;
-		for(int i = 0; i < n - 1; i++) {
-			if(info[i] == valor) {
+		for(int i = 0; i < n; i++) {
+			if(info[i].equals(valor)) {
 				return i;
-			} else if (!valor.equals(info[i])) {
+			} else if (valor.compareTo((T) info[i]) < 0) {
 				break;
 			}
 		}

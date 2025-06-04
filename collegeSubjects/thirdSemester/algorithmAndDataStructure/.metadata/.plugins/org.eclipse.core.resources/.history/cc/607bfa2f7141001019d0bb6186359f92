@@ -1,0 +1,13 @@
+package application;
+
+import entities.BuscaBinaria;
+import entities.BuscaLinear;
+import entities.BuscaLinearVetorOrdenado;
+
+public class App {
+	public static <T> void main(String[] args) {
+		BuscaLinear<T> linear = new BuscaLinear<>();
+		BuscaLinearVetorOrdenado<T> linearOrd = new BuscaLinearVetorOrdenado<>();
+		BuscaBinaria<T> binaria = new BuscaBinaria<>();
+	}
+}

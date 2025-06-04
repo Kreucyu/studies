@@ -1,0 +1,23 @@
+package application;
+
+import entities.BuscaAbstract;
+import entities.BuscaLinear;
+import entities.BuscaLinearVetorOrdenado;
+import entities.BuscaBinaria;
+
+public class App {
+    public static void main(String[] args) {
+        Integer[] vetor = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
+
+        testar("Busca Linear (20)", new BuscaLinear<>(), vetor.clone(), 20, 2);
+        testar("Busca Linear Ordenada (40)", new BuscaLinearVetorOrdenado<>(), vetor.clone(), 40, 4);
+        testar("Busca Binária (70)", new BuscaBinaria<>(), vetor.clone(), 70, 7);
+        testar("Busca Binária (75 - inexistente)", new BuscaBinaria<>(), vetor.clone(), 75, -1);
+    }
+
+    private static void testar(String nome, BuscaAbstract<Integer> busca, Integer[] vetor, int valor, int esperado) {
+        busca.setInfo(vetor);
+        int resultado = busca.buscar(valor);
+        System.out.printf("%s -> Esperado: %d | Obtido: %d%n", nome, esperado, resultado);
+    }
+}

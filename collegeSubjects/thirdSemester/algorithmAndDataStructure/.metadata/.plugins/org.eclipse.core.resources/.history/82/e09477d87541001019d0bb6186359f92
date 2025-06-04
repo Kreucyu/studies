@@ -1,0 +1,12 @@
+package model;
+
+public class ArvoreBinaria<T> extends ArvoreBinariaAbstract<T> {
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public NoArvoreBinaria buscar(Object info) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+}

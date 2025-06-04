@@ -1,0 +1,9 @@
+package application;
+
+import entities.BuscaLinear;
+
+public class App {
+	public static <T> void main(String[] args) {
+		BuscaLinear<T> linear = new BuscaLinear<>();
+	}
+}

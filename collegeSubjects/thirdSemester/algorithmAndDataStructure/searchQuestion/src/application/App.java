@@ -1,0 +1,22 @@
+package application;
+
+import entities.BuscaBinaria;
+import entities.BuscaLinear;
+import entities.BuscaLinearVetorOrdenado;
+
+public class App {
+	public static void main(String[] args) {
+		BuscaLinear<Integer> linear = new BuscaLinear<>();
+		BuscaLinearVetorOrdenado<Integer> linearOrd = new BuscaLinearVetorOrdenado<>();
+		BuscaBinaria<Integer> binaria = new BuscaBinaria<>();
+		Integer[] vetor = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
+		linear.setInfo(vetor);
+		linearOrd.setInfo(vetor);
+		binaria.setInfo(vetor);
+		System.out.println("caso1: " + linear.buscar(20));
+		System.out.println("caso2: " + linearOrd.buscar(40));
+		System.out.println("caso3: " + binaria.buscar(70));
+		System.out.println("caso4: " + binaria.buscar(75));
+		
+	}
+}
