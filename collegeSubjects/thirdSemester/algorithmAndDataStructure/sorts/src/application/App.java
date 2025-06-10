@@ -15,7 +15,7 @@ public class App {
         testar("Bolha", new OrdenacaoBolha<>(), vetor.clone());
         testar("Bolha Otimizada", new OrdenacaoBolhaOtimizada<>(), vetor.clone());
         testar("QuickSort", new OrdenacaoQuickSort<>(), vetor.clone());
-        
+        testar("MergeSort", new OrdenacaoMergeSort<>(), vetor.clone());
     }
 
     private static void testar(String nome, OrdenacaoAbstract<Integer> ordenacao, Integer[] vetor) {
