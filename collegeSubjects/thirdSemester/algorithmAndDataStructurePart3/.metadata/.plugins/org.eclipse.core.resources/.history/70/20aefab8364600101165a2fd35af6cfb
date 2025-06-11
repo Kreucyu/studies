@@ -1,0 +1,14 @@
+package application;
+
+public class App {
+
+	public static void main(String[] args) {
+		
+
+	}
+	
+	public static void testar(int vetor[], new BuscaAbstract<Integer> busca, String b) {
+		
+	}
+
+}

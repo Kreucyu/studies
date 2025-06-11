@@ -1,0 +1,36 @@
+package application;
+
+import entities.BuscaLinear;
+
+public class App {
+
+	public static void main(String[] args) {
+		Integer vetor[] = { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
+		//CASO 1:
+		testar(vetor, new BuscaLinear<>(), "Busca Linear", 20);
+		//CASO 2:
+		
+		//CASO 3:
+		
+		//CASO 4:
+	}
+	
+	public static void testar(Integer vetor[], BuscaLinear<Integer> busca, String b, int valor) {
+		busca.setInfo(vetor);
+		System.out.print("Vetor: { ");
+		for (int n : vetor) {
+			System.out.print(n + " ");
+		}
+		System.out.print("}\n");
+		System.out.println("Valor a ser buscado: " + valor);
+		System.out.println(b + ": ");
+		int n = busca.buscar(valor);
+		if(n != -1) {
+			System.out.println("Valor encontrado, posição: " + n);
+		} else {
+			System.out.println("Valor não encontrado");
+		}
+		
+	}
+
+}

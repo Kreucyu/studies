@@ -1,0 +1,8 @@
+package entities;
+
+public class NoMapa<T> {
+	private int chave;
+	private T valor;
+	
+	
+}

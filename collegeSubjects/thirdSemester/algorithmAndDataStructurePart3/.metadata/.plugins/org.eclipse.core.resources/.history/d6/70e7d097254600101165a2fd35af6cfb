@@ -1,0 +1,19 @@
+package entities;
+
+public class OrdenacaoMergeSort<T extends Comparable<T>> extends OrdenacaoAbstract<T> {
+
+	@Override
+	public void ordenar() {
+		int n = getInfo().length - 1;
+		mergeSort(0, n);
+		
+	}
+	
+	private void mergeSort(int inicio, int fim) {
+		
+	}
+	
+	private void merge(int inicio, int fim, int meio) {
+		
+	}
+}

@@ -1,0 +1,7 @@
+package entities;
+
+public class ArvoreBinariaBusca<T extends Comparable<T>> {
+	public void inserir(T info) {
+		
+	}
+}

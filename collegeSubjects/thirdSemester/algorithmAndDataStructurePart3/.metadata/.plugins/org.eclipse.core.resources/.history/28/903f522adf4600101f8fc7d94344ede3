@@ -1,0 +1,42 @@
+package entities;
+
+public class MapaDispersao<T> {
+	private ListaEncadeada<NoMapa<T>> info[];
+
+	public ListaEncadeada<NoMapa<T>>[] getInfo() {
+		return info;
+	}
+
+	public void setInfo(ListaEncadeada<NoMapa<T>> info[]) {
+		this.info = info;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public MapaDispersao(int tamanho) {
+		info = new ListaEncadeada[tamanho];
+	}
+	
+	private int calcularHash(int chave) {
+		return 0;
+	}
+	
+	public void inserir(int chave, T dado) {
+		
+	}
+	
+	public void remover(int chave) {
+		
+	}
+	
+	public T buscar(int chave) {
+		return null;
+	}
+	
+	public double calcularFatorCarga() {
+		return 0.0;
+	}
+	
+	public int calcularQtdeObjetos() {
+		return 0;
+	}
+}

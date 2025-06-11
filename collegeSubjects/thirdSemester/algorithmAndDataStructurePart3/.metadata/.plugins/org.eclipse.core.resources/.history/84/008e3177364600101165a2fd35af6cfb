@@ -1,0 +1,13 @@
+package entities;
+
+public class BuscaLinear<T> extends BuscaAbstract {
+	public int buscar(T valor) {
+		for(int i = 0; i <= getInfo().length; i++) {
+			if(getInfo()[i] == valor) {
+				return (int) getInfo()[i];
+			}
+		}
+		return -1;
+		
+	}
+}

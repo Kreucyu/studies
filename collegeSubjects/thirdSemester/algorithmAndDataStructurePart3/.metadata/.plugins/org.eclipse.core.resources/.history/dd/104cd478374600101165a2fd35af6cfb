@@ -1,0 +1,23 @@
+package application;
+
+import entities.BuscaAbstract;
+import entities.BuscaLinear;
+
+public class App {
+
+	public static void main(String[] args) {
+		int vetor[] = { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
+		//CASO 1:
+		testar(vetor, new BuscaLinear<>(), "linear", 20);
+		//CASO 2:
+		
+		//CASO 3:
+		
+		//CASO 4:
+	}
+	
+	public static void testar(int vetor[], BuscaAbstract busca, String b, int valor) {
+		System.out.println("Valor a ser buscado: " + valor);
+	}
+
+}

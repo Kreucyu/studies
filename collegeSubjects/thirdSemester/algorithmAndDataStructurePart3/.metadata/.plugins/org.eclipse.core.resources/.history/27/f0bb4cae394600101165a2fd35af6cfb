@@ -1,0 +1,8 @@
+package entities;
+
+public class BuscaLinearVetorOrdenado<T extends Comparable<T>> extends BuscaAbstract {
+	public int buscar(T valor) {
+		int n = getInfo().length;
+		return -1;
+	}
+}

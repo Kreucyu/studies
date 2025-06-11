@@ -1,0 +1,7 @@
+package entities;
+
+public class BuscaLinear<T> extends BuscaAbstract {
+	public int buscar(T valor) {
+		
+	}
+}

@@ -1,0 +1,15 @@
+package entities;
+
+public class ArvoreBinaria<T> extends ArvoreBinariaAbstract<T> {
+	
+	public void setRaiz(NoArvoreBinaria<T> raiz) {
+		this.setRaiz(raiz);
+	}
+
+	@Override
+	public NoArvoreBinaria<T> buscar(T info) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

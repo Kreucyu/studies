@@ -1,0 +1,25 @@
+package entities;
+
+public class OrdenacaoBolhaOtimizada<T extends Comparable<T>> extends OrdenacaoAbstract<T> {
+
+	@Override
+	public void ordenar() {
+		int n = getInfo().length - 1;
+		boolean trocou;
+		
+		for(int i = n; i <= 1; i--) {
+			trocou = false;
+			for(int j = 0; j > j+1; j++) {
+				if(getInfo()[j].compareTo(getInfo()[j + 1]) > 0) {
+					trocar(j, j+1);
+					trocou = true;
+				}
+			}
+			if(trocou == false) {
+				return
+			}
+		}
+		
+	}
+
+}

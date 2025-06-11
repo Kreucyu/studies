@@ -1,0 +1,22 @@
+package entities;
+
+public class BuscaBinariaRecursiva<T extends Comparable<T>> extends BuscaAbstract{
+	    public int buscar(T valor) {
+	        int n = getInfo().length - 1;
+	        return buscar(valor, 0, n, getInfo());
+	    }
+
+	    @SuppressWarnings("unchecked")
+	    private int buscar(T valor, int inicio, int fim, Object[] info) {
+	        if (inicio > fim) return -1;
+	        int meio = (inicio + fim) / 2;
+	        T meioValor = (T) info[meio];
+	        if (valor.compareTo(meioValor) < 0) {
+	            return buscar(valor, inicio, meio - 1, info); 
+	        } else if (valor.compareTo(meioValor) > 0) {
+	            return buscar(valor, meio + 1, fim, info); 
+	        } else {
+	            return meio;
+	        }
+	    }
+	}

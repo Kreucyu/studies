@@ -1,0 +1,10 @@
+INDEX VERSION 1.131+A:\Code\studies\collegeSubjects\thirdSemester\algorithmAndDataStructurePart3\.metadata\.plugins\org.eclipse.jdt.core
+1865797976.index
+489387540.index
+4184894391.index
+212340721.index
+673046562.index
+1196294.index
+3483230729.index
+3336480904.index
+3496203400.index

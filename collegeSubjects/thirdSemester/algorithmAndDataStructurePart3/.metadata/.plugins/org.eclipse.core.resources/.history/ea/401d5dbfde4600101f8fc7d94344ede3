@@ -1,0 +1,17 @@
+package entities;
+
+public class MapaDispersao<T> {
+	private ListaEncadeada<NoMapa<T>> info[];
+
+	public ListaEncadeada<NoMapa<T>>[] getInfo() {
+		return info;
+	}
+
+	public void setInfo(ListaEncadeada<NoMapa<T>> info[]) {
+		this.info = info;
+	}
+	
+	public MapaDispersao(int tamanho) {
+		
+	}
+}

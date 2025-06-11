@@ -1,0 +1,100 @@
+package entities;
+
+public class ArvoreBinariaBusca<T extends Comparable<T>> extends ArvoreBinariaAbstract<T> {
+	public void inserir(T info) {
+		NoArvoreBinaria<T> no = new NoArvoreBinaria<>(info);
+		if(estaVazia() == true) {
+			super.setRaiz(no);
+		} else {
+			NoArvoreBinaria<T> p = getRaiz();
+			while(true) {
+				NoArvoreBinaria<T> pai = p;
+				if(info.compareTo(p.getInfo()) < 0) {
+					p = pai.getEsquerda();
+					if(p == null) {
+						pai.setEsquerda(no);
+						return;
+					}
+					} else {
+						p = pai.getDireita();
+						if(p == null) {
+							pai.setDireita(no);
+							return;
+						}
+					}
+				}
+			}
+		}
+	
+	
+	public NoArvoreBinaria<T> buscar(T info) {
+		NoArvoreBinaria<T> p = getRaiz();
+		while(p != null) {
+			if(info.compareTo(p.getInfo()) == 0) {
+				return p;
+			} else if(info.compareTo(p.getInfo()) < 0) {
+				p = p.getEsquerda();
+			} else {
+				p = p.getDireita();
+			}
+		}
+		return null;
+	}
+	
+	public boolean isDegenerada() {
+		return isDegenerada(getRaiz());
+	}
+	
+	private boolean isDegenerada(NoArvoreBinaria<T> no) {
+		if(no == null) {
+			return true; //caso uma arvore vazia nao seja degenerada trocar para false
+		}
+		
+		if(no.getEsquerda() != null && no.getDireita() != null) {
+			return false;
+		}
+		
+		if(no.getEsquerda() != null) {
+			return isDegenerada(no.getEsquerda());
+		} else {
+			return isDegenerada(no.getDireita());
+		}
+		
+	}
+	
+	/* metodos recursivos
+	 * 
+	 *     public void inserir(T info) {
+        setRaiz(inserir(getRaiz(), info));
+    }
+
+    private NoArvoreBinaria<T> inserir(NoArvoreBinaria<T> no, T info) {
+        if (no == null) {
+            return new NoArvoreBinaria<>(info);
+        }
+        if (info.compareTo(no.getInfo()) < 0) {
+            no.setEsquerda(inserir(no.getEsquerda(), info));
+        } else {
+            no.setDireita(inserir(no.getDireita(), info));
+        }
+        return no;
+    }
+
+    @Override
+    public NoArvoreBinaria<T> buscar(T info) {
+        return buscar(getRaiz(), info);
+    }
+
+    private NoArvoreBinaria<T> buscar(NoArvoreBinaria<T> no, T info) {
+        if (no == null || no.getInfo().equals(info)) {
+            return no;
+        }
+        if (info.compareTo(no.getInfo()) < 0) {
+            return buscar(no.getEsquerda(), info);
+        } else {
+            return buscar(no.getDireita(), info);
+        }
+    }
+	 */
+	
+}

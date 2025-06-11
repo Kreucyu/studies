@@ -1,0 +1,107 @@
+package application;
+
+import entities.ArvoreBinariaBusca;
+import entities.NoArvoreBinaria;
+
+public class test {
+    public static void main(String[] args) {
+        System.out.println("Teste 1 (vazia): " + arvoreVazia().isDegenerada()); // true
+        System.out.println("Teste 2 (raiz): " + raizSomente().isDegenerada());   // true
+        System.out.println("Teste 3 (linha esquerda): " + linhaEsquerda().isDegenerada()); // true
+        System.out.println("Teste 4 (linha direita): " + linhaDireita().isDegenerada());   // true
+        System.out.println("Teste 5 (alternando lados): " + alternando().isDegenerada());  // true
+        System.out.println("Teste 6 (raiz com dois filhos): " + raizDoisFilhos().isDegenerada()); // false
+        System.out.println("Teste 7 (filho com dois filhos): " + filhoDoisFilhos().isDegenerada()); // false
+        System.out.println("Teste 8 (árvore cheia): " + arvoreCheia().isDegenerada()); // false
+    }
+
+    public static ArvoreBinariaBusca<Integer> arvoreVazia() {
+        return new ArvoreBinariaBusca<>();
+    }
+
+    public static ArvoreBinariaBusca<Integer> raizSomente() {
+        ArvoreBinariaBusca<Integer> a = new ArvoreBinariaBusca<>();
+        a.setRaiz(new NoArvoreBinaria<>(1));
+        return a;
+    }
+
+    public static ArvoreBinariaBusca<Integer> linhaEsquerda() {
+        NoArvoreBinaria<Integer> n1 = new NoArvoreBinaria<>(1);
+        NoArvoreBinaria<Integer> n2 = new NoArvoreBinaria<>(2);
+        NoArvoreBinaria<Integer> n3 = new NoArvoreBinaria<>(3);
+        NoArvoreBinaria<Integer> n4 = new NoArvoreBinaria<>(4);
+        n1.setEsquerda(n2);
+        n2.setEsquerda(n3);
+        n3.setEsquerda(n4);
+        ArvoreBinariaBusca<Integer> a = new ArvoreBinariaBusca<>();
+        a.setRaiz(n1);
+        return a;
+    }
+
+    public static ArvoreBinariaBusca<Integer> linhaDireita() {
+        NoArvoreBinaria<Integer> n1 = new NoArvoreBinaria<>(1);
+        NoArvoreBinaria<Integer> n2 = new NoArvoreBinaria<>(2);
+        NoArvoreBinaria<Integer> n3 = new NoArvoreBinaria<>(3);
+        NoArvoreBinaria<Integer> n4 = new NoArvoreBinaria<>(4);
+        n1.setDireita(n2);
+        n2.setDireita(n3);
+        n3.setDireita(n4);
+        ArvoreBinariaBusca<Integer> a = new ArvoreBinariaBusca<>();
+        a.setRaiz(n1);
+        return a;
+    }
+
+    public static ArvoreBinariaBusca<Integer> alternando() {
+        NoArvoreBinaria<Integer> n1 = new NoArvoreBinaria<>(1);
+        NoArvoreBinaria<Integer> n2 = new NoArvoreBinaria<>(2);
+        NoArvoreBinaria<Integer> n3 = new NoArvoreBinaria<>(3);
+        NoArvoreBinaria<Integer> n4 = new NoArvoreBinaria<>(4);
+        n1.setDireita(n2);
+        n2.setEsquerda(n3);
+        n3.setDireita(n4);
+        ArvoreBinariaBusca<Integer> a = new ArvoreBinariaBusca<>();
+        a.setRaiz(n1);
+        return a;
+    }
+
+    public static ArvoreBinariaBusca<Integer> raizDoisFilhos() {
+        NoArvoreBinaria<Integer> n1 = new NoArvoreBinaria<>(1);
+        n1.setEsquerda(new NoArvoreBinaria<>(2));
+        n1.setDireita(new NoArvoreBinaria<>(3));
+        ArvoreBinariaBusca<Integer> a = new ArvoreBinariaBusca<>();
+        a.setRaiz(n1);
+        return a;
+    }
+
+    public static ArvoreBinariaBusca<Integer> filhoDoisFilhos() {
+        NoArvoreBinaria<Integer> n1 = new NoArvoreBinaria<>(1);
+        NoArvoreBinaria<Integer> n2 = new NoArvoreBinaria<>(2);
+        NoArvoreBinaria<Integer> n3 = new NoArvoreBinaria<>(3);
+        NoArvoreBinaria<Integer> n4 = new NoArvoreBinaria<>(4);
+        n1.setDireita(n2);
+        n2.setEsquerda(n3);
+        n2.setDireita(n4);
+        ArvoreBinariaBusca<Integer> a = new ArvoreBinariaBusca<>();
+        a.setRaiz(n1);
+        return a;
+    }
+
+    public static ArvoreBinariaBusca<Integer> arvoreCheia() {
+        NoArvoreBinaria<Integer> n1 = new NoArvoreBinaria<>(1);
+        NoArvoreBinaria<Integer> n2 = new NoArvoreBinaria<>(2);
+        NoArvoreBinaria<Integer> n3 = new NoArvoreBinaria<>(3);
+        NoArvoreBinaria<Integer> n4 = new NoArvoreBinaria<>(4);
+        NoArvoreBinaria<Integer> n5 = new NoArvoreBinaria<>(5);
+        NoArvoreBinaria<Integer> n6 = new NoArvoreBinaria<>(6);
+        NoArvoreBinaria<Integer> n7 = new NoArvoreBinaria<>(7);
+        n1.setEsquerda(n2);
+        n1.setDireita(n3);
+        n2.setEsquerda(n4);
+        n2.setDireita(n5);
+        n3.setEsquerda(n6);
+        n3.setDireita(n7);
+        ArvoreBinariaBusca<Integer> a = new ArvoreBinariaBusca<>();
+        a.setRaiz(n1);
+        return a;
+    }
+}

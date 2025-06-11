@@ -1,0 +1,5 @@
+package entities;
+
+public class MapaDispersao<T> {
+	private ListaEncadeada<NoMapa<T>> info[];
+}

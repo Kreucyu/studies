@@ -1,0 +1,23 @@
+
+package application;
+
+import entities.OrdenacaoAbstract;
+import entities.OrdenacaoBolha;
+
+public class App {
+	public static <T> void main(String[] args) {
+		OrdenacaoAbstract<Integer> bubble = new OrdenacaoBolha<>();
+		Integer info[] = {70, 2, 88, 15, 90, 30};
+		bubble.setInfo(info);
+		bubble.ordenar();
+		System.out.print("Lista bubble: { ");
+		int i = 0;
+		int n = bubble.getInfo().length - 1
+		while(i <= n) {
+			System.out.print(bubble.getInfo()[i] + ", ");
+			if(i != )
+			i++;
+		}
+		System.out.print("}");
+	}
+}

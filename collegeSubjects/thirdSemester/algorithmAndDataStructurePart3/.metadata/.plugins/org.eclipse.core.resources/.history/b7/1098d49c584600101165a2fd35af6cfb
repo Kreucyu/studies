@@ -1,0 +1,12 @@
+package application;
+
+import entities.ArvoreBinaria;
+import entities.NoArvoreBinaria;
+
+public class App {
+	public static void main(String[] args) {
+		ArvoreBinaria<Integer> binaryT = new ArvoreBinaria<>();
+		NoArvoreBinaria<Integer> no1 = new NoArvoreBinaria<>(1);
+		binaryT.setRaiz(no1);
+	}
+}

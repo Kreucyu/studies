@@ -1,0 +1,59 @@
+package application;
+
+import entities.BuscaBinaria;
+import entities.BuscaLinear;
+import entities.BuscaLinearVetorOrdenado;
+
+public class App {
+
+	public static void main(String[] args) {
+		Integer vetor[] = { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
+		System.out.print("Vetor: { ");
+		for (int n : vetor) {
+			System.out.print(n + " ");
+		}
+		System.out.print("}\n");
+		//CASO 1:
+		System.out.println("\nBusca Linear:");
+		BuscaLinear<Integer> BuscaLinear = new BuscaLinear<>();
+		BuscaLinear.setInfo(vetor);
+		System.out.println("Valor a ser buscado: " + 20);
+		int n = BuscaLinear.buscar(20);
+		if(n != -1) {
+			System.out.println("Valor encontrado, posição: " + n);
+		} else {
+			System.out.println("Valor não encontrado");
+		}
+		//CASO 2:
+		System.out.println("\nBusca Linear Vetor Ordenado:");
+		BuscaLinearVetorOrdenado<Integer> BuscaLinearVetorOrdenado = new BuscaLinearVetorOrdenado<>();
+		BuscaLinearVetorOrdenado.setInfo(vetor);
+		System.out.println("Valor a ser buscado: " + 40);
+		int n1 = BuscaLinearVetorOrdenado.buscar(40);
+		if(n1 != -1) {
+			System.out.println("Valor encontrado, posição: " + n1);
+		} else {
+			System.out.println("Valor não encontrado");
+		}
+		//CASO 3:
+		System.out.println("\nBusca Binária:");
+		BuscaBinaria<Integer> BuscaBinaria = new BuscaBinaria<>();
+		BuscaBinaria.setInfo(vetor);
+		System.out.println("Valor a ser buscado: " + 70);
+		int n2 = BuscaBinaria.buscar(70);
+		if(n2 != -1) {
+			System.out.println("Valor encontrado, posição: " + n2);
+		} else {
+			System.out.println("Valor não encontrado");
+		}
+		//CASO 4:
+		System.out.println("\nValor a ser buscado: " + 75);
+		int n3 = BuscaBinaria.buscar(75);
+		if(n3 != -1) {
+			System.out.println("Valor encontrado, posição: " + n3);
+		} else {
+			System.out.println("Valor não encontrado");
+		}
+	}
+
+}

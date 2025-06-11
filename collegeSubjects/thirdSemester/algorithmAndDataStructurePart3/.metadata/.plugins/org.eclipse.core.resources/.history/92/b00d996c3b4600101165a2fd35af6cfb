@@ -1,0 +1,10 @@
+package entities;
+
+public class BuscaBinaria<T extends Comparable<T>> extends BuscaAbstract {
+	public int buscar(T valor) {
+		int n = getInfo().length - 1;
+		int inicio = 0;
+		int fim = n;
+		return -1;
+	}
+}

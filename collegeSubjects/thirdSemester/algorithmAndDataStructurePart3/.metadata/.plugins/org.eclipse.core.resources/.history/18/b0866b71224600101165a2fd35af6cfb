@@ -1,0 +1,40 @@
+
+package application;
+
+import entities.OrdenacaoAbstract;
+import entities.OrdenacaoBolha;
+import entities.OrdenacaoBolhaOtimizada;
+
+public class App {
+	public static <T> void main(String[] args) {
+		Integer info[] = {70, 2, 88, 15, 90, 30};
+		
+		//CASO 1:
+		teste(info, new OrdenacaoBolha<>(), "Bubble");
+		
+
+		//CASO 2:
+		teste(info, new OrdenacaoBolhaOtimizada<>(), "BubbleOtimizado");
+		
+		
+		//CASO 3:
+		
+	}
+	
+	private static void teste(Integer vetor[], OrdenacaoAbstract<Integer> ordenador, String algoritmo) {
+		ordenador.setInfo(vetor);
+		ordenador.ordenar();
+		System.out.print("Lista " + algoritmo + ": { ");
+		int i = 0;
+		int n = ordenador.getInfo().length - 1;
+		while(i <= n) {
+			System.out.print(ordenador.getInfo()[i]);
+			if(i != n) {
+				System.out.print(", ");
+			}
+			i++;
+		}
+		System.out.print(" }");
+		System.out.println();
+	}
+}

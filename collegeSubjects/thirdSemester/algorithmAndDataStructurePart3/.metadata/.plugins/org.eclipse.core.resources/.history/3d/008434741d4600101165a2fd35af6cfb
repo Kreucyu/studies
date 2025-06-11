@@ -1,0 +1,25 @@
+package entities;
+
+public class OrdenacaoBolha<T extends Comparable<T>> extends OrdenacaoAbstract<T> {
+
+	@Override
+	public void ordenar() {
+		T[] info = getInfo();
+		int n = info.length;
+		for(int i = n-1; i < 1; i--) {
+			for(int j = 0; j < i-1; j++) {
+				if(info[j].compareTo(info[j+1]) > 0) {
+					trocar(info,j,j+1);
+				}
+			}
+		}
+		
+	}
+	
+	private void trocar(int[] info, int pos1, int pos2) {
+		int temp = info[pos1];
+		info[pos1] = info[pos2];
+		info[pos2] = temp;
+	}
+	
+}

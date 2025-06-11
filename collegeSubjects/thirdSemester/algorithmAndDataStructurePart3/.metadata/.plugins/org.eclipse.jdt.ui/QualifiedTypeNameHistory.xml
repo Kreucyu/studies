@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="entities.OrdenacaoBolha"/>
+    <fullyQualifiedTypeName name="entities.OrdenacaoAbstract"/>
+    <fullyQualifiedTypeName name="entities.OrdenacaoBolhaOtimizada"/>
+    <fullyQualifiedTypeName name="entities.OrdenacaoQuickSort"/>
+    <fullyQualifiedTypeName name="entities.OrdenacaoMergeSort"/>
+    <fullyQualifiedTypeName name="entities.BuscaLinear"/>
+    <fullyQualifiedTypeName name="entities.BuscaAbstract"/>
+    <fullyQualifiedTypeName name="entities.BuscaLinearVetorOrdenado"/>
+    <fullyQualifiedTypeName name="entities.BuscaBinaria"/>
+    <fullyQualifiedTypeName name="entities.BuscaBinariaRecursiva"/>
+    <fullyQualifiedTypeName name="entities.ArvoreBinaria"/>
+    <fullyQualifiedTypeName name="entities.NoArvoreBinaria"/>
+    <fullyQualifiedTypeName name="entities.ArvoreBinariaBusca"/>
+</qualifiedTypeNameHistroy>

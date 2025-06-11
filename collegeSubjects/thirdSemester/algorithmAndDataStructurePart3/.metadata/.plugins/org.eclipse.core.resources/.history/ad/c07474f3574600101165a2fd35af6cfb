@@ -1,0 +1,9 @@
+package application;
+
+import entities.ArvoreBinaria;
+
+public class App {
+	public static void main(String[] args) {
+		ArvoreBinaria<Integer> binaryT = new ArvoreBinaria<>();
+	}
+}
