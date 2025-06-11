@@ -2,11 +2,28 @@ package entities;
 
 public class OrdenacaoMergeSort<T extends Comparable<T>> extends OrdenacaoAbstract<T> {
 
+    public OrdenacaoMergeSort(Class<T> type) { // Adicione este construtor
+        super(type);
+    }
+
 	@Override
 	public void ordenar() {
-		int n = getInfo().length - 1;
-		mergeSort(0, n);
-		
+		if (getInfo() == null || getInfo().length <= 1) {
+			return;
+		}
+		trocas = 0; // Merge Sort não realiza trocas diretas como Bubble ou Quick, mas move elementos
+		comparacoes = 0;
+		mergeSort(0, getInfo().length - 1);
+	}
+
+	@Override
+	public void ordenarSegmento(int inicio, int fim) {
+		if (getInfo() == null || inicio < 0 || fim >= getInfo().length || inicio >= fim) {
+			return;
+		}
+		trocas = 0; // Reinicia o contador de trocas para o segmento
+		comparacoes = 0; // Reinicia o contador de comparações para o segmento
+		mergeSort(inicio, fim);
 	}
 	
 	private void mergeSort(int inicio, int fim) {
@@ -22,13 +39,13 @@ public class OrdenacaoMergeSort<T extends Comparable<T>> extends OrdenacaoAbstra
 	private void merge(int inicio, int fim, int meio) {
 		int tamEsquerda = meio - inicio + 1;
 		T[] esquerda = (T[]) new Comparable[tamEsquerda];
-		for(int i = 0; i <= tamEsquerda-1; i++) {
+		for(int i = 0; i <= tamEsquerda - 1; i++) {
 			esquerda[i] = (T) getInfo()[inicio+i];
 		}
 		
 		int tamDireita = fim - meio;
 		T[] direita = (T[]) new Comparable[tamDireita];
-		for(int i = 0; i <= tamDireita-1; i++) {
+		for(int i = 0; i <= tamDireita - 1; i++) {
 			direita[i] = (T) getInfo()[meio+1+i];
 		}
 		
@@ -36,6 +53,7 @@ public class OrdenacaoMergeSort<T extends Comparable<T>> extends OrdenacaoAbstra
 		int cDir = 0;
 		for(int i = inicio; i <= fim; i++) {
 			if(cEsq < tamEsquerda && cDir < tamDireita) {
+				comparacoes++; // Conta a comparação entre elementos da esquerda e direita
 				if(esquerda[cEsq].compareTo(direita[cDir]) < 0) {
 					getInfo()[i] = esquerda[cEsq];
 					cEsq = cEsq + 1;
@@ -43,19 +61,21 @@ public class OrdenacaoMergeSort<T extends Comparable<T>> extends OrdenacaoAbstra
 					getInfo()[i] = direita[cDir];
 					cDir = cDir + 1;
 				}
+				// Cada atribuição a getInfo()[i] pode ser considerada uma "movimentação" ou "troca lógica"
+				// mas não é uma troca de posições diretas como no Bubble Sort.
+				// Para fins de contagem, manteremos as trocas em 0, ou podemos adicionar um contador de movimentos.
 			} else break;
 		}
-		int i = inicio + cEsq + cDir;
+		// Os loops abaixo também movem elementos, então podemos considerá-los como "movimentos"
+		// mas não incrementam 'trocas' no sentido tradicional.
 		while(cEsq < tamEsquerda) {
-			getInfo()[i] = esquerda[cEsq];
+			getInfo()[inicio + cEsq + cDir] = esquerda[cEsq];
 			cEsq = cEsq + 1;
-			i = i+1;
 		}
 		
 		while(cDir < tamDireita) {
-			getInfo()[i] = direita[cDir];
+			getInfo()[inicio + cEsq + cDir] = direita[cDir];
 			cDir = cDir + 1;
-			i = i+1;
 		}
 	}
 }

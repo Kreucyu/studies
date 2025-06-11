@@ -1,0 +1,78 @@
+package application;
+
+import entities.OrdenacaoQuickSort;
+
+// Certifique-se de que todas as suas classes estão no pacote 'entities'
+
+public class Main {
+    public static void main(String[] args) {
+        Integer[] arr = {5, 2, 8, 1, 9, 4, 7, 3, 6};
+        String[] stringArr = {"banana", "apple", "kiwi", "orange", "grape"};
+
+        // Exemplo com QuickSort
+        OrdenacaoQuickSort<Integer> quickSort = new OrdenacaoQuickSort<>();
+        quickSort.setInfo(arr.clone()); // Usa clone para não alterar o array original
+        quickSort.ordenar();
+        System.out.println("QuickSort (crescente): " + java.util.Arrays.toString(quickSort.getInfo()));
+        System.out.println("Trocas QuickSort: " + quickSort.getTrocas());
+        System.out.println("Comparações QuickSort: " + quickSort.getComparacoes());
+        System.out.println("Está ordenado? " + quickSort.estaOrdenado());
+
+        quickSort.setInfo(arr.clone());
+        quickSort.ordenarDecrescente();
+        System.out.println("QuickSort (decrescente): " + java.util.Arrays.toString(quickSort.getInfo()));
+
+        quickSort.setInfo(arr.clone());
+        quickSort.ordenarSegmento(1, 4); // Ordena o segmento de índice 1 a 4
+        System.out.println("QuickSort (segmento 1-4): " + java.util.Arrays.toString(quickSort.getInfo()));
+
+
+        // Exemplo com MergeSort
+        OrdenacaoMergeSort<Integer> mergeSort = new OrdenacaoMergeSort<>();
+        mergeSort.setInfo(arr.clone());
+        mergeSort.ordenar();
+        System.out.println("\nMergeSort (crescente): " + java.util.Arrays.toString(mergeSort.getInfo()));
+        System.out.println("Trocas MergeSort: " + mergeSort.getTrocas());
+        System.out.println("Comparações MergeSort: " + mergeSort.getComparacoes());
+
+        // Exemplo com Bubble Sort
+        OrdenacaoBolha<Integer> bubbleSort = new OrdenacaoBolha<>();
+        bubbleSort.setInfo(arr.clone());
+        bubbleSort.ordenar();
+        System.out.println("\nBubble Sort (crescente): " + java.util.Arrays.toString(bubbleSort.getInfo()));
+        System.out.println("Trocas Bubble Sort: " + bubbleSort.getTrocas());
+        System.out.println("Comparações Bubble Sort: " + bubbleSort.getComparacoes());
+
+
+        // Exemplo de Ordenar por Ocorrência
+        Integer[] arrOcorrencia = {1, 3, 2, 1, 3, 3, 2, 1, 4};
+        OrdenacaoQuickSort<Integer> quickOcorrencia = new OrdenacaoQuickSort<>(); // Ou qualquer outro, o método é na Abstract
+        quickOcorrencia.setInfo(arrOcorrencia.clone());
+        quickOcorrencia.ordenarPorOcorrencia();
+        System.out.println("\nOrdenado por Ocorrência: " + java.util.Arrays.toString(quickOcorrencia.getInfo()));
+
+        // Exemplo de Ordenar String por Tamanho
+        OrdenacaoQuickSort<String> quickString = new OrdenacaoQuickSort<>();
+        quickString.setInfo(stringArr.clone());
+        quickString.ordenarStringPorTamanho();
+        System.out.println("String por Tamanho: " + java.util.Arrays.toString(quickString.getInfo()));
+
+        // Exemplo de Intercalar Vetores Ordenados
+        Integer[] arr1 = {1, 3, 5};
+        Integer[] arr2 = {2, 4, 6, 8};
+        OrdenacaoQuickSort<Integer> quickIntercalar = new OrdenacaoQuickSort<>();
+        quickIntercalar.setInfo(arr1); // Define o primeiro array como 'info'
+        Integer[] intercalado = quickIntercalar.intercalarVetoresOrdenados(arr2);
+        System.out.println("\nVetores Intercalados: " + java.util.Arrays.toString(intercalado));
+
+        // Exemplo de São Permutações
+        Integer[] perm1 = {1, 2, 3};
+        Integer[] perm2 = {3, 1, 2};
+        Integer[] perm3 = {1, 2, 4};
+        OrdenacaoQuickSort<Integer> quickPermutacao = new OrdenacaoQuickSort<>();
+        quickPermutacao.setInfo(perm1);
+        System.out.println("São permutações (1,2,3 e 3,1,2)? " + quickPermutacao.saoPermutacoes(perm2));
+        quickPermutacao.setInfo(perm1); // Reset para verificar com outro array
+        System.out.println("São permutações (1,2,3 e 1,2,4)? " + quickPermutacao.saoPermutacoes(perm3));
+    }
+}

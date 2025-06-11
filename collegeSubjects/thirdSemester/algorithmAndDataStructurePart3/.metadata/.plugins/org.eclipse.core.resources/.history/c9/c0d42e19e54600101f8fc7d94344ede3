@@ -1,0 +1,333 @@
+package entities;
+
+public abstract class OrdenacaoAbstract<T extends Comparable<T>> {
+	private T info[];
+	protected long trocas; // Contador de trocas
+	protected long comparacoes; // Contador de comparações
+
+	public T[] getInfo() {
+		return info;
+	}
+
+	public void setInfo(T[] info) {
+		this.info = info;
+		this.trocas = 0; // Reinicia contadores ao definir novos dados
+		this.comparacoes = 0; // Reinicia contadores ao definir novos dados
+	}
+	
+	public void trocar(int a, int b) {
+		T temp = info[a];
+		info[a] = info[b];
+		info[b] = temp;
+		trocas++; // Incrementa o contador de trocas
+	}
+	
+	public long getTrocas() {
+		return trocas;
+	}
+
+	public long getComparacoes() {
+		return comparacoes;
+	}
+
+	// Método para ordenar em ordem decrescente (comum a todos)
+	public void ordenarDecrescente() {
+		ordenar(); // Primeiro ordena crescentemente
+		T[] temp = (T[]) new Comparable[info.length];
+		for (int i = 0; i < info.length; i++) {
+			temp[i] = info[info.length - 1 - i];
+		}
+		info = temp;
+	}
+
+	// Método para ordenar um segmento específico
+	public abstract void ordenarSegmento(int inicio, int fim);
+
+	// Método para verificar se o array está ordenado
+	public boolean estaOrdenado() {
+		for (int i = 0; i < info.length - 1; i++) {
+			comparacoes++; // Conta a comparação
+			if (info[i].compareTo(info[i+1]) > 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	// Contar elementos fora de ordem
+	public int contarElementosForaDeOrdem() {
+		int count = 0;
+		for (int i = 0; i < info.length - 1; i++) {
+			comparacoes++; // Conta a comparação
+			if (info[i].compareTo(info[i+1]) > 0) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	// Obter índice de ordenação (retorna um array de índices como se fosse ordenado)
+	public Integer[] obterIndiceOrdenacao() {
+		Integer[] indices = new Integer[info.length];
+		for (int i = 0; i < info.length; i++) {
+			indices[i] = i;
+		}
+
+		// Cria uma cópia para não alterar o array original
+		T[] tempInfo = (T[]) new Comparable[info.length];
+		System.arraycopy(info, 0, tempInfo, 0, info.length);
+
+		// Bubble sort para os índices com base nos valores (não é o ideal para desempenho, mas é simples)
+		for (int i = 0; i < tempInfo.length - 1; i++) {
+			for (int j = 0; j < tempInfo.length - 1 - i; j++) {
+				comparacoes++; // Conta a comparação
+				if (tempInfo[j].compareTo(tempInfo[j+1]) > 0) {
+					T tempVal = tempInfo[j];
+					tempInfo[j] = tempInfo[j+1];
+					tempInfo[j+1] = tempVal;
+
+					Integer tempIdx = indices[j];
+					indices[j] = indices[j+1];
+					indices[j+1] = tempIdx;
+					trocas++; // Conta a troca (de índices e valores temporários)
+				}
+			}
+		}
+		return indices;
+	}
+
+	// Calcular mediana (requer que o array esteja ordenado)
+	public T calcularMediana() {
+		if (info == null || info.length == 0) {
+			return null;
+		}
+		T[] temp = (T[]) new Comparable[info.length];
+		System.arraycopy(info, 0, temp, 0, info.length);
+		// Aqui podemos usar um algoritmo de ordenação para a cópia temporária,
+		// ou assumir que o array 'info' será ordenado antes de chamar este método.
+		// Para simplicidade, vamos usar o Bubble Sort na cópia para não alterar o original.
+		for (int i = 0; i < temp.length - 1; i++) {
+			for (int j = 0; j < temp.length - 1 - i; j++) {
+				if (temp[j].compareTo(temp[j+1]) > 0) {
+					T val = temp[j];
+					temp[j] = temp[j+1];
+					temp[j+1] = val;
+				}
+			}
+		}
+
+		if (temp.length % 2 == 1) {
+			return temp[temp.length / 2];
+		} else {
+			// Para tipos genéricos, retornar a "mediana" de dois elementos é complexo.
+			// Para números, seria (elemento1 + elemento2) / 2.
+			// Para T extends Comparable, retornaremos o primeiro dos dois elementos do meio, ou um dos dois.
+			// Aqui, para simplicidade, retornaremos o elemento à esquerda do meio.
+			return temp[temp.length / 2 - 1];
+		}
+	}
+
+
+	// Ordenar por pares e ímpares (requer que T seja Integer ou um tipo que possa ser tratado como tal)
+	public void ordenarPorParImpar() {
+		if (!(info instanceof Integer[])) {
+			System.out.println("Este método só funciona para arrays de Integer.");
+			return;
+		}
+		// Separa em dois arrays, pares e ímpares
+		// Ordena separadamente
+		// Junta os arrays (pares primeiro, depois ímpares)
+		// Isso pode ser implementado de forma mais eficiente, mas para um exemplo, faremos assim.
+		// Não é um método de ordenação diretamente implementável por Bubble/Merge/Quick.
+		// É uma pré-operação ou pós-operação.
+
+		// Para simplificar, vamos criar uma nova lista e depois copiar de volta
+		java.util.ArrayList<Integer> pares = new java.util.ArrayList<>();
+		java.util.ArrayList<Integer> impares = new java.util.ArrayList<>();
+
+		for (T val : info) {
+			Integer intVal = (Integer) val;
+			if (intVal % 2 == 0) {
+				pares.add(intVal);
+			} else {
+				impares.add(intVal);
+			}
+		}
+
+		// Ordena as listas de pares e ímpares
+		java.util.Collections.sort(pares);
+		java.util.Collections.sort(impares);
+
+		int idx = 0;
+		for (Integer par : pares) {
+			info[idx++] = (T) par;
+		}
+		for (Integer impar : impares) {
+			info[idx++] = (T) impar;
+		}
+	}
+
+	// Ordenar String por tamanho
+	public void ordenarStringPorTamanho() {
+		if (!(info instanceof String[])) {
+			System.out.println("Este método só funciona para arrays de String.");
+			return;
+		}
+		// A ordenação por tamanho é um critério diferente do compareTo padrão.
+		// Necessitaríamos de um Comparator customizado para a maioria dos algoritmos.
+		// Para simplicidade, vamos usar um algoritmo de ordenação interno para este caso,
+		// ou modificar o algoritmo para aceitar um Comparator.
+		java.util.Arrays.sort(info, (s1, s2) -> ((String)s1).length() - ((String)s2).length());
+	}
+
+
+	// Ordenar por último dígito (para Integer)
+	public void ordenarPorUltimoDigito() {
+		if (!(info instanceof Integer[])) {
+			System.out.println("Este método só funciona para arrays de Integer.");
+			return;
+		}
+		java.util.Arrays.sort(info, (i1, i2) -> ((Integer)i1 % 10) - ((Integer)i2 % 10));
+	}
+
+	// Ordenar negativos (mover negativos para o início, preservar ordem relativa)
+	public void ordenarNegativos() {
+		if (!(info instanceof Integer[])) {
+			System.out.println("Este método só funciona para arrays de Integer.");
+			return;
+		}
+		// Uma forma simples é separar e depois juntar
+		java.util.ArrayList<Integer> negativos = new java.util.ArrayList<>();
+		java.util.ArrayList<Integer> naoNegativos = new java.util.ArrayList<>();
+
+		for (T val : info) {
+			Integer intVal = (Integer) val;
+			if (intVal < 0) {
+				negativos.add(intVal);
+			} else {
+				naoNegativos.add(intVal);
+			}
+		}
+
+		// Ordena cada grupo (opcional, dependendo se a ordem relativa dentro dos grupos deve ser mantida)
+		java.util.Collections.sort(negativos);
+		java.util.Collections.sort(naoNegativos);
+
+		int idx = 0;
+		for (Integer neg : negativos) {
+			info[idx++] = (T) neg;
+		}
+		for (Integer naoNeg : naoNegativos) {
+			info[idx++] = (T) naoNeg;
+		}
+	}
+
+	// Intercalar vetores ordenados (requer dois vetores de entrada)
+	// Este método não se encaixa diretamente em uma classe de ordenação que opera em seu próprio array 'info'.
+	// Seria mais um utilitário. Mas podemos simular adicionando um segundo array.
+	public T[] intercalarVetoresOrdenados(T[] outroArray) {
+		if (this.info == null || outroArray == null) {
+			return null;
+		}
+
+		T[] resultado = (T[]) new Comparable[this.info.length + outroArray.length];
+		int i = 0, j = 0, k = 0;
+
+		while (i < this.info.length && j < outroArray.length) {
+			comparacoes++; // Conta a comparação
+			if (this.info[i].compareTo(outroArray[j]) < 0) {
+				resultado[k++] = this.info[i++];
+			} else {
+				resultado[k++] = outroArray[j++];
+			}
+		}
+
+		while (i < this.info.length) {
+			resultado[k++] = this.info[i++];
+		}
+
+		while (j < outroArray.length) {
+			resultado[k++] = outroArray[j++];
+		}
+		return resultado;
+	}
+
+	// Ordenar com segundo critério
+	// Isso geralmente envolve um Comparator que encapsula a lógica de múltiplos critérios.
+	// Não é facilmente adicionável diretamente aos métodos de ordenação existentes sem modificar
+	// a forma como `compareTo` é usado ou injetar um `Comparator`.
+	// Para demonstrar, precisaríamos de uma classe auxiliar que encapsule dois valores.
+	// Por exemplo, se T fosse uma classe que tem um campo primário e um secundário.
+	// Exemplo:
+	/*
+	public void ordenarComSegundoCriterio() {
+		// Isso só funcionaria se T fosse um tipo com dois campos comparáveis,
+		// ou se tivéssemos um Comparator.
+		// Exemplo com Collections.sort e um lambda para ilustrar:
+		java.util.Arrays.sort(info, (val1, val2) -> {
+			int cmp = val1.compareTo(val2);
+			if (cmp == 0) {
+				// Se são iguais pelo primeiro critério, usa o segundo critério
+				// Isso requer acesso a um segundo campo para comparação
+				// Por exemplo, se T fosse Pair<Integer, String>
+				// return val1.getSegundoCampo().compareTo(val2.getSegundoCampo());
+			}
+			return cmp;
+		});
+	}
+	*/
+
+
+	// São permutações (dois arrays são permutações um do outro)
+	public boolean saoPermutacoes(T[] outroArray) {
+		if (this.info == null || outroArray == null || this.info.length != outroArray.length) {
+			return false;
+		}
+
+		// Cria cópias e ordena para comparar
+		T[] temp1 = (T[]) new Comparable[this.info.length];
+		System.arraycopy(this.info, 0, temp1, 0, this.info.length);
+		T[] temp2 = (T[]) new Comparable[outroArray.length];
+		System.arraycopy(outroArray, 0, temp2, 0, outroArray.length);
+
+		// Usa um algoritmo de ordenação para as cópias
+		// (Para este exemplo, usaremos Collections.sort em listas temporárias para simplicidade)
+		java.util.ArrayList<T> list1 = new java.util.ArrayList<>(java.util.Arrays.asList(temp1));
+		java.util.ArrayList<T> list2 = new java.util.ArrayList<>(java.util.Arrays.asList(temp2));
+
+		java.util.Collections.sort(list1);
+		java.util.Collections.sort(list2);
+
+		for (int i = 0; i < list1.size(); i++) {
+			comparacoes++; // Conta a comparação
+			if (list1.get(i).compareTo(list2.get(i)) != 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+
+	// Ordenar por ocorrência (ex: elementos mais frequentes primeiro)
+	public void ordenarPorOcorrencia() {
+		if (info == null || info.length == 0) {
+			return;
+		}
+
+		java.util.Map<T, Integer> frequencia = new java.util.HashMap<>();
+		for (T item : info) {
+			frequencia.put(item, frequencia.getOrDefault(item, 0) + 1);
+		}
+
+		// Ordena com base na frequência e depois no valor
+		java.util.Arrays.sort(info, (o1, o2) -> {
+			int cmpFrequencia = frequencia.get(o2).compareTo(frequencia.get(o1)); // Decrescente por frequência
+			if (cmpFrequencia == 0) {
+				return o1.compareTo(o2); // Crescente por valor se frequências forem iguais
+			}
+			return cmpFrequencia;
+		});
+	}
+
+	public abstract void ordenar();
+}

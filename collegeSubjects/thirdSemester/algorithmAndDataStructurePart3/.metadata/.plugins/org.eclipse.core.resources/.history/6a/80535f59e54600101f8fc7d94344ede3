@@ -1,0 +1,54 @@
+package entities;
+
+public class OrdenacaoBolhaOtimizada<T extends Comparable<T>> extends OrdenacaoAbstract<T> {
+
+	@Override
+	public void ordenar() {
+		if (getInfo() == null || getInfo().length <= 1) {
+			return;
+		}
+		trocas = 0; // Reinicia o contador de trocas
+		comparacoes = 0; // Reinicia o contador de comparações
+		int n = getInfo().length;
+		boolean trocou;
+		
+		for(int i = 0; i < n - 1; i++) { // Loop externo: itera n-1 vezes
+			trocou = false;
+			for(int j = 0; j < n - 1 - i; j++) { // Loop interno: compara elementos adjacentes
+				comparacoes++; // Conta a comparação
+				if(getInfo()[j].compareTo(getInfo()[j + 1]) > 0) {
+					trocar(j, j+1); // Chama o método trocar da classe abstrata, que incrementa 'trocas'
+					trocou = true;
+				}
+			}
+			if(trocou == false) {
+				break; // Se nenhuma troca ocorreu, o array está ordenado
+			}
+		}
+	}
+
+	@Override
+	public void ordenarSegmento(int inicio, int fim) {
+		if (getInfo() == null || inicio < 0 || fim >= getInfo().length || inicio >= fim) {
+			return;
+		}
+		trocas = 0; // Reinicia o contador de trocas para o segmento
+		comparacoes = 0; // Reinicia o contador de comparações para o segmento
+		boolean trocou;
+		
+		for(int i = inicio; i <= fim; i++) { // Loop externo no segmento
+			trocou = false;
+			// Loop interno no segmento, ajustando os limites
+			for(int j = inicio; j < fim - (i - inicio); j++) {
+				comparacoes++; // Conta a comparação
+				if(getInfo()[j].compareTo(getInfo()[j + 1]) > 0) {
+					trocar(j, j+1);
+					trocou = true;
+				}
+			}
+			if(trocou == false) {
+				break;
+			}
+		}
+	}
+}
