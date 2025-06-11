@@ -1,0 +1,202 @@
+package application; // Ou no mesmo pacote das suas entidades se preferir
+
+import entities.MapaDispersao;
+import entities.NoMapa;
+import entities.ListaEncadeada; // Importe as classes para teste
+
+import java.util.List;
+
+public class TesteMapaDispersao {
+
+    public static void main(String[] args) {
+        System.out.println("Iniciando cenário de testes para MapaDispersao...");
+
+        // Teste 1: Construtor e Inserção Básica
+        System.out.println("\n--- Teste 1: Construtor e Inserção Básica ---");
+        MapaDispersao<String> mapa = new MapaDispersao<>(5);
+        mapa.inserir(1, "Dado A");
+        mapa.inserir(6, "Dado F"); // Colisão com 1 (6 % 5 = 1)
+        mapa.inserir(2, "Dado B");
+        mapa.inserir(7, "Dado G"); // Colisão com 2 (7 % 5 = 2)
+        mapa.inserir(3, "Dado C");
+
+        assertEquals("Buscar chave 1", "Dado A", mapa.buscar(1));
+        assertEquals("Buscar chave 6", "Dado F", mapa.buscar(6));
+        assertEquals("Buscar chave 2", "Dado B", mapa.buscar(2));
+        assertEquals("Buscar chave 7", "Dado G", mapa.buscar(7));
+        assertEquals("Buscar chave 3", "Dado C", mapa.buscar(3));
+        assertEquals("Buscar chave inexistente (4)", null, mapa.buscar(4));
+        assertEquals("Número de objetos após inserção", 5, mapa.calcularQtdeObjetos());
+
+        // Teste 2: Listar Chaves
+        System.out.println("\n--- Teste 2: Listar Chaves ---");
+        List<Integer> chaves = mapa.listarChaves();
+        System.out.println("Chaves no mapa: " + chaves);
+        assertTrue("Lista de chaves contém 1", chaves.contains(1));
+        assertTrue("Lista de chaves contém 6", chaves.contains(6));
+        assertTrue("Lista de chaves contém 2", chaves.contains(2));
+        assertTrue("Lista de chaves contém 7", chaves.contains(7));
+        assertTrue("Lista de chaves contém 3", chaves.contains(3));
+        assertEquals("Tamanho da lista de chaves", 5, chaves.size());
+
+        // Teste 3: Contar Colisões
+        System.out.println("\n--- Teste 3: Contar Colisões ---");
+        // Índices 1 e 2 têm colisões (comprimento 2 cada)
+        // (2-1) + (2-1) = 2 colisões
+        assertEquals("Contagem de colisões", 2, mapa.contarColisoes());
+
+        // Teste 4: Contém Chave
+        System.out.println("\n--- Teste 4: Contém Chave ---");
+        assertTrue("Contém chave 1", mapa.contemChave(1));
+        assertTrue("Contém chave 7", mapa.contemChave(7));
+        assertFalse("Não contém chave 10", mapa.contemChave(10));
+
+        // Teste 5: Remover
+        System.out.println("\n--- Teste 5: Remover ---");
+        mapa.remover(1);
+        assertEquals("Buscar chave 1 após remoção", null, mapa.buscar(1));
+        assertEquals("Buscar chave 6 (ainda presente após remoção de 1)", "Dado F", mapa.buscar(6));
+        assertEquals("Número de objetos após remoção", 4, mapa.calcularQtdeObjetos());
+        assertEquals("Contagem de colisões após remoção (apenas 7 e 2 agora)", 1, mapa.contarColisoes()); // (2-1) = 1
+
+        mapa.remover(100); // Remover chave inexistente
+        assertEquals("Número de objetos após remover inexistente", 4, mapa.calcularQtdeObjetos());
+
+        // Teste 6: Substituir Valor
+        System.out.println("\n--- Teste 6: Substituir Valor ---");
+        assertTrue("Substituir valor de chave 2", mapa.substituirValor(2, "Novo Dado B"));
+        assertEquals("Verificar novo valor de chave 2", "Novo Dado B", mapa.buscar(2));
+        assertFalse("Substituir valor de chave inexistente (99)", mapa.substituirValor(99, "Valor Inexistente"));
+        assertEquals("Número de objetos após substituição", 4, mapa.calcularQtdeObjetos());
+
+        // Teste 7: Fator de Carga e Taxa de Ocupação
+        System.out.println("\n--- Teste 7: Fator de Carga e Taxa de Ocupação ---");
+        System.out.println("Fator de Carga: " + mapa.calcularFatorCarga()); // 4/5 = 0.8
+        System.out.println("Taxa de Ocupação: " + mapa.taxaDeOcupacao()); // 3/5 = 0.6 (buckets 1, 2, 3 ocupados)
+        assertEquals("Fator de Carga", 0.8, mapa.calcularFatorCarga(), 0.001); // Delta para double comparison
+        assertEquals("Taxa de Ocupação", 0.6, mapa.taxaDeOcupacao(), 0.001);
+
+        // Teste 8: Tamanho da Maior Lista
+        System.out.println("\n--- Teste 8: Tamanho da Maior Lista ---");
+        // No momento, bucket (2%5=2) tem "Dado G" e "Novo Dado B" (2 elementos)
+        assertEquals("Tamanho da maior lista", 2, mapa.tamanhoMaiorLista());
+
+        // Teste 9: Inserir com Rejeição
+        System.out.println("\n--- Teste 9: Inserir com Rejeição ---");
+        assertFalse("Inserir com rejeição em bucket ocupado (chave 11 - hash 1)", mapa.inserirComRejeicao(11, "Dado K"));
+        assertEquals("Buscar chave 11 (não inserida)", null, mapa.buscar(11));
+        assertTrue("Inserir com rejeição em bucket vazio (chave 4 - hash 4)", mapa.inserirComRejeicao(4, "Dado D"));
+        assertEquals("Buscar chave 4 (inserida)", "Dado D", mapa.buscar(4));
+        assertEquals("Número de objetos após inserção com rejeição", 5, mapa.calcularQtdeObjetos());
+
+        // Teste 10: Buscar Posição
+        System.out.println("\n--- Teste 10: Buscar Posição ---");
+        assertEquals("Posição de 6", 1, mapa.buscarPosicao(6));
+        assertEquals("Posição de 7", 2, mapa.buscarPosicao(7));
+        assertEquals("Posição de 4", 4, mapa.buscarPosicao(4));
+
+        // Teste 11: Verificar Distribuição
+        System.out.println("\n--- Teste 11: Verificar Distribuição ---");
+        mapa.verificarDistribuicao(); // Apenas imprime, sem asserção direta
+
+        // Teste 12: Possui Duplicatas (reavaliar o método para a sua definição de duplicata)
+        System.out.println("\n--- Teste 12: Possui Duplicatas ---");
+        // Com a implementação atual de 'inserir', pode haver chaves duplicadas na mesma lista.
+        // Se 'possuiDuplicatas' verifica se há duas entradas de NoMapa com a mesma CHAVE em qualquer lugar do mapa:
+        // A implementação de MapaDispersao.inserir() sempre adiciona um novo NoMapa, mesmo que a chave já exista em outro nó da lista.
+        // Então, se inserirmos (1, "A") e depois (1, "B"), o possuiDuplicatas deveria retornar true.
+        // Se a lógica do seu mapa é que cada chave é única, 'inserir' deveria chamar 'substituirValor' ou buscar e atualizar.
+        // Para este teste, vamos inserir uma duplicata explícita que seria pega pelo 'possuiDuplicatas'
+        mapa.inserir(3, "Outro Dado C"); // Insere uma duplicata de chave 3
+        assertTrue("Possui duplicatas após inserção de chave 3", mapa.possuiDuplicatas());
+        mapa.remover(3); // Remove o primeiro "Dado C"
+        mapa.remover(3); // Remove o "Outro Dado C"
+        mapa.remover(7); // Remove a colisão que estava com 2
+        mapa.remover(2);
+        mapa.remover(6);
+        mapa.remover(4);
+        mapa.inserir(1, "Dado A");
+        mapa.inserir(2, "Dado B");
+        assertFalse("Não possui duplicatas após limpeza e reinserção de chaves únicas", mapa.possuiDuplicatas());
+
+
+        // Teste 13: Obter Último da Lista
+        System.out.println("\n--- Teste 13: Obter Último da Lista ---");
+        MapaDispersao<String> mapaUltimo = new MapaDispersao<>(3);
+        mapaUltimo.inserir(0, "Primeiro 0");
+        mapaUltimo.inserir(3, "Segundo 0"); // hash 0
+        mapaUltimo.inserir(6, "Terceiro 0"); // hash 0
+
+        NoMapa<String> ultimoNo = mapaUltimo.obterUltimoDaLista(0);
+        assertNotNull("Último nó do índice 0 não é nulo", ultimoNo);
+        // A ordem de inserção na ListaEncadeada padrão é FIFO (First-In, First-Out) no início da lista.
+        // Então "Terceiro 0" foi inserido mais recentemente, mas "Primeiro 0" está no final da lista se inserirmos no início.
+        // A implementação da ListaEncadeada.inserir coloca no início, então o último adicionado é o "primeiro".
+        // O "último" real na lista seria o primeiro que foi inserido nesse bucket.
+        // Se ListaEncadeada.inserir adiciona no início (como está), o último elemento "realmente" na lista seria o primeiro inserido.
+        // Portanto, o `obterUltimoDaLista` retornará o elemento mais antigo no bucket.
+        assertEquals("Último nó do índice 0", "Primeiro 0", ultimoNo.getValor());
+        assertEquals("Último nó do índice 0 (chave)", 0, ultimoNo.getChave());
+        assertEquals("Obter último de índice vazio", null, mapaUltimo.obterUltimoDaLista(1));
+
+        // Teste 14: Redimensionar e Reorganizar Tabela
+        System.out.println("\n--- Teste 14: Redimensionar e Reorganizar Tabela ---");
+        mapa.limpar();
+        mapa.inserir(1, "A");
+        mapa.inserir(2, "B");
+        mapa.inserir(3, "C");
+        assertEquals("Número de objetos antes do redimensionamento", 3, mapa.calcularQtdeObjetos());
+        assertEquals("Tamanho do array antes do redimensionamento", 5, mapa.getInfo().length);
+
+        mapa.reorganizarTabela(); // Redimensiona para o dobro (10)
+        assertEquals("Tamanho do array após redimensionamento", 10, mapa.getInfo().length);
+        assertEquals("Número de objetos após redimensionamento", 3, mapa.calcularQtdeObjetos());
+        assertEquals("Buscar chave 1 após redimensionamento", "A", mapa.buscar(1)); // Chave 1 continua na posição 1
+        assertEquals("Buscar chave 2 após redimensionamento", "B", mapa.buscar(2));
+        assertEquals("Buscar chave 3 após redimensionamento", "C", mapa.buscar(3));
+        assertEquals("Fator de Carga após redimensionamento", 0.3, mapa.calcularFatorCarga(), 0.001); // 3/10 = 0.3
+
+        // Teste 15: Limpar
+        System.out.println("\n--- Teste 15: Limpar ---");
+        mapa.limpar();
+        assertEquals("Número de objetos após limpar", 0, mapa.calcularQtdeObjetos());
+        assertEquals("Fator de Carga após limpar", 0.0, mapa.calcularFatorCarga(), 0.001);
+        assertFalse("Não contém chave 1 após limpar", mapa.contemChave(1));
+
+
+        System.out.println("\nTodos os testes concluídos!");
+    }
+
+    // Métodos auxiliares para asserções
+    private static void assertEquals(String testName, Object expected, Object actual) {
+        if ((expected == null && actual == null) || (expected != null && expected.equals(actual))) {
+            System.out.println("PASSED: " + testName + " (Esperado: " + expected + ", Obtido: " + actual + ")");
+        } else {
+            System.err.println("FAILED: " + testName + " (Esperado: " + expected + ", Obtido: " + actual + ")");
+        }
+    }
+
+    private static void assertTrue(String testName, boolean condition) {
+        if (condition) {
+            System.out.println("PASSED: " + testName);
+        } else {
+            System.err.println("FAILED: " + testName);
+        }
+    }
+
+    private static void assertFalse(String testName, boolean condition) {
+        if (!condition) {
+            System.out.println("PASSED: " + testName);
+        } else {
+            System.err.println("FAILED: " + testName);
+        }
+    }
+
+    private static void assertNotNull(String testName, Object obj) {
+        if (obj != null) {
+            System.out.println("PASSED: " + testName);
+        } else {
+            System.err.println("FAILED: " + testName + " (Objeto nulo)");
+        }
+    }
+}
