@@ -4,13 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MapaDispersao<T> {
-    private ListaEncadeada<NoMapa<T>> info[]; // Corrigido de 'dados' para 'info' para consistência
-
-    // Constantes para ajuste de tamanho
-    private static final double FATOR_DESEJADO = 0.75;
-    private static final double FATOR_MAXIMO = 0.9;
-    private static final double FATOR_MINIMO = 0.5;
-    private static final int TAMANHO_MINIMO = 4; // Um tamanho mínimo razoável
+    private ListaEncadeada<NoMapa<T>> info[];
 
     public ListaEncadeada<NoMapa<T>>[] getInfo() {
         return info;
@@ -22,9 +16,6 @@ public class MapaDispersao<T> {
 
     @SuppressWarnings("unchecked")
     public MapaDispersao(int tamanho) {
-        if (tamanho <= 0) {
-            throw new IllegalArgumentException("O tamanho inicial do mapa deve ser maior que zero.");
-        }
         info = new ListaEncadeada[tamanho];
     }
 
@@ -42,17 +33,16 @@ public class MapaDispersao<T> {
         no.setChave(chave);
         no.setValor(dado);
         info[idx].inserir(no);
-        ajustarTamanhoNecessario(); // Chama o ajuste após a inserção
     }
 
     public void remover(int chave) {
         int idx = calcularHash(chave);
+        // Ensure the list exists before trying to remove
         if (info[idx] != null) {
             NoMapa<T> no = new NoMapa<T>();
             no.setChave(chave);
             info[idx].retirar(no);
         }
-        ajustarTamanhoNecessario(); // Chama o ajuste após a remoção
     }
 
     public T buscar(int chave) {
@@ -60,8 +50,9 @@ public class MapaDispersao<T> {
         if (info[idx] != null) {
             NoMapa<T> no = new NoMapa<T>();
             no.setChave(chave);
+            // Assuming buscar in ListaEncadeada returns NoLista<NoMapa<T>> if found, null otherwise
             NoLista<NoMapa<T>> result = info[idx].buscar(no);
-            if (result != null) {
+            if (result != null) { // Check result itself, not 'no'
                 return result.getInfo().getValor();
             }
         }
@@ -69,14 +60,14 @@ public class MapaDispersao<T> {
     }
 
     public double calcularFatorCarga() {
-        double tamanhoArray = getInfo().length;
-        double qtdeElementos = 0;
+        double tamanho = getInfo().length;
+        double qtde = 0;
         for (ListaEncadeada<NoMapa<T>> n : info) {
             if (n != null) {
-                qtdeElementos += n.obterComprimento();
+                qtde += n.obterComprimento();
             }
         }
-        return qtdeElementos / tamanhoArray;
+        return qtde / tamanho;
     }
 
     public int calcularQtdeObjetos() {
@@ -97,10 +88,10 @@ public class MapaDispersao<T> {
         List<Integer> chaves = new ArrayList<>();
         for (ListaEncadeada<NoMapa<T>> lista : info) {
             if (lista != null) {
-                NoLista<NoMapa<T>> atual = lista.getPrimeiro();
+                NoLista<NoMapa<T>> atual = lista.getPrimeiro(); // Assuming getPrimeiro() exists in ListaEncadeada
                 while (atual != null) {
                     chaves.add(atual.getInfo().getChave());
-                    atual = atual.getProximo();
+                    atual = atual.getProximo(); // Assuming getProximo() exists in NoLista
                 }
             }
         }
@@ -136,23 +127,24 @@ public class MapaDispersao<T> {
      */
     @SuppressWarnings("unchecked")
     public void limpar() {
-        info = new ListaEncadeada[info.length];
+        info = new ListaEncadeada[info.length]; // Re-initializes the array with nulls
     }
 
     /**
      * Busca um valor associado a uma chave, com tratamento explícito de colisões
      * (já implícito na busca original que usa lista encadeada).
+     * Este método é funcionalmente idêntico ao método `buscar` existente,
+     * mas é mantido para clareza em relação ao requisito.
      * @param chave A chave a ser buscada.
      * @return O valor associado à chave, ou null se a chave não for encontrada.
      */
     public T buscaComTratamentoColisoes(int chave) {
-        return buscar(chave);
+        return buscar(chave); // The existing 'buscar' method already handles collisions via linked lists.
     }
 
     /**
      * Reorganiza a tabela hash, tipicamente redimensionando-a e redistribuindo os elementos.
      * Neste exemplo, simplesmente chama o método redimensionar com o dobro do tamanho.
-     * Este método pode ser removido se 'ajustarTamanhoNecessario' for o principal mecanismo de redimensionamento.
      */
     public void reorganizarTabela() {
         redimensionar(info.length * 2);
@@ -201,6 +193,15 @@ public class MapaDispersao<T> {
 
     /**
      * Verifica se o mapa contém chaves duplicadas.
+     * No entanto, a implementação atual de `inserir` não permite chaves duplicadas no mesmo bucket
+     * (assumindo que `ListaEncadeada.inserir` não adiciona duplicatas ou que `NoMapa.equals`
+     * com base na chave impede isso). Se 'inserir' sempre adiciona,
+     * mesmo que a chave já exista, esta verificação seria mais relevante.
+     * Com a implementação atual, o método `inserir` simplesmente adiciona um novo `NoMapa`
+     * à lista encadeada. Se já existir um `NoMapa` com a mesma chave, ele será duplicado.
+     * Para evitar duplicatas e ter uma lógica mais "mapa", o `inserir` deveria primeiro
+     * buscar se a chave já existe e, se sim, atualizar o valor ou ignorar a inserção.
+     * Assumindo que `ListaEncadeada.inserir` pode levar a duplicatas de `NoMapa` baseadas apenas na chave.
      * @return true se houver chaves duplicadas, false caso contrário.
      */
     public boolean possuiDuplicatas() {
@@ -221,6 +222,7 @@ public class MapaDispersao<T> {
         return false;
     }
 
+
     /**
      * Redimensiona a tabela hash para um novo tamanho.
      * Todos os elementos existentes são re-hashing e redistribuídos na nova tabela.
@@ -232,6 +234,7 @@ public class MapaDispersao<T> {
             throw new IllegalArgumentException("O novo tamanho deve ser maior que zero.");
         }
 
+        // Armazenar os elementos existentes
         List<NoMapa<T>> todosElementos = new ArrayList<>();
         for (ListaEncadeada<NoMapa<T>> lista : info) {
             if (lista != null) {
@@ -243,18 +246,18 @@ public class MapaDispersao<T> {
             }
         }
 
+        // Criar o novo array de listas
         info = new ListaEncadeada[novoTamanho];
 
+        // Reinserir todos os elementos na nova tabela
         for (NoMapa<T> no : todosElementos) {
-            // Note: Chamamos inserir, que por sua vez chama ajustarTamanhoNecessario().
-            // Poderíamos ter uma versão interna de inserir que não chamasse o ajuste recursivamente durante o redimensionamento.
-            // Para simplicidade, vamos chamar inserir, mas em cenários muito grandes, isso poderia ser otimizado.
             inserir(no.getChave(), no.getValor());
         }
     }
 
     /**
      * Substitui o valor associado a uma chave existente.
+     * Se a chave não existir, o valor não é substituído e a operação falha.
      * @param chave A chave do elemento a ser atualizado.
      * @param novoValor O novo valor a ser associado à chave.
      * @return true se o valor foi substituído com sucesso, false caso contrário.
@@ -275,6 +278,7 @@ public class MapaDispersao<T> {
 
     /**
      * Verifica a distribuição dos elementos na tabela hash, imprimindo o comprimento de cada lista.
+     * Ajuda a visualizar como os elementos estão dispersos.
      */
     public void verificarDistribuicao() {
         System.out.println("Verificação da Distribuição do Mapa Dispersão:");
@@ -285,7 +289,14 @@ public class MapaDispersao<T> {
     }
 
     /**
-     * Insere um novo par chave-valor, mas rejeita a inserção se o bucket já estiver ocupado.
+     * Insere um novo par chave-valor, mas rejeita a inserção se o bucket já estiver ocupado
+     * (ou seja, se já houver qualquer elemento no bucket).
+     * Este é um tipo de estratégia de sondagem linear ou endereçamento aberto simplificado,
+     * onde não há tratamento de colisões além da rejeição.
+     * **Nota**: Esta implementação contradiz a natureza de uma tabela hash com listas encadeadas
+     * para tratamento de colisões, onde múltiplos elementos no mesmo bucket são esperados.
+     * Se o objetivo é que cada bucket tenha no máximo um elemento, a estrutura deveria ser diferente.
+     * Mantida para atender ao requisito, mas com a ressalva.
      * @param chave A chave a ser inserida.
      * @param dado O dado a ser inserido.
      * @return true se a inserção foi bem-sucedida (bucket estava vazio), false caso contrário.
@@ -300,6 +311,7 @@ public class MapaDispersao<T> {
             info[idx].inserir(no);
             return true;
         } else {
+            // Bucket já ocupado, rejeita a inserção
             return false;
         }
     }
@@ -313,131 +325,13 @@ public class MapaDispersao<T> {
         if (idx < 0 || idx >= info.length || info[idx] == null || info[idx].obterComprimento() == 0) {
             return null;
         }
-        NoLista<NoMapa<T>> atual = info[idx].getPrimeiro();
+        // Assuming ListaEncadeada has a method to get the last node, or we can traverse
+        NoLista<NoMapa<T>> atual = info[idx].getPrimeiro(); // Assuming getPrimeiro() exists
         NoMapa<T> ultimo = null;
         while (atual != null) {
             ultimo = atual.getInfo();
-            atual = atual.getProximo();
+            atual = atual.getProximo(); // Assuming getProximo() exists
         }
         return ultimo;
-    }
-
-    // --- MÉTODOS ADICIONADOS A PARTIR DAS IMAGENS ---
-
-    /**
-     * Ajusta o tamanho da tabela hash se o fator de carga estiver fora dos limites desejados.
-     * Redimensiona para o dobro se o fator de carga for muito alto.
-     * Reduz para a metade (com um mínimo) se o fator de carga for muito baixo.
-     */
-    public void ajustarTamanhoNecessario() {
-        double fatorAtual = calcularFatorCarga();
-        int tamanhoAtual = info.length;
-        int novoTamanho = tamanhoAtual;
-
-        // Crescer a tabela
-        if (fatorAtual > FATOR_MAXIMO) {
-            novoTamanho = tamanhoAtual * 2;
-        }
-        // Reduzir a tabela
-        else if (fatorAtual < FATOR_MINIMO && tamanhoAtual > TAMANHO_MINIMO) {
-            // Garante que o novo tamanho não seja menor que o mínimo e não seja zero
-            novoTamanho = Math.max(TAMANHO_MINIMO, tamanhoAtual / 2);
-        }
-
-        // Se o tamanho mudou, realoca o mapa
-        if (novoTamanho != tamanhoAtual) {
-            System.out.println("Realocando: tamanho antigo = " + tamanhoAtual + ", novo = " + novoTamanho);
-            realocarMapa(novoTamanho);
-        }
-    }
-
-    /**
-     * Realoca todos os elementos do mapa para uma nova tabela com o tamanho especificado.
-     * Este método é uma versão mais específica e interna do 'redimensionar'.
-     * Para evitar duplicação de lógica com 'redimensionar', 'redimensionar' pode ser ajustado
-     * para usar 'realocarMapa' ou este método ser o principal.
-     * Mantive 'redimensionar' separado para compatibilidade com o que já havíamos feito,
-     * mas 'ajustarTamanhoNecessario' agora chama 'realocarMapa'.
-     * @param tamanhoNovo O novo tamanho para a tabela hash.
-     */
-    @SuppressWarnings("unchecked")
-    private void realocarMapa(int tamanhoNovo) {
-        if (tamanhoNovo <= 0) {
-            throw new IllegalArgumentException("O novo tamanho deve ser maior que zero.");
-        }
-
-        ListaEncadeada<NoMapa<T>>[] velhoInfo = info;
-        info = new ListaEncadeada[tamanhoNovo]; // Cria o novo array
-
-        // Itera sobre o array antigo e reinserir os elementos no novo array
-        for (int i = 0; i < velhoInfo.length; i++) {
-            if (velhoInfo[i] != null) {
-                NoLista<NoMapa<T>> atual = velhoInfo[i].getPrimeiro();
-                while (atual != null) {
-                    NoMapa<T> elemento = atual.getInfo();
-                    // Calcule o novo índice no novo array e insira
-                    int novoIdx = elemento.getChave() % tamanhoNovo;
-                    if (info[novoIdx] == null) {
-                        info[novoIdx] = new ListaEncadeada<>();
-                    }
-                    info[novoIdx].inserir(elemento); // Insere o NoMapa diretamente
-                    atual = atual.getProximo();
-                }
-            }
-        }
-    }
-
-    /**
-     * Calcula o próximo número primo maior ou igual a um dado tamanho.
-     * Usado para otimizar o tamanho da tabela hash.
-     * @param tamanho O tamanho inicial a partir do qual buscar o próximo primo.
-     * @return O próximo número primo.
-     */
-    private int calcularProximoPrimo(int tamanho) {
-        if (tamanho <= 2) {
-            return 2; // O menor primo é 2
-        }
-        int num = tamanho;
-        while (true) {
-            if (ehPrimo(num)) {
-                return num;
-            }
-            num++;
-        }
-    }
-
-    /**
-     * Verifica se um número é primo.
-     * @param numero O número a ser verificado.
-     * @return true se o número for primo, false caso contrário.
-     */
-    private boolean ehPrimo(int numero) {
-        if (numero <= 1) {
-            return false;
-        }
-        for (int i = 2; i * i <= numero; i++) {
-            if (numero % i == 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Converte todos os elementos do mapa em uma única ListaEncadeada.
-     * @return Uma ListaEncadeada contendo todos os NoMapa<T> presentes no mapa.
-     */
-    public ListaEncadeada<NoMapa<T>> converterTabelaParaLista() {
-        ListaEncadeada<NoMapa<T>> listaCompleta = new ListaEncadeada<>();
-        for (ListaEncadeada<NoMapa<T>> listaBucket : info) {
-            if (listaBucket != null) {
-                NoLista<NoMapa<T>> atual = listaBucket.getPrimeiro();
-                while (atual != null) {
-                    listaCompleta.inserir(atual.getInfo());
-                    atual = atual.getProximo();
-                }
-            }
-        }
-        return listaCompleta;
     }
 }
