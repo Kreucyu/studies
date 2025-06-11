@@ -1,0 +1,41 @@
+package entities;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class BuscaLinear<T> extends BuscaAbstract {
+	public int buscar(T valor) {
+		comparacoes = 0; // Reset comparisons for each search
+		for(int i = 0; i < getInfo().length; i++) { // Changed condition to i < getInfo().length
+			comparacoes++; // Comparison for getInfo()[i] == valor
+			if(getInfo()[i].equals(valor)) { // Use .equals() for object comparison
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public List<Integer> buscarTodasOcorrencias(T valor) {
+		List<Integer> ocorrencias = new ArrayList<>();
+		for(int i = 0; i < getInfo().length; i++) {
+			if(getInfo()[i].equals(valor)) {
+				ocorrencias.add(i);
+			}
+		}
+		return ocorrencias;
+	}
+
+	public int buscarUltimaOcorrencia(T valor) {
+		int ultimaOcorrencia = -1;
+		for(int i = 0; i < getInfo().length; i++) {
+			if(getInfo()[i].equals(valor)) {
+				ultimaOcorrencia = i;
+			}
+		}
+		return ultimaOcorrencia;
+	}
+
+	public int contarComparacoesBuscaLinear() {
+		return comparacoes;
+	}
+}

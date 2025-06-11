@@ -1,5 +1,2 @@
 INDEX VERSION 1.131+A:\Code\studies\collegeSubjects\thirdSemester\algorithmAndDataStructurePart3\.metadata\.plugins\org.eclipse.jdt.core
-1196294.index
-4184894391.index
 1865797976.index
-3496203400.index

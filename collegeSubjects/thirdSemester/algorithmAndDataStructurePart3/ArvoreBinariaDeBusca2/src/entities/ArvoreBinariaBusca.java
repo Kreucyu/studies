@@ -1,5 +1,8 @@
 package entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ArvoreBinariaBusca<T extends Comparable<T>> extends ArvoreBinariaAbstract<T> {
 	public void inserir(T info) {
 		NoArvoreBinaria<T> no = new NoArvoreBinaria<>(info);
@@ -26,6 +29,7 @@ public class ArvoreBinariaBusca<T extends Comparable<T>> extends ArvoreBinariaAb
 		}
 	}
 
+	@Override
 	public NoArvoreBinaria<T> buscar(T info) {
 		NoArvoreBinaria<T> p = getRaiz();
 		while (p != null) {
@@ -39,13 +43,33 @@ public class ArvoreBinariaBusca<T extends Comparable<T>> extends ArvoreBinariaAb
 		}
 		return null;
 	}
+	
+	// buscar recursivo (overrides if specific BST behavior is needed, otherwise inherits)
+	@Override
+	public NoArvoreBinaria<T> buscarRecursivo(T info) {
+		return buscarRecursivoBST(getRaiz(), info);
+	}
+
+	private NoArvoreBinaria<T> buscarRecursivoBST(NoArvoreBinaria<T> no, T info) {
+		if (no == null || no.getInfo().equals(info)) {
+			return no;
+		}
+		if (info.compareTo(no.getInfo()) < 0) {
+			return buscarRecursivoBST(no.getEsquerda(), info);
+		} else {
+			return buscarRecursivoBST(no.getDireita(), info);
+		}
+	}
+
 
 	@SuppressWarnings("unused")
 	public void retirar(T info) {
 		NoArvoreBinaria<T> p = getRaiz();
 		NoArvoreBinaria<T> pai = null;
 		boolean filhoEsquerda = false;
-		while (!p.equals(null) && !p.getInfo().equals(info)) {
+		
+		// Corrigir a condição do loop para verificar 'p != null' primeiro
+		while (p != null && !p.getInfo().equals(info)) { 
 			pai = p;
 			if (info.compareTo(p.getInfo()) < 0) {
 				filhoEsquerda = true;
@@ -55,10 +79,12 @@ public class ArvoreBinariaBusca<T extends Comparable<T>> extends ArvoreBinariaAb
 				p = p.getDireita();
 			}
 		}
-		if(p == null) {
+		
+		if(p == null) { // Elemento não encontrado na árvore
 			return;
 		}
 		
+		// Caso 1: Nó folha
 		if (p.getEsquerda() == null && p.getDireita() == null) {
 				if (p.equals(getRaiz())) {
 					setRaiz(null);
@@ -70,16 +96,7 @@ public class ArvoreBinariaBusca<T extends Comparable<T>> extends ArvoreBinariaAb
 					}
 				}
 			
-		} else if (p.getDireita()==null) {
-			if (p.equals(getRaiz())) {
-				setRaiz(p.getEsquerda());
-			} else {
-				if (filhoEsquerda) {
-					pai.setEsquerda(p.getEsquerda());
-				} else {
-					pai.setDireita(p.getEsquerda());
-				}
-			}
+		// Caso 2: Nó com apenas um filho (direita)
 		} else if (p.getEsquerda()==null) {
 			if (p.equals(getRaiz())) {
 				setRaiz(p.getDireita());
@@ -90,6 +107,18 @@ public class ArvoreBinariaBusca<T extends Comparable<T>> extends ArvoreBinariaAb
 					pai.setDireita(p.getDireita());
 				}
 			}
+		// Caso 3: Nó com apenas um filho (esquerda)
+		} else if (p.getDireita()==null) {
+			if (p.equals(getRaiz())) {
+				setRaiz(p.getEsquerda());
+			} else {
+				if (filhoEsquerda) {
+					pai.setEsquerda(p.getEsquerda());
+				} else {
+					pai.setDireita(p.getEsquerda());
+				}
+			}
+		// Caso 4: Nó com dois filhos
 		} else {
 			NoArvoreBinaria<T> sucessor = extrairSucessor(p);
 			if(p.equals(getRaiz())) {
@@ -145,24 +174,156 @@ public class ArvoreBinariaBusca<T extends Comparable<T>> extends ArvoreBinariaAb
 
 	}
 
-	/*
-	 * metodos recursivos
-	 * 
-	 * public void inserir(T info) { setRaiz(inserir(getRaiz(), info)); }
-	 * 
-	 * private NoArvoreBinaria<T> inserir(NoArvoreBinaria<T> no, T info) { if (no ==
-	 * null) { return new NoArvoreBinaria<>(info); } if
-	 * (info.compareTo(no.getInfo()) < 0) { no.setEsquerda(inserir(no.getEsquerda(),
-	 * info)); } else { no.setDireita(inserir(no.getDireita(), info)); } return no;
-	 * }
-	 * 
-	 * @Override public NoArvoreBinaria<T> buscar(T info) { return buscar(getRaiz(),
-	 * info); }
-	 * 
-	 * private NoArvoreBinaria<T> buscar(NoArvoreBinaria<T> no, T info) { if (no ==
-	 * null || no.getInfo().equals(info)) { return no; } if
-	 * (info.compareTo(no.getInfo()) < 0) { return buscar(no.getEsquerda(), info); }
-	 * else { return buscar(no.getDireita(), info); } }
-	 */
+	// encontra maior
+	public T encontraMaior() {
+		if (estaVazia()) {
+			return null;
+		}
+		NoArvoreBinaria<T> p = getRaiz();
+		while (p.getDireita() != null) {
+			p = p.getDireita();
+		}
+		return p.getInfo();
+	}
 
+	// encontra menor
+	public T encontraMenor() {
+		if (estaVazia()) {
+			return null;
+		}
+		NoArvoreBinaria<T> p = getRaiz();
+		while (p.getEsquerda() != null) {
+			p = p.getEsquerda();
+		}
+		return p.getInfo();
+	}
+
+	// verificar se é valida (para BST)
+	public boolean verificarSeEhValida() {
+		return verificarSeEhValida(getRaiz(), null, null);
+	}
+
+	private boolean verificarSeEhValida(NoArvoreBinaria<T> no, T min, T max) {
+		if (no == null) {
+			return true;
+		}
+
+		if ((min != null && no.getInfo().compareTo(min) < 0) ||
+			(max != null && no.getInfo().compareTo(max) > 0)) {
+			return false;
+		}
+
+		return verificarSeEhValida(no.getEsquerda(), min, no.getInfo()) &&
+			   verificarSeEhValida(no.getDireita(), no.getInfo(), max);
+	}
+
+	// contar nos em intervalo
+	public int contarNosEmIntervalo(T min, T max) {
+		return contarNosEmIntervalo(getRaiz(), min, max);
+	}
+
+	private int contarNosEmIntervalo(NoArvoreBinaria<T> no, T min, T max) {
+		if (no == null) {
+			return 0;
+		}
+		int count = 0;
+		if (no.getInfo().compareTo(min) >= 0 && no.getInfo().compareTo(max) <= 0) {
+			count = 1;
+		}
+
+		if (no.getInfo().compareTo(min) > 0) { // Pode haver nós no lado esquerdo que estão no intervalo
+			count += contarNosEmIntervalo(no.getEsquerda(), min, max);
+		}
+		if (no.getInfo().compareTo(max) < 0) { // Pode haver nós no lado direito que estão no intervalo
+			count += contarNosEmIntervalo(no.getDireita(), min, max);
+		}
+		return count;
+	}
+
+	// mostrar em ordem decrescente
+	public String mostrarEmOrdemDecrescente() {
+		StringBuilder sb = new StringBuilder();
+		mostrarEmOrdemDecrescente(getRaiz(), sb);
+		return sb.toString().trim();
+	}
+
+	private void mostrarEmOrdemDecrescente(NoArvoreBinaria<T> no, StringBuilder sb) {
+		if (no == null) {
+			return;
+		}
+		mostrarEmOrdemDecrescente(no.getDireita(), sb);
+		sb.append(no.getInfo()).append(" ");
+		mostrarEmOrdemDecrescente(no.getEsquerda(), sb);
+	}
+
+	// mostrar em ordem crescente (same as exibirEmOrdem from abstract class)
+	public String mostrarEmOrdemCrescente() {
+		return exibirEmOrdem();
+	}
+
+	// somar valores (assuming T is a Number type, requires casting or a Number generic constraint)
+	// For simplicity, this will assume T can be cast to Integer or Double.
+	// A more robust solution would involve a Number type parameter and sum function.
+	public double somarValores() {
+		return somarValores(getRaiz());
+	}
+
+	private double somarValores(NoArvoreBinaria<T> no) {
+		if (no == null) {
+			return 0;
+		}
+		double sum = 0;
+		if (no.getInfo() instanceof Number) {
+			sum = ((Number) no.getInfo()).doubleValue();
+		}
+		return sum + somarValores(no.getEsquerda()) + somarValores(no.getDireita());
+	}
+	
+	// contar pares (assuming T is an Integer or can be converted to one)
+	public int contarPares() {
+        return contarPares(getRaiz());
+    }
+
+    private int contarPares(NoArvoreBinaria<T> no) {
+        if (no == null) {
+            return 0;
+        }
+        int count = 0;
+        if (no.getInfo() instanceof Integer) {
+            if (((Integer) no.getInfo()) % 2 == 0) {
+                count = 1;
+            }
+        }
+        return count + contarPares(no.getEsquerda()) + contarPares(no.getDireita());
+    }
+	
+	// menor maior que (finds the smallest value greater than a given value)
+	public T menorMaiorQue(T valor) {
+		T result = null;
+		NoArvoreBinaria<T> current = getRaiz();
+		while (current != null) {
+			if (current.getInfo().compareTo(valor) > 0) {
+				result = current.getInfo();
+				current = current.getEsquerda();
+			} else {
+				current = current.getDireita();
+			}
+		}
+		return result;
+	}
+
+	// maior menor que (finds the largest value smaller than a given value)
+	public T maiorMenorQue(T valor) {
+		T result = null;
+		NoArvoreBinaria<T> current = getRaiz();
+		while (current != null) {
+			if (current.getInfo().compareTo(valor) < 0) {
+				result = current.getInfo();
+				current = current.getDireita();
+			} else {
+				current = current.getEsquerda();
+			}
+		}
+		return result;
+	}
 }

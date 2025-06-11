@@ -1,0 +1,152 @@
+package entities;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class BuscaBinariaRecursiva<T extends Comparable<T>> extends BuscaAbstract{
+	    public int buscar(T valor) {
+	        comparacoes = 0; // Reset comparisons for each search
+	        int n = getInfo().length - 1;
+	        return buscar(valor, 0, n, getInfo());
+	    }
+
+	    @SuppressWarnings("unchecked")
+	    private int buscar(T valor, int inicio, int fim, Object[] info) {
+	        comparacoes++; // Comparison for inicio > fim
+	        if (inicio > fim) return -1;
+	        int meio = (inicio + fim) / 2;
+	        T meioValor = (T) info[meio];
+	        comparacoes++; // Comparison for valor.compareTo(meioValor) < 0
+	        if (valor.compareTo(meioValor) < 0) {
+	            return buscar(valor, inicio, meio - 1, info);
+	        } else {
+	            comparacoes++; // Comparison for valor.compareTo(meioValor) > 0
+	            if (valor.compareTo(meioValor) > 0) {
+	                return buscar(valor, meio + 1, fim, info);
+	            } else {
+	                return meio;
+	            }
+	        }
+	    }
+
+		@SuppressWarnings("unchecked")
+		public List<Integer> buscarTodasOcorrencias(T valor) {
+			List<Integer> ocorrencias = new ArrayList<>();
+			int indice = buscar(valor); // Find first occurrence
+			if (indice != -1) {
+				// Search backwards
+				int temp = indice;
+				while (temp >= 0 && valor.compareTo((T) getInfo()[temp]) == 0) {
+					ocorrencias.add(0, temp);
+					temp--;
+				}
+				// Search forwards
+				temp = indice + 1;
+				while (temp < getInfo().length && valor.compareTo((T) getInfo()[temp]) == 0) {
+					ocorrencias.add(temp);
+					temp++;
+				}
+			}
+			return ocorrencias;
+		}
+
+		@SuppressWarnings("unchecked")
+		public int buscarUltimaOcorrencia(T valor) {
+			return buscarUltimaOcorrencia(valor, 0, getInfo().length - 1, -1);
+		}
+
+		@SuppressWarnings("unchecked")
+		private int buscarUltimaOcorrencia(T valor, int inicio, int fim, int ultimaOcorrencia) {
+			if (inicio > fim) {
+				return ultimaOcorrencia;
+			}
+			int meio = (inicio + fim) / 2;
+			T meioValor = (T) getInfo()[meio];
+			if (valor.compareTo(meioValor) < 0) {
+				return buscarUltimaOcorrencia(valor, inicio, meio - 1, ultimaOcorrencia);
+			} else if (valor.compareTo(meioValor) > 0) {
+				return buscarUltimaOcorrencia(valor, meio + 1, fim, ultimaOcorrencia);
+			} else {
+				// Found an occurrence, try to find a later one
+				return buscarUltimaOcorrencia(valor, meio + 1, fim, meio);
+			}
+		}
+
+		@SuppressWarnings("unchecked")
+		public boolean existeEntre(T valorInicial, T valorFinal) {
+			return existeEntre(valorInicial, valorFinal, 0, getInfo().length - 1);
+		}
+
+		@SuppressWarnings("unchecked")
+		private boolean existeEntre(T valorInicial, T valorFinal, int inicio, int fim) {
+			if (inicio > fim) {
+				return false;
+			}
+			int meio = (inicio + fim) / 2;
+			T meioValor = (T) getInfo()[meio];
+
+			if (meioValor.compareTo(valorInicial) >= 0 && meioValor.compareTo(valorFinal) <= 0) {
+				return true;
+			}
+
+			if (meioValor.compareTo(valorInicial) < 0) {
+				return existeEntre(valorInicial, valorFinal, meio + 1, fim);
+			} else {
+				return existeEntre(valorInicial, valorFinal, inicio, meio - 1);
+			}
+		}
+
+		@SuppressWarnings("unchecked")
+		public int buscaBinariaOuInserir(T valor) {
+			return buscaBinariaOuInserir(valor, 0, getInfo().length - 1);
+		}
+
+		@SuppressWarnings("unchecked")
+		private int buscaBinariaOuInserir(T valor, int inicio, int fim) {
+			if (inicio > fim) {
+				return inicio; // Insertion point
+			}
+			int meio = (inicio + fim) / 2;
+			T meioValor = (T) getInfo()[meio];
+			if (valor.compareTo(meioValor) < 0) {
+				return buscaBinariaOuInserir(valor, inicio, meio - 1);
+			} else if (valor.compareTo(meioValor) > 0) {
+				return buscaBinariaOuInserir(valor, meio + 1, fim);
+			} else {
+				return meio; // Value found
+			}
+		}
+
+		@SuppressWarnings("unchecked")
+		public List<T> buscarTodosIntervalo(T valorInicial, T valorFinal) {
+			List<T> resultados = new ArrayList<>();
+			buscarTodosIntervalo(valorInicial, valorFinal, 0, getInfo().length - 1, resultados);
+			return resultados;
+		}
+
+		@SuppressWarnings("unchecked")
+		private void buscarTodosIntervalo(T valorInicial, T valorFinal, int inicio, int fim, List<T> resultados) {
+			if (inicio > fim) {
+				return;
+			}
+			int meio = (inicio + fim) / 2;
+			T meioValor = (T) getInfo()[meio];
+
+			// If current element is within range, add it and search both sides
+			if (meioValor.compareTo(valorInicial) >= 0 && meioValor.compareTo(valorFinal) <= 0) {
+				resultados.add(meioValor);
+				buscarTodosIntervalo(valorInicial, valorFinal, inicio, meio - 1, resultados);
+				buscarTodosIntervalo(valorInicial, valorFinal, meio + 1, fim, resultados);
+			} else if (meioValor.compareTo(valorInicial) < 0) {
+				// Current element is too small, search right half
+				buscarTodosIntervalo(valorInicial, valorFinal, meio + 1, fim, resultados);
+			} else {
+				// Current element is too large, search left half
+				buscarTodosIntervalo(valorInicial, valorFinal, inicio, meio - 1, resultados);
+			}
+		}
+
+		public int contarComparacoesBuscaBinaria() {
+			return comparacoes;
+		}
+	}

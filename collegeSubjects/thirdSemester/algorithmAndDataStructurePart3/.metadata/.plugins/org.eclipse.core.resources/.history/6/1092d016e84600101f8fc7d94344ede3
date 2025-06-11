@@ -1,0 +1,161 @@
+import entities.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+// import java.util.Arrays; // Não será usado para List
+// import java.util.List; // Não será usado para List
+import static org.junit.jupiter.api.Assertions.*;
+
+public class BuscaBinariaTest {
+
+    private BuscaBinaria<Integer> buscaBinaria;
+    private Integer[] arrOrdenado;
+    private Integer[] arrVazio;
+    private Integer[] arrUnico;
+    private Integer[] arrTodosIguais;
+
+    @BeforeEach
+    void setUp() {
+        buscaBinaria = new BuscaBinaria<>();
+        arrOrdenado = new Integer[]{1, 5, 8, 12, 15, 20, 25, 30, 30, 35, 40, 40, 40, 45, 50};
+        arrVazio = new Integer[]{};
+        arrUnico = new Integer[]{10};
+        arrTodosIguais = new Integer[]{7, 7, 7, 7, 7};
+    }
+
+    // --- Testes Básicos de Busca (`buscar`) ---
+    @Test
+    void testBuscarElementoExistente() {
+        buscaBinaria.setInfo(arrOrdenado);
+        assertEquals(3, buscaBinaria.buscar(12));
+        assertEquals(7, buscaBinaria.buscar(30)); // Primeira ocorrência de 30 (pode variar dependendo da implementação exata)
+        assertEquals(14, buscaBinaria.buscar(50));
+    }
+
+    @Test
+    void testBuscarElementoNaoExistente() {
+        buscaBinaria.setInfo(arrOrdenado);
+        assertEquals(-1, buscaBinaria.buscar(0));
+        assertEquals(-1, buscaBinaria.buscar(100));
+        assertEquals(-1, buscaBinaria.buscar(13));
+    }
+
+    @Test
+    void testBuscarEmArrayVazio() {
+        buscaBinaria.setInfo(arrVazio);
+        assertEquals(-1, buscaBinaria.buscar(5));
+    }
+
+    @Test
+    void testBuscarEmArrayUnicoElemento() {
+        buscaBinaria.setInfo(arrUnico);
+        assertEquals(0, buscaBinaria.buscar(10));
+        assertEquals(-1, buscaBinaria.buscar(5));
+    }
+
+    // --- Testes de Ocorrências (Adaptados) ---
+    @Test
+    void testBuscarPrimeiraOcorrenciaMultiplas() {
+        buscaBinaria.setInfo(arrOrdenado);
+        assertEquals(7, buscaBinaria.buscarPrimeiraOcorrencia(30)); // Índice da primeira ocorrência de 30
+        assertEquals(10, buscaBinaria.buscarPrimeiraOcorrencia(40)); // Índice da primeira ocorrência de 40
+    }
+
+    @Test
+    void testBuscarPrimeiraOcorrenciaUnica() {
+        buscaBinaria.setInfo(arrOrdenado);
+        assertEquals(0, buscaBinaria.buscarPrimeiraOcorrencia(1));
+    }
+
+    @Test
+    void testBuscarPrimeiraOcorrenciaNaoExistente() {
+        buscaBinaria.setInfo(arrOrdenado);
+        assertEquals(-1, buscaBinaria.buscarPrimeiraOcorrencia(99));
+    }
+
+    @Test
+    void testBuscarPrimeiraOcorrenciaArrayTodosIguais() {
+        buscaBinaria.setInfo(arrTodosIguais);
+        assertEquals(0, buscaBinaria.buscarPrimeiraOcorrencia(7));
+    }
+
+    @Test
+    void testBuscarUltimaOcorrenciaExistente() {
+        buscaBinaria.setInfo(arrOrdenado);
+        assertEquals(8, buscaBinaria.buscarUltimaOcorrencia(30));
+        assertEquals(12, buscaBinaria.buscarUltimaOcorrencia(40));
+        assertEquals(0, buscaBinaria.buscarUltimaOcorrencia(1));
+    }
+
+    @Test
+    void testBuscarUltimaOcorrenciaNaoExistente() {
+        buscaBinaria.setInfo(arrOrdenado);
+        assertEquals(-1, buscaBinaria.buscarUltimaOcorrencia(99));
+    }
+
+    // --- Testes de Intervalo ---
+    @Test
+    void testExisteEntreTrue() {
+        buscaBinaria.setInfo(arrOrdenado);
+        assertTrue(buscaBinaria.existeEntre(10, 20));
+        assertTrue(buscaBinaria.existeEntre(1, 50));
+        assertTrue(buscaBinaria.existeEntre(30, 30));
+    }
+
+    @Test
+    void testExisteEntreFalse() {
+        buscaBinaria.setInfo(arrOrdenado);
+        assertFalse(buscaBinaria.existeEntre(2, 4));
+        buscaBinaria.setInfo(arrVazio);
+        assertFalse(buscaBinaria.existeEntre(1, 10)); // Array vazio
+    }
+
+    @Test
+    void testBuscarTodosIntervaloBoolean() {
+        buscaBinaria.setInfo(arrOrdenado);
+        assertTrue(buscaBinaria.buscarTodosIntervalo(20, 35)); // Deve encontrar pelo menos um
+        assertTrue(buscaBinaria.buscarTodosIntervalo(0, 100)); // Deve encontrar pelo menos um
+        assertFalse(buscaBinaria.buscarTodosIntervalo(2, 4));  // Não deve encontrar nenhum
+    }
+
+    @Test
+    void testContarElementosNoIntervalo() {
+        buscaBinaria.setInfo(arrOrdenado);
+        assertEquals(5, buscaBinaria.contarElementosNoIntervalo(20, 35)); // 20, 25, 30, 30, 35
+        assertEquals(15, buscaBinaria.contarElementosNoIntervalo(0, 100)); // Todos os elementos
+        assertEquals(0, buscaBinaria.contarElementosNoIntervalo(2, 4)); // Nenhum no intervalo
+        assertEquals(3, buscaBinaria.contarElementosNoIntervalo(40, 40)); // 40, 40, 40
+    }
+
+    // --- Testes de Busca Binária ou Inserção ---
+    @Test
+    void testBuscaBinariaOuInserirExistente() {
+        buscaBinaria.setInfo(arrOrdenado);
+        assertEquals(3, buscaBinaria.buscaBinariaOuInserir(12));
+        assertEquals(7, buscaBinaria.buscaBinariaOuInserir(30)); // Pode retornar a primeira ou qualquer uma das ocorrências
+    }
+
+    @Test
+    void testBuscaBinariaOuInserirNaoExistente() {
+        buscaBinaria.setInfo(arrOrdenado);
+        assertEquals(0, buscaBinaria.buscaBinariaOuInserir(0)); // Should be inserted at index 0
+        assertEquals(4, buscaBinaria.buscaBinariaOuInserir(13)); // Should be inserted at index 4 (after 12, before 15)
+        assertEquals(arrOrdenado.length, buscaBinaria.buscaBinariaOuInserir(100)); // Should be inserted at the end
+    }
+
+    // --- Testes de Contagem de Comparações ---
+    @Test
+    void testContarComparacoesBuscaBinaria() {
+        buscaBinaria.setInfo(arrOrdenado);
+        buscaBinaria.buscar(1); // First element
+        assertTrue(buscaBinaria.contarComparacoesBuscaBinaria() > 0);
+
+        buscaBinaria.buscar(30); // Middle element
+        assertTrue(buscaBinaria.contarComparacoesBuscaBinaria() > 0);
+
+        buscaBinaria.buscar(50); // Last element
+        assertTrue(buscaBinaria.contarComparacoesBuscaBinaria() > 0);
+
+        buscaBinaria.buscar(99); // Not found
+        assertTrue(buscaBinaria.contarComparacoesBuscaBinaria() > 0);
+    }
+}
