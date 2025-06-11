@@ -1,0 +1,109 @@
+--ordenar em ordem decrescente (todas as ordenações)
+--ordenar segmento
+--contar trocas e comparações
+--contador de trocas
+--esta ordenado
+--comparar algoritmos
+--ordenar por pares
+--ordenar por impares
+--calcular mediana
+--ordenar string por tamanho
+--obter índice ordenação
+--contar elementos fora de ordem
+--ordena por ocorrência
+--são premutacoes
+--ordena por ultimo digito
+--intercalar vetores ordenados
+--ordenar com segundo critério
+--ordenar negativos
+
+arvores
+
+--encontra maior
+--encontra menor
+--altura
+--contar nos
+--contar nos nível
+--contem
+--verificar se e valida
+--contar nos em intervalo
+--mostrar em ordem decrescente
+--mostrar em ordem crescente
+--contar pares	
+--estabalanceada
+--isdegenerada
+--inverter
+--somar valores
+--contar nos com um filho
+--contar nos folha
+--contar nos com 2 filhos
+--contar nos internos
+--listar em ordem
+--pre ordem
+--pos ordem
+--são iguais (2 arvores)
+--contar folhas em nível
+--e completa
+--e cheia
+--menor maior que
+--maior menor que
+--contar filhos
+--buscar
+--buscar recursivo
+
+
+hash
+
+--listarchaves
+--contarColisoes
+--contem chave
+--limpar
+--hashmap sem encadeamento separado
+--busca com tratamento de colisões
+--reorganizar tabela
+--tamanho maior lista
+--buscar posição
+--taxa de ocupação
+--possui duplicatas
+--redimensionar
+--substituir valor
+--verificar distribuição
+--inserir com rejeição (se já ocupado rejeita)
+--obter ultimo (lista)
+--calcularqtde obj
+
+tiago degenerada
+
+ public boolean isDegenerada() {
+        NoArvoreBinaria<T> no = getRaiz();
+
+        while (no.getEsquerda() != null || no.getDireita() != null) {
+            if (no.getEsquerda() != null && no.getDireita() != null) {
+                return false;
+            } else if (no.getEsquerda() != null) {
+                no = no.getEsquerda();
+            }
+            else if (no.getDireita() != null) {
+                no = no.getDireita();
+            }
+        }
+
+        // considera que árvores vazias não são degeneradas
+        return true;
+    }
+
+tiago qtde obj
+
+    public int calcularQtdeObjetos() {
+
+        int qtdeObjetos = 0;
+
+        for (int i = 0; i < getInfo().length; i++) {
+            if (info[i] != null) {
+                qtdeObjetos += this.info[i].obterComprimento();
+            }
+
+        }
+
+        return qtdeObjetos;
+    }
