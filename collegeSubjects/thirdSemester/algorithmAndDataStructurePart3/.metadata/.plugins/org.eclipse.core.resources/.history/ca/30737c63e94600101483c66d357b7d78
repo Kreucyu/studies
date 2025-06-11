@@ -1,0 +1,183 @@
+package application;
+
+//TesteMapaDispersao.java
+import java.time.LocalDate;
+
+public class TesteMapaDispersao {
+
+ public static void main(String[] args) {
+     // Plano de testes PL01 - Validar implementação do mapa de dispersão 
+     System.out.println("--- Executando Plano de Testes PL01 (Endereçamento Aberto) ---");
+
+     // Caso 1: Validar que o método insere um dado novo e consegue localizá-lo 
+     System.out.println("\n--- Caso 1: Inserção e Busca de um único elemento ---");
+     // Criar um mapa de dispersão com capacidade de armazenamento de 53 listas encadeadas (aqui, 53 slots).
+     MapaDispersao<Aluno> mapa1 = new MapaDispersao<>(53);
+
+     // Crie um objeto (obj1) da classe Aluno que represente o aluno com matricula = 12000, nome "Jean" e data de nascimento = 01/01/2000.
+     Aluno obj1 = new Aluno(12000, "Jean", LocalDate.of(2000, 1, 1));
+     // Adicione o obj1 no mapa, definindo que sua chave de busca seja 12000.
+     mapa1.inserir(12000, obj1);
+     mapa1.imprimirMapa();
+
+     System.out.println("Fator de Carga: " + mapa1.calcularFatorCarga());
+
+     // Procure no mapa pelo aluno que tem chave de busca igual à 12000.
+     Aluno alunoBuscado1 = mapa1.buscar(12000);
+     // Deverá ser retornado uma instância de Aluno que tem identidade de referência idêntica à obj1.
+     if (alunoBuscado1 != null && alunoBuscado1.equals(obj1)) {
+         System.out.println("Caso 1 SUCESSO: Aluno 12000 encontrado e é o mesmo objeto. " + alunoBuscado1);
+     } else {
+         System.out.println("Caso 1 FALHA: Aluno 12000 não encontrado ou não é o mesmo objeto.");
+     }
+
+     // Caso 2: Validar que o método insere mais de um objeto no mapa de dispersão, localizando os diversos objetos.
+     System.out.println("\n--- Caso 2: Inserção e Busca de múltiplos elementos ---");
+     // Crie um mapa de dispersão com capacidade de armazenamento de 53 listas encadeadas (aqui, 53 slots).
+     MapaDispersao<Aluno> mapa2 = new MapaDispersao<>(53);
+
+     // Armazene os seguintes alunos:
+     Aluno alunoJean = new Aluno(12000, "Jean", LocalDate.of(2000, 1, 1)); // 
+     Aluno alunoPedro = new Aluno(14000, "Pedro", LocalDate.of(1999, 1, 20)); // 
+     Aluno alunoMarta = new Aluno(12500, "Marta", LocalDate.of(2001, 2, 18)); // 
+     Aluno alunoLucas = new Aluno(13000, "Lucas", LocalDate.of(1998, 11, 25)); // 
+
+     mapa2.inserir(alunoJean.getMatricula(), alunoJean);
+     mapa2.inserir(alunoPedro.getMatricula(), alunoPedro);
+     mapa2.inserir(alunoMarta.getMatricula(), alunoMarta);
+     mapa2.inserir(alunoLucas.getMatricula(), alunoLucas);
+     mapa2.imprimirMapa();
+
+     System.out.println("Fator de Carga: " + mapa2.calcularFatorCarga());
+
+     // Solicite a busca de todos os alunos, um por um, utilizando o respectivo código de matricula.
+     boolean caso2Sucesso = true;
+     Aluno bJean = mapa2.buscar(12000);
+     // Os objetos retornados devem ser os mesmos que foram originalmente adicionados ao mapa de dispersão.
+     if (bJean != null && bJean.equals(alunoJean)) {
+         System.out.println("Aluno 12000 (Jean) encontrado: " + bJean);
+     } else {
+         System.out.println("Caso 2 FALHA: Aluno 12000 (Jean) não encontrado ou não é o mesmo.");
+         caso2Sucesso = false;
+     }
+
+     Aluno bPedro = mapa2.buscar(14000);
+     // Os objetos retornados devem ser os mesmos que foram originalmente adicionados ao mapa de dispersão.
+     if (bPedro != null && bPedro.equals(alunoPedro)) {
+         System.out.println("Aluno 14000 (Pedro) encontrado: " + bPedro);
+     } else {
+         System.out.println("Caso 2 FALHA: Aluno 14000 (Pedro) não encontrado ou não é o mesmo.");
+         caso2Sucesso = false;
+     }
+
+     Aluno bMarta = mapa2.buscar(12500);
+     // Os objetos retornados devem ser os mesmos que foram originalmente adicionados ao mapa de dispersão.
+     if (bMarta != null && bMarta.equals(alunoMarta)) {
+         System.out.println("Aluno 12500 (Marta) encontrado: " + bMarta);
+     } else {
+         System.out.println("Caso 2 FALHA: Aluno 12500 (Marta) não encontrado ou não é o mesmo.");
+         caso2Sucesso = false;
+     }
+
+     Aluno bLucas = mapa2.buscar(13000);
+     // Os objetos retornados devem ser os mesmos que foram originalmente adicionados ao mapa de dispersão.
+     if (bLucas != null && bLucas.equals(alunoLucas)) {
+         System.out.println("Aluno 13000 (Lucas) encontrado: " + bLucas);
+     } else {
+         System.out.println("Caso 2 FALHA: Aluno 13000 (Lucas) não encontrado ou não é o mesmo.");
+         caso2Sucesso = false;
+     }
+
+     if (caso2Sucesso) {
+         System.out.println("Caso 2 SUCESSO: Todos os alunos foram encontrados corretamente.");
+     }
+
+
+     // Caso 3: Validar inserção e busca de objetos quando há colisão 
+     System.out.println("\n--- Caso 3: Inserção e Busca com Colisões (Endereçamento Aberto) ---");
+     // Crie um mapa de dispersão com capacidade de armazenamento de 53 listas encadeadas (aqui, 53 slots).
+     MapaDispersao<Aluno> mapa3 = new MapaDispersao<>(53);
+
+     // Armazenar os seguintes alunos:
+     Aluno alunoJean3 = new Aluno(12000, "Jean", LocalDate.of(2000, 1, 1)); // 
+     Aluno alunoPedro3 = new Aluno(14000, "Pedro", LocalDate.of(1999, 1, 20)); // 
+     // O objeto de matrícula 14226 colidirá com o objeto de matrícula 12000.
+     Aluno alunoMarta3 = new Aluno(14226, "Marta", LocalDate.of(2001, 2, 18)); // 
+     // O objeto de matrícula 17180 colidirá com o aluno de matrícula 14000.
+     Aluno alunoLucas3 = new Aluno(17180, "Lucas", LocalDate.of(1998, 11, 25)); // 
+
+     // Para garantir as colisões para o tamanho 53:
+     // 12000 % 53 = 30
+     // 14226 % 53 = 30  -> Colide com 12000
+     // 14000 % 53 = 32
+     // 17180 % 53 = 32 -> Colide com 14000
+
+     mapa3.inserir(alunoJean3.getMatricula(), alunoJean3);
+     mapa3.inserir(alunoPedro3.getMatricula(), alunoPedro3);
+     mapa3.inserir(alunoMarta3.getMatricula(), alunoMarta3); // Colisão esperada com 12000
+     mapa3.inserir(alunoLucas3.getMatricula(), alunoLucas3); // Colisão esperada com 14000
+     mapa3.imprimirMapa();
+
+     System.out.println("Fator de Carga: " + mapa3.calcularFatorCarga());
+
+     // Solicite a busca de todos os alunos, um por um, utilizando o respectivo código de matricula.
+     boolean caso3Sucesso = true;
+     Aluno bJean3 = mapa3.buscar(12000);
+     // Os objetos retornados devem ser os mesmos que foram originalmente adicionados ao mapa de dispersão.
+     if (bJean3 != null && bJean3.equals(alunoJean3)) {
+         System.out.println("Aluno 12000 (Jean) encontrado: " + bJean3);
+     } else {
+         System.out.println("Caso 3 FALHA: Aluno 12000 (Jean) não encontrado ou não é o mesmo.");
+         caso3Sucesso = false;
+     }
+
+     Aluno bPedro3 = mapa3.buscar(14000);
+     // Os objetos retornados devem ser os mesmos que foram originalmente adicionados ao mapa de dispersão.
+     if (bPedro3 != null && bPedro3.equals(alunoPedro3)) {
+         System.out.println("Aluno 14000 (Pedro) encontrado: " + bPedro3);
+     } else {
+         System.out.println("Caso 3 FALHA: Aluno 14000 (Pedro) não encontrado ou não é o mesmo.");
+         caso3Sucesso = false;
+     }
+
+     Aluno bMarta3 = mapa3.buscar(14226);
+     // Os objetos retornados devem ser os mesmos que foram originalmente adicionados ao mapa de dispersão.
+     if (bMarta3 != null && bMarta3.equals(alunoMarta3)) {
+         System.out.println("Aluno 14226 (Marta) encontrado: " + bMarta3);
+     } else {
+         System.out.println("Caso 3 FALHA: Aluno 14226 (Marta) não encontrado ou não é o mesmo.");
+         caso3Sucesso = false;
+     }
+
+     Aluno bLucas3 = mapa3.buscar(17180);
+     // Os objetos retornados devem ser os mesmos que foram originalmente adicionados ao mapa de dispersão.
+     if (bLucas3 != null && bLucas3.equals(alunoLucas3)) {
+         System.out.println("Aluno 17180 (Lucas) encontrado: " + bLucas3);
+     } else {
+         System.out.println("Caso 3 FALHA: Aluno 17180 (Lucas) não encontrado ou não é o mesmo.");
+         caso3Sucesso = false;
+     }
+
+     if (caso3Sucesso) {
+         System.out.println("Caso 3 SUCESSO: Todos os alunos foram encontrados corretamente, mesmo com colisões.");
+     }
+
+     // Teste de Remoção (adicional para endereçamento aberto)
+     System.out.println("\n--- Teste de Remoção (adicional) ---");
+     mapa3.remover(12000); // Remove Jean
+     mapa3.imprimirMapa();
+     Aluno bJeanRemovido = mapa3.buscar(12000);
+     if (bJeanRemovido == null) {
+         System.out.println("Remoção SUCESSO: Aluno 12000 (Jean) não encontrado após remoção.");
+     } else {
+         System.out.println("Remoção FALHA: Aluno 12000 (Jean) ainda encontrado após remoção.");
+     }
+
+     Aluno bMartaAposRemocao = mapa3.buscar(14226); // Marta deveria ainda ser encontrada
+     if (bMartaAposRemocao != null && bMartaAposRemocao.equals(alunoMarta3)) {
+         System.out.println("Busca pós-remoção SUCESSO: Aluno 14226 (Marta) ainda encontrado.");
+     } else {
+         System.out.println("Busca pós-remoção FALHA: Aluno 14226 (Marta) não encontrado após remoção do 12000.");
+     }
+ }
+}
